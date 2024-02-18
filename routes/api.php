@@ -28,7 +28,7 @@ Route::resource('roles', RoleController::class)->only(['index', 'store']);
 Route::post('/payment/initiate', [PaymentController::class, 'initiatePayment'])->name('payment.initiate');
 
 // Route for handling Paystack callback after payment
-Route::get('/payment/callback/{reference}', [PaymentController::class, 'handleGatewayCallback'])->name('payment.callback');
+Route::get('/payment/callback/reference', [PaymentController::class, 'handleGatewayCallback'])->name('payment.callback');
 
 Route::prefix('client')->group(function () {
 

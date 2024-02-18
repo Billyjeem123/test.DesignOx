@@ -2,6 +2,7 @@
 
 namespace App\Services;
 use App\Helpers\Utility;
+use App\Models\Job;
 use http\Env\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -32,7 +33,7 @@ class PaymentService
                 ],
             ];
             $response = Http::withHeaders([
-                'Authorization' => 'Bearer sk_test_755a02d78f2777eb99ac6ba0b69d8a729b4e1992', #   Replace with your actual secret key
+                'Authorization' => 'Bearer sk_test_755a02d78f2777eb99ac6ba0b69d8a729b4e1992',# your actual secret key
                 'Content-Type' => 'application/json',
             ])->post('https://api.paystack.co/transaction/initialize', $paymentDetails);
 
@@ -59,17 +60,17 @@ class PaymentService
 
 
 
-    public function handleGatewayCallback(Request $request)
+    public function handleGatewayCallback()
     {
         try {
-            $transactionId = request('reference'); #    Assuming you receive the transaction ID in the request
+            $transactionId = request('reference'); #   received the transaction ID in the request
 
             #    Construct the endpoint URL with the transaction ID
             $url = 'https://api.paystack.co/transaction/verify/' . $transactionId;
 
             #    Send a GET request to fetch transaction details
             $response = Http::withHeaders([
-                'Authorization' => 'Bearer '. getenv('PAYSTACK_SECRET_KEY'), #    Replace with your actual secret key
+                'Authorization' => 'Bearer sk_test_755a02d78f2777eb99ac6ba0b69d8a729b4e1992', // Replace with your actual secret key
                 'Content-Type' => 'application/json',
             ])->get($url);
 
@@ -78,7 +79,28 @@ class PaymentService
                 #    Get the response data
                 $responseData = $response->json();
 
-                echo json_encode($responseData);
+                $tranxRecord =  json_encode($responseData);
+
+                $reference = $tranxRecord['reference'];
+                $amount = $tranxRecord['amount'];
+                $currency = $tranxRecord['currency'];
+                $usertoken = $tranxRecord['metadata']['usertoken'];
+                $project_desc = $tranxRecord['project_desc'];
+                $project_type = $tranxRecord['project_type'];
+                $tools_used = $tranxRecord['tools_used'];
+                $duration = $tranxRecord['duration'];
+                $experience_level  = $tranxRecord['experience_level'];
+                $budget = $tranxRecord['budget'];
+                $numbers_of_proposals = $tranxRecord['numbers_of_proposals'];
+                $project_link_attachment = $tranxRecord['project_link_attachment'];
+                $payment_channel = $tranxRecord['payment_channel'];
+
+
+                $saveClientJob = Job::create([
+                    ''
+
+                ])
+
 
                 #    Process the response data as needed
                 #    For example, you can extract relevant information from $responseData and return it

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="b3e39b2d-07f7-4d63-8eeb-cf36debc8be2" name="test.designox" url="https://iccflifeskills.com.ng/">
+        <fileTransfer rootFolder="/home/iccflife" accessType="SFTP" host="http://iccflifeskills.com.ng" port="22" sshConfigId="7b85d0e6-423d-42a7-8664-95d245ab64dd" sshConfig="iccflife@http://iccflifeskills.com.ng:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" isUseRsync="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

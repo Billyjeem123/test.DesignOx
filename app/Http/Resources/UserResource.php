@@ -23,7 +23,7 @@ class UserResource extends JsonResource
             'google_id' => $this->google_id,
             'email' => $this->email,
             'roles' => $this->roles->pluck('role_name') ,// Assuming 'role_name' is the attribute you want to include
-           
+
     ];
 }
 

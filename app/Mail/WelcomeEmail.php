@@ -22,9 +22,9 @@ class WelcomeEmail extends Mailable
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct($userName)
     {
-        $this->user = $user;
+        $this->user = $userName;
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+
 use App\Helpers\Utility;
 use App\Mail\adminJobNotify;
 use App\Models\Job;

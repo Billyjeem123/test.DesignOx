@@ -9,6 +9,7 @@ use App\Http\Resources\UserResource;
 use App\Mail\WelcomeEmail;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\UserService;
 use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,51 +21,37 @@ use Laravel\Socialite\Facades\Socialite;
 class AuthController extends Controller
 {
 
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function register(UserRequest $request)
     {
         try {
-            # Define validation rules
-
-
-            # Validate the incoming request
-            $validatedData = $request->validate($rules);
-
-            # Sanitize password and portfolio link
+            # Sanitize password
+            $validatedData = $request->validated();
             $validatedData['password'] = Hash::make($validatedData['password']);
-            #  Sanitize portfolio link here if needed
 
-            # Create the user
-
-            $token = Utility::token();
-
-            $user = User::create(array_merge($validatedData, ['otp' => $token, 'account_type' => 'local']));
-
-            # Assign role to the user
-            $role = Role::where('role_name', $validatedData['role'])->first();
-            #  Assuming you have a 'roles' table
-            $user->roles()->attach($role);
-            #  Assuming you have a many-to-many relationship between users and roles
+            $user = $this->userService->registerUser($validatedData);
 
             # Send email verification notification
-            Mail::to($user->email)->send(new WelcomeEmail($user));
-            #  Send verification email
+            Mail::to($validatedData['email'])->send(new WelcomeEmail($validatedData['firstname']));
 
-            return Utility::outputData(true, 'User created successfully. Verification email sent.', new UserResource($user), 201);
+            return Utility::outputData(true, 'User created successfully.', new UserResource($user), 201);
         } catch (ValidationException $e) {
-            return Utility::outputData(false, 'Validation failed', [], 422);
+            return Utility::outputData(false, 'Validation failed', $e->getMessage(), 422);
         }
     }
 
-    public function verifyOTP(Request $request)
+
+    public function verifyOTP(UserRequest $request)
     {
 
         try {
-            $rules = [
-                'token' => ['required', 'string'],
-                'email' => ['required', 'string']
-            ];
-
-            $validatedData = $request->validate($rules);
+            $validatedData = $request->validated();
 
             $token = $validatedData['token'];
             $email = $validatedData['email'];
@@ -108,17 +95,11 @@ class AuthController extends Controller
         }
     }
 
-    public function login(Request $request)
+    public function login(UserRequest $request)
     {
         try {
-            # Validation rules
-            $rules = [
-                'email' => ['required', 'string', 'email'],
-                'password' => ['required', 'string'],
-            ];
-
             # Validate the request data
-            $validatedData = $request->validate($rules);
+            $validatedData = $request->validated();
 
             # Retrieve email and password from validated data
             $email = $validatedData['email'];

@@ -55,7 +55,7 @@
         <div class="logo">
             <img src="https://example.com/logo.png" alt="Logo">
         </div>
-        <h1>Welcome, {{ $user->fullname }}!</h1>
+        <h1>Welcome, {{ $user }}!</h1>
         <p>Thank you for joining our platform. We're excited to have you on board.</p>
         <p>Get started by browsing through our services or creating your own!</p>
         <div style="text-align: center;">

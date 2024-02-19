@@ -24,14 +24,29 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-                'firstname' => ['required', 'string', 'max:255'],
-                'lastname' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('tblusers')],
-                'password' => ['required', 'string', 'max:255']
-        ];
+        switch ($this->route()->getActionMethod()) {
+            case 'register':
+                return [
+                    'firstname' => 'required|string|max:255',
+                    'lastname' => 'required|string|max:255',
+                    'email' => 'required|email|unique:tblusers',
+                    'password' => 'required|string',
+                ];
+            case 'verifyOTP':
+                return [
+                    'token' => 'required|string',
+                    'email' => 'required|email',
+                ];
+            case 'login':
+                return [
+                    'email' => 'required|email',
+                    'password' => 'required|string',
+                ];
+            default:
+                return [];
+        }
     }
 
 
-   g
+
 }

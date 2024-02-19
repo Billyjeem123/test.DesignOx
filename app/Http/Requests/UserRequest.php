@@ -34,13 +34,20 @@ class UserRequest extends FormRequest
                 ];
             case 'verifyOTP':
                 return [
-                    'token' => 'required|string',
+                    'otp' => 'required|string',
                     'email' => 'required|email',
                 ];
             case 'login':
                 return [
                     'email' => 'required|email',
                     'password' => 'required|string',
+                ];
+
+            case 'saveUserCountry':
+                return [
+                    'usertoken' => 'required',
+                    'role' => ['required', 'string', Rule::in(['client', 'talent'])], #  New role validation rule
+                    'country' => 'required|string',
                 ];
             default:
                 return [];

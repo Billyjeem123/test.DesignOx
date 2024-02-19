@@ -47,110 +47,47 @@ class AuthController extends Controller
     }
 
 
-    public function verifyOTP(UserRequest $request)
+    public function VerifyOTP(UserRequest $request)
     {
-
         try {
             $validatedData = $request->validated();
+            $verifyResult = $this->userService->verifyOTP($validatedData);
 
-            $token = $validatedData['token'];
-            $email = $validatedData['email'];
-
-            #  Find the user by the provided token
-            $user = User::where('otp', $token)->first();
-
-            #  If the user doesn't exist or the token is invalid
-            if (!$user) {
-                return Utility::outputData(false, "Invalid OTP", [], 422);
-            }
-
-            #  Check if the provided email matches the user's email
-            if ($email !== $user->email) {
-                return Utility::outputData(false, "Email doesn't match", [], 422);
-            }
-
-            # Retrieve existing access token if available
-            $alreadyExist = $user->getCurrentToken();
-            if ($alreadyExist) {
-                #  If token exists, use it
-                $accessToken = $alreadyExist->token;
-            } else {
-                #  If token doesn't exist, generate a new one
-                $accessToken = $user->createToken('API Token of ' . $user->email, ['read'])->plainTextToken;
-            }
-
-            #  Mark the email as verified by setting the current timestamp
-            $user->email_verified_at = now();
-            $user->save();
-
-
-            Auth::login($user);
-
-            return Utility::outputData(true, 'Account has been activated', [
-                'user' => new UserResource($user),
-                'access_token' => $accessToken,
-            ], 200);
-        } catch (ValidationException $e) {
-            return Utility::outputData(false, 'Validation failed', [], 422);
+            return Utility::outputData($verifyResult['success'], $verifyResult['message'],  $verifyResult['data'], $verifyResult['status']);
+        } catch (\Exception $e) {
+            return Utility::outputData(false, $e->getMessage(), [], 500);
         }
     }
 
     public function login(UserRequest $request)
     {
         try {
-            # Validate the request data
             $validatedData = $request->validated();
+            $loginResult = $this->userService->login($validatedData);
 
-            # Retrieve email and password from validated data
-            $email = $validatedData['email'];
-            $password = $validatedData['password'];
-
-            # Find the user by email
-            $user = User::where('email', $email)->first();
-
-            if (!$user) {
-                return Utility::outputData(false, 'User not found.', [], 404);
-            }
-
-            if ($user->account_type !== 'local') {
-                return Utility::outputData(false, 'Please log in using your Google account.', [], 401);
-            }
-
-            # If user not found or password is incorrect, return error
-            if (!$user || !Hash::check($password, $user->password)) {
-                return Utility::outputData(false, 'Incorrect email or password', [], 422);
-            }
-
-            #  Check if the account is not verified
-            if (!$user->email_verified_at) {
-                return Utility::outputData(false, 'Account not verified', [], 422);
-            }
-
-            # Retrieve existing access token if available
-            $alreadyExist = $user->getCurrentToken();
-            if ($alreadyExist) {
-                #  If token exists, use it
-                $accessToken = $alreadyExist->bearerToken;
-            } else {
-                #  If token doesn't exist, generate a new one
-                $accessToken = $user->createToken('API Token of ' . $user->email, ['read'])->plainTextToken;
-            }
-
-            # Attempt to login the user
-            Auth::login($user);
-
-            # Return success response with user data and access token
-            return Utility::outputData(true, 'Login successful', [
-                'user' => new UserResource($user),
-                'access_token' => $accessToken,
-            ], 200);
-        } catch (ValidationException $e) {
-            # Handle validation errors
-            return Utility::outputData(false, $e->getMessage(), [], 422);
+            return Utility::outputData($loginResult['success'], $loginResult['message'],  $loginResult['data'] ?? [], $loginResult['status']);
         } catch (\Exception $e) {
-            # Handle other unexpected errors
             return Utility::outputData(false, $e->getMessage(), [], 500);
         }
+    }
+
+
+
+    public function saveUserCountry(UserRequest $request){
+
+        try {
+            # Sanitize input
+            $validatedData = $request->validated();
+
+             $saveCountry  = $this->userService->saveUserCountry($validatedData);
+
+            return Utility::outputData($saveCountry['success'], $saveCountry['message'],  $saveCountry['data'], $saveCountry['status']);
+        } catch (ValidationException $e) {
+            return Utility::outputData(false, 'Validation failed', $e->getMessage(), 422);
+        }
+
+
+
     }
 
 //     public function logout()

@@ -18,7 +18,7 @@ return [
     'publicKey' => 'pk_test_41542043f72482b6dfad6fc342c062ed6088f84c',
 
     /**
-     * Secret Key From Paystack Dashboardd
+     * Secret Key From Paystack Dashboard
      *
      */
     'secretKey' => 'sk_test_755a02d78f2777eb99ac6ba0b69d8a729b4e1992',

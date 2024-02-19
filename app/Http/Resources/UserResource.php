@@ -21,6 +21,7 @@ class UserResource extends JsonResource
             'lastname' => $this->lastname,
             'account_type' => $this->account_type,
             'google_id' => $this->google_id,
+            'country' => $this->country,
             'email' => $this->email,
             'roles' => $this->roles->pluck('role_name') ,// Assuming 'role_name' is the attribute you want to include
 

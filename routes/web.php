@@ -13,5 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::view('/payment', 'payment');
-
+Route::get('/', function () {
+    return '<a href="' . route('googlelogin') . '"><button>Click me</button></a>';
+});

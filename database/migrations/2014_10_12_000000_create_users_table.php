@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('otp');
             $table->string('account_type');
+            $table->string('country')->nullable();
             $table->string('google_id')->nullable();
             $table->rememberToken();
             $table->string('country')->nullable();

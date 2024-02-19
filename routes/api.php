@@ -30,8 +30,12 @@ Route::prefix('client')->group(function () {
     Route::prefix('auth')->group(function () {
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('/verify-otp', [AuthController::class, 'verifyOTP']); #sww
+        Route::post('/save-country', [AuthController::class, 'saveUserCountry']);
         Route::post('/login', [AuthController::class, 'login']);
         Route::post('/logout', [AuthController::class, 'logout']);
+        Route::get('/google-redirect', [AuthController::class, 'googleRedirect'])->name('googlelogin');
+        Route::get('/google-callback', [AuthController::class, 'googleCallBack']);
+
     });
 
     #Post Job client...
@@ -44,8 +48,7 @@ Route::prefix('client')->group(function () {
 
 
     # Register with Google
-    Route::get('/google-redirect', [AuthController::class, 'googleRedirect'])->name('googlelogin');
-    Route::get('/google-callback', [AuthController::class, 'googleCallBack']);
+
 });
 
 Route::post('/task', [AuthController::class, 'task']);

@@ -71,7 +71,7 @@ class PaymentService
 
             #    Send a GET request to fetch transaction details
             $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' .config('services.paystack.secrete_key'), // Replace with your actual secret key
+                'Authorization' => 'Bearer ' .config('services.paystack.secrete_key'),
                 'Content-Type' => 'application/json',
             ])->get($url);
 
@@ -79,9 +79,7 @@ class PaymentService
             if ($response->successful()) {
                 #    Get the response data
                 $tranxRecord = $response->json();
-//                 echo json_encode($tranxRecord);
 
-                $reference = $tranxRecord['status'];
                 $amount = $tranxRecord['data']['amount'];
                 $currency = $tranxRecord['data']['currency'];
                 $usertoken = $tranxRecord['data']['metadata']['usertoken'];
@@ -96,6 +94,7 @@ class PaymentService
                 $payment_channel = $tranxRecord['data']['metadata']['payment_channel'];
                 $email  = $tranxRecord['data']['customer']['email'];
                 $keywords = $tranxRecord['data']['metadata']['keywords'];
+                $reference = $tranxRecord['data']['reference'];
 
 
                 $saveClientJob = Job::create([

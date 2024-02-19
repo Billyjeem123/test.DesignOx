@@ -1,70 +1,64 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Client\User;
 
-use App\Models\Role;
-use App\Models\User;
 use App\Helpers\Utility;
-use App\Mail\WelcomeEmail;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Mail\WelcomeEmail;
+use App\Models\Role;
+use App\Models\User;
+use Dotenv\Exception\ValidationException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
-use Dotenv\Exception\ValidationException;
-use Illuminate\Support\Facades\Session;
 
+class AuthController extends Controller
+{
 
-class AuthController extends Controller {
-
-     
-
-    public function register( Request $request ) {
+    public function register(Request $request)
+    {
         try {
             # Define validation rules
             $rules = [
-                'fullname' => [ 'required', 'string', 'max:255' ],
-                'email' => [ 'required', 'string', 'email', 'max:255', Rule::unique( 'users' ) ],
-                'password' => [ 'required', 'string', 'max:255' ],
-                'phone_number' => [ 'required', 'string', 'max:255' ],
-                'portfolio_link' => [ 'nullable', 'string', 'max:255' ],
-                'role' => [ 'required', 'string', Rule::in( [ 'client', 'talent' ] ) ], #  New role validation rule
+                'firstname' => ['required', 'string', 'max:255'],
+                'lastname' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('tblusers')],
+                'password' => ['required', 'string', 'max:255'],
+                'role' => ['required', 'string', Rule::in(['client', 'talent'])], #  New role validation rule
             ];
 
             # Validate the incoming request
-            $validatedData = $request->validate( $rules );
+            $validatedData = $request->validate($rules);
 
             # Sanitize password and portfolio link
-            $validatedData[ 'password' ] = Hash::make( $validatedData[ 'password' ] );
+            $validatedData['password'] = Hash::make($validatedData['password']);
             #  Sanitize portfolio link here if needed
 
             # Create the user
 
             $token = Utility::token();
 
-            $user = User::create( array_merge( $validatedData, [ 'otp' => $token ] ) );
+            $user = User::create(array_merge($validatedData, ['otp' => $token, 'account_type' => 'local']));
 
             # Assign role to the user
-            $role = Role::where( 'role_name', $validatedData[ 'role' ] )->first();
+            $role = Role::where('role_name', $validatedData['role'])->first();
             #  Assuming you have a 'roles' table
-            $user->roles()->attach( $role );
+            $user->roles()->attach($role);
             #  Assuming you have a many-to-many relationship between users and roles
 
             # Send email verification notification
-            Mail::to( $user->email )->send( new WelcomeEmail( $user ) );
+            Mail::to($user->email)->send(new WelcomeEmail($user));
             #  Send verification email
 
-            return Utility::outputData( true, 'User created successfully. Verification email sent.', new UserResource( $user ), 201 );
-
-        } catch ( ValidationException $e ) {
-            return Utility::outputData( false, 'Validation failed', [], 422 );
+            return Utility::outputData(true, 'User created successfully. Verification email sent.', new UserResource($user), 201);
+        } catch (ValidationException $e) {
+            return Utility::outputData(false, 'Validation failed', [], 422);
         }
-
     }
-
 
     public function verifyOTP(Request $request)
     {
@@ -72,56 +66,54 @@ class AuthController extends Controller {
         try {
             $rules = [
                 'token' => ['required', 'string'],
-                'email' => ['required', 'string'],
+                'email' => ['required', 'string']
             ];
-    
+
             $validatedData = $request->validate($rules);
-    
+
             $token = $validatedData['token'];
             $email = $validatedData['email'];
-    
-           #  Find the user by the provided token
+
+            #  Find the user by the provided token
             $user = User::where('otp', $token)->first();
-    
-           #  If the user doesn't exist or the token is invalid
+
+            #  If the user doesn't exist or the token is invalid
             if (!$user) {
                 return Utility::outputData(false, "Invalid OTP", [], 422);
             }
-    
-           #  Check if the provided email matches the user's email
+
+            #  Check if the provided email matches the user's email
             if ($email !== $user->email) {
                 return Utility::outputData(false, "Email doesn't match", [], 422);
             }
 
-             # Retrieve existing access token if available
-             $alreadyExist = $user->getCurrentToken();
-             if ($alreadyExist) {
-                 #  If token exists, use it
-                 $accessToken = $alreadyExist->token;
-             } else {
-                 #  If token doesn't exist, generate a new one
-                 $accessToken = $user->createToken('API Token of ' . $user->email, ['read'])->plainTextToken;
-             }
-     
-    
-           #  Mark the email as verified by setting the current timestamp
+            # Retrieve existing access token if available
+            $alreadyExist = $user->getCurrentToken();
+            if ($alreadyExist) {
+                #  If token exists, use it
+                $accessToken = $alreadyExist->token;
+            } else {
+                #  If token doesn't exist, generate a new one
+                $accessToken = $user->createToken('API Token of ' . $user->email, ['read'])->plainTextToken;
+            }
+
+            #  Mark the email as verified by setting the current timestamp
             $user->email_verified_at = now();
             $user->save();
 
+
             Auth::login($user);
-    
+
             return Utility::outputData(true, 'Account has been activated', [
                 'user' => new UserResource($user),
                 'access_token' => $accessToken,
             ], 200);
-    
         } catch (ValidationException $e) {
             return Utility::outputData(false, 'Validation failed', [], 422);
         }
     }
 
-  
-    public function Login(Request $request)
+    public function login(Request $request)
     {
         try {
             # Validation rules
@@ -129,27 +121,35 @@ class AuthController extends Controller {
                 'email' => ['required', 'string', 'email'],
                 'password' => ['required', 'string'],
             ];
-    
+
             # Validate the request data
             $validatedData = $request->validate($rules);
-    
+
             # Retrieve email and password from validated data
             $email = $validatedData['email'];
             $password = $validatedData['password'];
-    
+
             # Find the user by email
             $user = User::where('email', $email)->first();
-    
+
+            if (!$user) {
+                return Utility::outputData(false, 'User not found.', [], 404);
+            }
+
+            if ($user->account_type !== 'local') {
+                return Utility::outputData(false, 'Please log in using your Google account.', [], 401);
+            }
+
             # If user not found or password is incorrect, return error
             if (!$user || !Hash::check($password, $user->password)) {
                 return Utility::outputData(false, 'Incorrect email or password', [], 422);
             }
-    
+
             #  Check if the account is not verified
             if (!$user->email_verified_at) {
                 return Utility::outputData(false, 'Account not verified', [], 422);
             }
-    
+
             # Retrieve existing access token if available
             $alreadyExist = $user->getCurrentToken();
             if ($alreadyExist) {
@@ -159,16 +159,15 @@ class AuthController extends Controller {
                 #  If token doesn't exist, generate a new one
                 $accessToken = $user->createToken('API Token of ' . $user->email, ['read'])->plainTextToken;
             }
-    
+
             # Attempt to login the user
             Auth::login($user);
-    
+
             # Return success response with user data and access token
             return Utility::outputData(true, 'Login successful', [
                 'user' => new UserResource($user),
                 'access_token' => $accessToken,
             ], 200);
-    
         } catch (ValidationException $e) {
             # Handle validation errors
             return Utility::outputData(false, $e->getMessage(), [], 422);
@@ -177,95 +176,78 @@ class AuthController extends Controller {
             return Utility::outputData(false, $e->getMessage(), [], 500);
         }
     }
-    
-    
 
-    public function logout()
-{
-    try {
-        $logout = auth()->user()->tokens()->delete();
-        if ($logout) {
-            return Utility::outputData(true, "Logged out successfully", [], 200);
-        }
-    } catch (\Exception $e) {
-        return Utility::outputData(false, $e->getMessage(), [], 500);
+//     public function logout()
+// {
+//     try {
+//         $logout = auth()->user()->tokens()->delete();
+//         if ($logout) {
+//             return Utility::outputData(true, "Logged out successfully", [], 200);
+//         }
+//     } catch (\Exception $e) {
+//         return Utility::outputData(false, $e->getMessage(), [], 500);
+//     }
+// }
+
+    public function redirectToGoogle()
+    {
+
+        return Socialite::driver('google')->redirect();
     }
-}
 
+    // public function googleCallBack(){
 
-public function googleRedirect(){
+    //     $googleUser = Socialite::driver('google')->stateless()->user();
+    //     $userFullName= $googleUser['family_name'];
+    //     $userEmail = $googleUser['email'];
 
-    return Socialite::driver('google')->redirect();
-}
+    //     echo json_encode($googleUser);
+    // }
 
-public function googleCallBack(){
+    public function forgetPassword(Request $request)
+    {
 
+        try {
+            $rules = [
+                'email' => ['required', 'string'],
+            ];
 
-    $googleUser = Socialite::driver('google')->stateless()->user();
-    $userFullName= $googleUser['family_name'];
-    $userEmail = $googleUser['email'];
+            $validatedData = $request->validate($rules);
 
-    
-    echo json_encode($googleUser);
-}
+            $token = Utility::token();
+            $email = $validatedData['email'];
 
+            #  Find the user by the provided token
+            $user = User::where('otp', $token)->first();
+            $user = User::where('email', $email)->where('password', $token)->first();
 
+            #  If the user doesn't exist or the token is invalid
+            if (!$user) {
+                return Utility::outputData(false, "Invalid OTP", [], 422);
+            }
 
+            # Retrieve existing access token if available
+            $alreadyExist = $user->getCurrentToken();
+            if ($alreadyExist) {
+                #  If token exists, use it
+                $accessToken = $alreadyExist->token;
+            } else {
+                #  If token doesn't exist, generate a new one
+                $accessToken = $user->createToken('API Token of ' . $user->email, ['read'])->plainTextToken;
+            }
 
+            #  Mark the email as verified by setting the current timestamp
+            $user->email_verified_at = now();
+            $user->save();
 
-public function forgetPassword(Request $request)
-{
+            Auth::login($user);
 
-    try {
-        $rules = [
-            'email' => ['required', 'string'],
-        ];
-
-        $validatedData = $request->validate($rules);
-
-        $token =  Utility::token();
-        $email = $validatedData['email'];
-
-       #  Find the user by the provided token
-        $user = User::where('otp', $token)->first();
-        $user = User::where('email', $email)->where('password', $token)->first();
-
-       #  If the user doesn't exist or the token is invalid
-        if (!$user) {
-            return Utility::outputData(false, "Invalid OTP", [], 422);
+            return Utility::outputData(true, 'Account has been activated', [
+                'user' => new UserResource($user),
+                'access_token' => $accessToken,
+            ], 200);
+        } catch (ValidationException $e) {
+            return Utility::outputData(false, 'Validation failed', [], 422);
         }
-
-    
-
-         # Retrieve existing access token if available
-         $alreadyExist = $user->getCurrentToken();
-         if ($alreadyExist) {
-             #  If token exists, use it
-             $accessToken = $alreadyExist->token;
-         } else {
-             #  If token doesn't exist, generate a new one
-             $accessToken = $user->createToken('API Token of ' . $user->email, ['read'])->plainTextToken;
-         }
- 
-
-       #  Mark the email as verified by setting the current timestamp
-        $user->email_verified_at = now();
-        $user->save();
-
-        Auth::login($user);
-
-        return Utility::outputData(true, 'Account has been activated', [
-            'user' => new UserResource($user),
-            'access_token' => $accessToken,
-        ], 200);
-
-    } catch (ValidationException $e) {
-        return Utility::outputData(false, 'Validation failed', [], 422);
     }
-}
-
-
-
-
-    
 }

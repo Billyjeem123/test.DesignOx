@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client\User;
 
 use App\Helpers\Utility;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Mail\WelcomeEmail;
 use App\Models\Role;
@@ -19,17 +20,11 @@ use Laravel\Socialite\Facades\Socialite;
 class AuthController extends Controller
 {
 
-    public function register(Request $request)
+    public function register(UserRequest $request)
     {
         try {
             # Define validation rules
-            $rules = [
-                'firstname' => ['required', 'string', 'max:255'],
-                'lastname' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('tblusers')],
-                'password' => ['required', 'string', 'max:255'],
-                'role' => ['required', 'string', Rule::in(['client', 'talent'])], #  New role validation rule
-            ];
+
 
             # Validate the incoming request
             $validatedData = $request->validate($rules);

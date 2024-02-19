@@ -1,0 +1,1 @@
+ php artisan migrate:rollback --path=database/migrations/2024_02_19_073908_create_job_posting_keyword.php

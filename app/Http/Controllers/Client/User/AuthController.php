@@ -26,7 +26,7 @@ class AuthController extends Controller
             $rules = [
                 'firstname' => ['required', 'string', 'max:255'],
                 'lastname' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')],
+                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('tblusers')],
                 'password' => ['required', 'string', 'max:255'],
                 'role' => ['required', 'string', Rule::in(['client', 'talent'])], #  New role validation rule
             ];

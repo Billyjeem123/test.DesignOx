@@ -3,13 +3,9 @@
 namespace App\Http\Controllers\Client\PostJob;
 
 use App\Http\Controllers\Controller;
-use App\Http\Middleware\CheckClientRole;
 use App\Http\Requests\JobRequest;
-use App\Models\Job;
 use App\Services\PaymentService;
-use Illuminate\Http\Request;
 use App\Helpers\Utility;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class JobController extends Controller
@@ -18,9 +14,6 @@ class JobController extends Controller
 
     public function __construct(PaymentService $paymentService)
     {
-        $this->middleware('auth:sanctum');
-        $this->middleware(CheckClientRole::class)->only('createJob');
-
         $this->paymentService = $paymentService; #  Inject PaymentService instance
     }
 
@@ -39,6 +32,7 @@ class JobController extends Controller
                 'numbers_of_proposals' => $request['numbers_of_proposals'],
                 'project_link_attachment' => $request['project_link_attachment'],
                 'payment_channel' => $request['payment_channel'],
+                'keywords' => $request['keywords']
             ];
 
             return $this->paymentService->processPayment($data);
@@ -51,6 +45,16 @@ class JobController extends Controller
             #  Handle any other exceptions that may occur during role creation
             return Utility::outputData(false, "An error occurred", $e->getMessage(), 500);
         }
+    }
+
+
+
+    public function payForJobPosting(){
+
+        $transactionId = request('reference'); #   received the transaction ID in the request
+
+        return $this->paymentService->handleGatewayCallback($transactionId);
+
     }
 
 

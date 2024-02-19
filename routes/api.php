@@ -24,12 +24,6 @@ Route::resource('roles', RoleController::class)->only(['index', 'store']);
 /**
  * Authentication routes.
  */
-// Route for initiating payment
-Route::post('/payment/initiate', [PaymentController::class, 'initiatePayment'])->name('payment.initiate');
-
-// Route for handling Paystack callback after payment
-Route::get('/payment/callback/reference', [PaymentController::class, 'handleGatewayCallback'])->name('payment.callback');
-
 Route::prefix('client')->group(function () {
 
     #Client authorization Endpoint
@@ -41,11 +35,14 @@ Route::prefix('client')->group(function () {
     });
 
     #Post Job client...
-    Route::post('/post-job', [JobController::class, 'createJob'])->name('postJobPayment');
+    Route::middleware(['auth:sanctum', 'client'])->group(function () {
+        Route::post('/post-job', [JobController::class, 'createJob'])->name('postJobPayment');
+        Route::post('/payment/callback', [JobController::class, 'payForJobPosting'])->name('payment.callback');
+    });
 
 
 
-    # Register with google
+    # Register with Google
     Route::get('/google-redirect', [AuthController::class, 'googleRedirect'])->name('googlelogin');
     Route::get('/google-callback', [AuthController::class, 'googleCallBack']);
 });

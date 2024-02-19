@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to our Platform!</title>
+    <title>JOB POSTING NOTIFICATION!</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
-            margin: 0;Q
-            padding: 0;
+            margin: 0;
+        padding: 0;
         }
         .container {
             max-width: 600px;
@@ -51,16 +51,15 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo">
-            <img src="https://example.com/logo.png" alt="Logo">
-        </div>
-        <h1>Welcome, {{ $user->fullname }}!</h1>
-        <p>Thank you for joining our platform. We're excited to have you on board.</p>
-        <p>Get started by browsing through our services or creating your own!</p>
-        <div style="text-align: center;">
-            <a href="https://example.com" class="btn">Browse Services</a>
-        </div>
+<div class="container">
+    <div class="logo">
+        <img src="https://example.com/logo.png" alt="Logo">
     </div>
+    <h1>Dear Admin</h1>
+    <p>One of our user just posted  a a job your attention in ths aspect  highly required</p>
+    <div style="text-align: center;">
+        <a href="https://example.com" class="btn">Browse Services</a>
+    </div>
+</div>
 </body>
 </html>

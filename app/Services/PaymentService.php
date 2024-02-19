@@ -2,10 +2,12 @@
 
 namespace App\Services;
 use App\Helpers\Utility;
+use App\Mail\adminJobNotify;
 use App\Models\Job;
-use http\Env\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 
 
 class PaymentService
@@ -29,11 +31,12 @@ class PaymentService
                     'numbers_of_proposals' => $data['numbers_of_proposals'],
                     'project_link_attachment' => $data['project_link_attachment'],
                     'payment_channel' => $data['payment_channel'],
+                    'keywords' => $data['keywords'],
 
                 ],
             ];
             $response = Http::withHeaders([
-                'Authorization' => 'Bearer sk_test_755a02d78f2777eb99ac6ba0b69d8a729b4e1992',# your actual secret key
+                'Authorization' => 'Bearer ' .config('services.paystack.secrete_key'), // Replace with your actual secret key
                 'Content-Type' => 'application/json',
             ])->post('https://api.paystack.co/transaction/initialize', $paymentDetails);
 
@@ -60,51 +63,62 @@ class PaymentService
 
 
 
-    public function handleGatewayCallback()
+    public function handleGatewayCallback($transactionId)
     {
         try {
-            $transactionId = request('reference'); #   received the transaction ID in the request
-
             #    Construct the endpoint URL with the transaction ID
             $url = 'https://api.paystack.co/transaction/verify/' . $transactionId;
 
             #    Send a GET request to fetch transaction details
             $response = Http::withHeaders([
-                'Authorization' => 'Bearer sk_test_755a02d78f2777eb99ac6ba0b69d8a729b4e1992', // Replace with your actual secret key
+                'Authorization' => 'Bearer ' .config('services.paystack.secrete_key'), // Replace with your actual secret key
                 'Content-Type' => 'application/json',
             ])->get($url);
 
             #    Check if the request was successful
             if ($response->successful()) {
                 #    Get the response data
-                $responseData = $response->json();
+                $tranxRecord = $response->json();
+//                 echo json_encode($tranxRecord);
 
-                $tranxRecord =  json_encode($responseData);
-
-                $reference = $tranxRecord['reference'];
-                $amount = $tranxRecord['amount'];
-                $currency = $tranxRecord['currency'];
-                $usertoken = $tranxRecord['metadata']['usertoken'];
-                $project_desc = $tranxRecord['project_desc'];
-                $project_type = $tranxRecord['project_type'];
-                $tools_used = $tranxRecord['tools_used'];
-                $duration = $tranxRecord['duration'];
-                $experience_level  = $tranxRecord['experience_level'];
-                $budget = $tranxRecord['budget'];
-                $numbers_of_proposals = $tranxRecord['numbers_of_proposals'];
-                $project_link_attachment = $tranxRecord['project_link_attachment'];
-                $payment_channel = $tranxRecord['payment_channel'];
+                $reference = $tranxRecord['status'];
+                $amount = $tranxRecord['data']['amount'];
+                $currency = $tranxRecord['data']['currency'];
+                $usertoken = $tranxRecord['data']['metadata']['usertoken'];
+                $project_desc = $tranxRecord['data']['metadata']['project_desc'];
+                $project_type = $tranxRecord['data']['metadata']['project_type'];
+                $tools_used = $tranxRecord['data']['metadata']['tools_used'];
+                $duration = $tranxRecord['data']['metadata']['duration'];
+                $experience_level  = $tranxRecord['data']['metadata']['experience_level'];
+                $budget = $tranxRecord['data']['metadata']['budget'];
+                $numbers_of_proposals = $tranxRecord['data']['metadata']['numbers_of_proposals'];
+                $project_link_attachment = $tranxRecord['data']['metadata']['project_link_attachment'];
+                $payment_channel = $tranxRecord['data']['metadata']['payment_channel'];
+                $email  = $tranxRecord['data']['customer']['email'];
+                $keywords = $tranxRecord['data']['metadata']['keywords'];
 
 
                 $saveClientJob = Job::create([
-                    ''
+                    'client_id' => $usertoken,
+                    'project_desc' => $project_desc,
+                    'project_type' => $project_type,
+                    'tools_used' => $tools_used,
+                    'budget' => $budget,
+                    'duration' => $duration,
+                    'experience_level' => $experience_level,
+                    'numbers_of_proposals' => $numbers_of_proposals,
+                    'project_link_attachment' => $project_link_attachment
 
-                ])
+                ]);
+                $newlyCreatedJobId = $saveClientJob->id;
+
+                $this->saveJobPaymentTranx($newlyCreatedJobId, $reference, $email, $amount, $currency, $payment_channel);
+                $this->saveJobPostingKeyWords($newlyCreatedJobId, $keywords);
 
 
-                #    Process the response data as needed
-                #    For example, you can extract relevant information from $responseData and return it
-                return Utility::outputData(true, "Transaction details retrieved successfully", $responseData, 200);
+                Mail::to(config('services.app_config.app_mail'))->send(new adminJobNotify());
+
+                return Utility::outputData(true, "Payment successful", [], 200);
             } else {
                 #    Log the error response
                 $errorResponse = $response->json();
@@ -118,5 +132,60 @@ class PaymentService
             return Utility::outputData(false, 'An error occurred while processing the request: ' . $e->getMessage(), [], 500);
         }
     }
+
+
+    public function saveJobPaymentTranx($jobPostingId,$reference, $email, $amount,$currency, $payment_channel): void
+    {
+
+        DB::table('tbljob_post_tranx')->insert([
+            'job_post_id' => $jobPostingId,
+            'reference' => $reference,
+            'email' => $email,
+            'amount' => $amount,
+            'currency' => $currency,
+            'status' => 'success',
+            'payment_channel' => $payment_channel
+        ]);
+    }
+
+
+
+    public function getPaymentTransactionsByJobPostingId($jobPostingId)
+    {
+        return DB::table('tbljob_post_tranx')
+            ->where('job_post_id', $jobPostingId)
+            ->get();
+    }
+
+
+
+    public function saveJobPostingKeyWords(int $jobPostingId, array $keywords): void
+    {
+        // Prepare data for insertion
+        $data = [];
+        foreach ($keywords as $keyword) {
+            $data[] = [
+                'job_post_id' => $jobPostingId,
+                'keywords' => $keyword,
+            ];
+        }
+
+        // Insert data into the table
+        DB::table('tbljob_keywords')->insert($data);
+    }
+
+
+    public function getJobPostingKeyWords($jobPostingId)
+    {
+        return DB::table('tbljob_keywords')
+            ->where('job_post_id', $jobPostingId)
+            ->get();
+    }
+
+
+
+
+
+
 
 }

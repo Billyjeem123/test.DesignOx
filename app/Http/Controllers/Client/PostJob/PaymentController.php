@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client\PostJob;
 
 use App\Helpers\Utility;
 use App\Http\Controllers\Controller;
+use App\Models\Job;
 use Illuminate\Http\Request;
 use Unicodeveloper\Paystack\Facades\Paystack;
 use Illuminate\Support\Facades\Http;
@@ -36,7 +37,7 @@ class PaymentController extends Controller
                 $authorizationUrl = $response['data']['authorization_url'];
 
                 // Redirect the user to the authorization URL
-   return   Utility::outputData(true, "Paystack Autorization Url", $authorizationUrl, 200);
+     return   Utility::outputData(true, "Paystack Autorization Url", $authorizationUrl, 200);
             } else {
                 // Log the error response
                 $errorResponse = $response->json();
@@ -58,8 +59,7 @@ class PaymentController extends Controller
     public function handleGatewayCallback()
     {
         try {
-             $transactionId = request('reference'); #    Assuming you receive the transaction ID in the request
-            ;
+            $transactionId = request('reference'); #   received the transaction ID in the request
 
             #    Construct the endpoint URL with the transaction ID
             $url = 'https://api.paystack.co/transaction/verify/' . $transactionId;
@@ -75,7 +75,42 @@ class PaymentController extends Controller
                 #    Get the response data
                 $responseData = $response->json();
 
-                echo json_encode($responseData);
+                $tranxRecord =  json_decode($responseData, true);
+                var_dump($tranxRecord);
+
+                exit;
+                $reference = $tranxRecord['reference'];
+                $amount = $tranxRecord['amount'];
+                $currency = $tranxRecord['currency'];
+                $usertoken = $tranxRecord['metadata']['usertoken'];
+                $project_desc = $tranxRecord['project_desc'];
+                $project_type = $tranxRecord['project_type'];
+                $tools_used = $tranxRecord['tools_used'];
+                $duration = $tranxRecord['duration'];
+                $experience_level  = $tranxRecord['experience_level'];
+                $budget = $tranxRecord['budget'];
+                $numbers_of_proposals = $tranxRecord['numbers_of_proposals'];
+                $project_link_attachment = $tranxRecord['project_link_attachment'];
+                $payment_channel = $tranxRecord['payment_channel'];
+                $email  = $tranxRecord['customer']['email'];
+
+
+                $saveClientJob = Job::create([
+                    'client_id' => $usertoken,
+                    'project_desc' => $project_desc,
+                    'project_type' => $project_type,
+                    'tools_used' => $tools_used,
+                    'budget' => $budget,
+                    'duration' => $duration,
+                    'experience_level' => $experience_level,
+                    'numbers_of_proposals' => $numbers_of_proposals,
+                    'project_link_attachment' => $project_link_attachment,
+                    'payment_channel' => $payment_channel
+
+                ]);
+
+                echo $newlyCreatedJobId = $saveClientJob->id;
+
 
                 #    Process the response data as needed
                 #    For example, you can extract relevant information from $responseData and return it

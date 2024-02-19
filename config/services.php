@@ -41,6 +41,17 @@ return [
         'client_id' => '358463868849-makltra3iitnee9iu32hkb7tb9voi1jb.apps.googleusercontent.com',
         'client_secret' => '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',
         'redirect' => 'http://127.0.0.1:8000/v0.1/api/auth/google-callback',
-    ]
+    ],
+
+    'paystack' => [
+        'secrete_key' => env('PAYSTACK_SECRET_KEY', 'sk_test_755a02d78f2777eb99ac6ba0b69d8a729b4e1992'),
+        'public_key' => env('PAYSTACK_PUBLIC_KEY', 'pk_test_41542043f72482b6dfad6fc342c062ed6088f84c'),
+        'url' => env('PAYSTACK_PAYMENT_URL', 'https://iccflifeskills.com.ng/v0.1/api/payment/callback'),
+    ],
+
+    'app_config' =>[
+        'app_mail' => env('APP_MAIL', 'billyhadiattaofeeq@gmail.com')
+
+]
 
 ];

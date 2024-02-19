@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
 {
-    Schema::create('job_posts', function (Blueprint $table) {
+    Schema::create('tbljob_posts', function (Blueprint $table) {
         $table->id();
-        $table->foreignId('client_id')->constrained('users');
+        $table->foreignId('client_id')->constrained('tblusers');
         $table->string('project_desc');
         $table->string('project_type');
         $table->string('tools_used');
@@ -23,8 +23,8 @@ return new class extends Migration
         $table->string('duration'); // You can store the duration as a string
         $table->string('experience_level');
         $table->integer('numbers_of_proposals');
+        $table->integer('on_going')->default(0);
         $table->string('project_link_attachment')->nullable();
-        $table->string('payment_channel')->nullable();
         $table->tinyInteger('has_paid')->default(0); // Assuming a boolean-like field for payment status
         $table->timestamp('work_start_time')->nullable(); // Timestamp for project start time
         $table->timestamp('work_end_time')->nullable(); // Timestamp for project end time
@@ -40,6 +40,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('job_posts');
+        Schema::dropIfExists('tbljob_posts');
     }
 };

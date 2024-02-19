@@ -39,7 +39,7 @@ class RoleController extends Controller
         try {
             # Define validation rules
             $rules = [
-                'role_name' => ['required', 'string', 'max:255', Rule::unique('roles')],
+                'role_name' => ['required', 'string', 'max:255', Rule::unique('tblroles')],
             ];
 
             # Validate the incoming request

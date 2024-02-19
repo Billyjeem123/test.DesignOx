@@ -13,15 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbljob_post_tranx', function (Blueprint $table) {
+        Schema::create('tbljob_keywords', function (Blueprint $table) {
             $table->id();
             $table->foreignId('job_post_id')->constrained('tbljob_posts'); // Define job_post_id as a foreign key
-            $table->string('reference');
-            $table->string('email');
-            $table->string('payment_channel')->nullable();
-            $table->decimal('amount', 10, 2);
-            $table->string('currency');
-            $table->string('status');
+            $table->string('keywords');
             $table->timestamps();
         });
     }
@@ -33,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbljob_posts');
+        Schema::dropIfExists('tbljob_keywords');
     }
 };

@@ -14,5 +14,5 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('/', function () {
-    return '<a href="' . route('googlelogin') . '"><button>Click me</button></a>';
+    return '<a href="' . route('google.redirect') . '"><button>Click me</button></a>';
 });

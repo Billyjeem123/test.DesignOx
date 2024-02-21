@@ -22,6 +22,25 @@ class UserService {
         return User::create(array_merge($userData, ['otp' => $token, 'account_type' => 'local']));
     }
 
+    public function registerUserViaGoogle(array $userData): array
+    {
+        # Check if the user already exists
+        $existingUser = User::where('email', $userData['email'])->first();
+        if ($existingUser) {
+            return ['success' => false, 'message' => 'User already exists.', 'data' => new UserResource($existingUser), 'access_token' => null, 'status_code' => 200];
+        }
+
+        # Create user record with additional data
+        $user = User::create(array_merge($userData, ['otp' => 0, 'account_type' => 'google']));
+
+        $accessToken = $user->createToken('API Token of ' . $user->email, ['read'])->plainTextToken;
+
+        Auth::login($user);
+
+        return ['success' => true, 'message' => 'User registered successfully.', 'data' => new UserResource($user), 'access_token' => $accessToken, 'status_code' => 200];
+    }
+
+
 
     public function login(array $credentials)
     {

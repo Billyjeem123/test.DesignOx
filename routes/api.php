@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Client\PostJob\JobController;
-use App\Http\Controllers\Client\PostJob\PaymentController;
 use App\Http\Controllers\Client\User\AuthController;
 use App\Http\Controllers\Role\RoleController;
 use Illuminate\Support\Facades\Route;
@@ -19,11 +18,10 @@ use Illuminate\Support\Facades\Route;
 
 // Roles Routes
 Route::resource('roles', RoleController::class)->only(['index', 'store']);
-
-
 /**
  * Authentication routes.
  */
+
 Route::prefix('client')->group(function () {
 
     #Client authorization Endpoint
@@ -33,12 +31,12 @@ Route::prefix('client')->group(function () {
         Route::post('/save-country', [AuthController::class, 'saveUserCountry']);
         Route::post('/login', [AuthController::class, 'login']);
         Route::post('/logout', [AuthController::class, 'logout']);
-        Route::get('/google-redirect', [AuthController::class, 'googleRedirect'])->name('googlelogin');
-        Route::get('/google-callback', [AuthController::class, 'googleCallBack']);
+        Route::get('google-redirect', [AuthController::class, 'googleRedirect'])->name('google.redirect');
+        Route::get('google-callback', [AuthController::class, 'googleCallBack'])->name('google.callback');
 
     });
 
-    #Post Job client...
+    #Post Job client1...
     Route::middleware(['auth:sanctum', 'client'])->group(function () {
         Route::post('/post-job', [JobController::class, 'createJob'])->name('postJobPayment');
         Route::post('/payment/callback', [JobController::class, 'payForJobPosting'])->name('payment.callback');
@@ -47,11 +45,8 @@ Route::prefix('client')->group(function () {
 
 
 
-    # Register with Google
 
 });
-
-Route::post('/task', [AuthController::class, 'task']);
 
 Route::fallback(function () {
     abort(404, 'API resource not found');

@@ -2,10 +2,10 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="b3e39b2d-07f7-4d63-8eeb-cf36debc8be2" name="test.designox" url="https://iccflifeskills.com.ng/">
-        <fileTransfer rootFolder="/home/iccflife" accessType="SFTP" host="http://iccflifeskills.com.ng" port="22" sshConfigId="7b85d0e6-423d-42a7-8664-95d245ab64dd" sshConfig="iccflife@http://iccflifeskills.com.ng:22 key" keyPair="true">
+      <webServer id="c161ced8-4431-4141-917d-cbb9e192a6d8" name="test.designox" url="http://162.215.15.12">
+        <fileTransfer rootFolder="/test.designox" host="162.215.15.12" port="21">
           <advancedOptions>
-            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" isUseRsync="true" />
+            <advancedOptions passiveMode="true" />
           </advancedOptions>
         </fileTransfer>
       </webServer>

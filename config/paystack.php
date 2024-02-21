@@ -24,11 +24,11 @@ return [
     'secretKey' => 'sk_test_755a02d78f2777eb99ac6ba0b69d8a729b4e1992',
 
     /**
-     * Paystack Payment URL
+     * Paystack Payment URLe
      * 8J+BY7gx[6yg2K
      *
      */
-    'paymentUrl' => 'https://iccflifeskills.com.ng/v0.1/api/payment/callback',
+    'paymentUrl' => 'https://designox.iccflifeskills.com.ng/v0.1/api/google-redirect',
 
     /**
      * Optional email address of the merchant

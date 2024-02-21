@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Mail\WelcomeEmail;
-use App\Models\Role;
 use App\Models\User;
 use App\Services\UserService;
 use Dotenv\Exception\ValidationException;
@@ -15,7 +14,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
@@ -90,32 +88,40 @@ class AuthController extends Controller
 
     }
 
-//     public function logout()
-// {
-//     try {
-//         $logout = auth()->user()->tokens()->delete();
-//         if ($logout) {
-//             return Utility::outputData(true, "Logged out successfully", [], 200);
-//         }
-//     } catch (\Exception $e) {
-//         return Utility::outputData(false, $e->getMessage(), [], 500);
-//     }
-// }
+     public function logout()
+ {
+     try {
+         $logout = auth()->user()->tokens()->delete();
+         if ($logout) {
+             return Utility::outputData(true, "Logged out successfully", [], 200);
+         }
+     } catch (\Exception $e) {
+         return Utility::outputData(false, $e->getMessage(), [], 500);
+     }
+ }
 
-    public function redirectToGoogle()
+    public function googleRedirect()
     {
+        return  $redirectUrl = Socialite::driver('google')->stateless()->redirect();
 
-        return Socialite::driver('google')->redirect();
     }
 
-    // public function googleCallBack(){
 
-    //     $googleUser = Socialite::driver('google')->stateless()->user();
-    //     $userFullName= $googleUser['family_name'];
-    //     $userEmail = $googleUser['email'];
+    public function googleCallBack(): string
+     {
+         $googleUser = Socialite::driver('google')->stateless()->user();
+         $validatedData = [
+             'firstname' => $googleUser->user['given_name'],
+             'lastname' => $googleUser->user['family_name'],
+             'email' => $googleUser->email,
+             'password' => 0
+         ];
 
-    //     echo json_encode($googleUser);
-    // }
+         $result = $this->userService->registerUserViaGoogle($validatedData);
+
+         return Utility::outputResult($result['success'], $result['message'], new UserResource($result['data']), $result['access_token']);
+
+     }
 
     public function forgetPassword(Request $request)
     {

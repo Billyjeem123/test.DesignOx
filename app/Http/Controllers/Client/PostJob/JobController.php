@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Client\PostJob;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JobRequest;
-use App\Services\PaymentService;
 use App\Helpers\Utility;
+use App\Services\PaymentService;
 use Illuminate\Validation\ValidationException;
 
 class JobController extends Controller
 {
-    protected $paymentService;
+    protected  $paymentService;
 
     public function __construct(PaymentService $paymentService)
     {
@@ -48,16 +48,14 @@ class JobController extends Controller
     }
 
 
-
-    public function payForJobPosting(){
+    public function payForJobPosting()
+    {
 
         $transactionId = request('reference'); #   received the transaction ID in the request
 
         return $this->paymentService->handleGatewayCallback($transactionId);
 
     }
-
-
 
 
 

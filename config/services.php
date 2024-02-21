@@ -31,16 +31,11 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    // 'google' => [
-    //     'client_id' => env('GOOGLE_CLIENT_ID'),
-    //     'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-    //     'redirect' => env('GOOGLE_CALLBACK_URL'),
-    // ]
 
     'google' => [
-        'client_id' => '358463868849-makltra3iitnee9iu32hkb7tb9voi1jb.apps.googleusercontent.com',
-        'client_secret' => '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',
-        'redirect' => 'http://127.0.0.1:8000/v0.1/api/auth/google-callback',
+        'client_id' => '1041698225513-nitgtg4a6daeu4g9i89ag4lgn42c9u6k.apps.googleusercontent.com',
+        'client_secret' => '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',
+        'redirect' => 'https://designox.iccflifeskills.com.ng/v0.1/api/client/auth/google-callback',
     ],
 
     'paystack' => [

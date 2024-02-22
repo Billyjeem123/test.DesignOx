@@ -111,6 +111,8 @@ class PaymentService
 
                 $this->saveJobPaymentTranx($newlyCreatedJobId, $reference, $email, $amount, $currency, $payment_channel);
                 $this->saveJobPostingKeyWords($newlyCreatedJobId, $keywords);
+                $this->saveJobPostingTools($newlyCreatedJobId,$tools_used);
+
 
 
                 Mail::to(config('services.app_config.app_mail'))->send(new adminJobNotify());
@@ -169,6 +171,23 @@ class PaymentService
 
         // Insert data into the table
         DB::table('tbljob_keywords')->insert($data);
+    }
+
+
+
+    public function saveJobPostingTools(int $jobPostingId, array $tools): void
+    {
+        // Prepare data for insertion
+        $data = [];
+        foreach ($tools as $tool) {
+            $data[] = [
+                'job_post_id' => $jobPostingId,
+                'tools' => $tool,
+            ];
+        }
+
+        // Insert data into the table
+        DB::table('tbljob_tools')->insert($data);
     }
 
 

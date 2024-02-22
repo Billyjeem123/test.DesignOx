@@ -49,6 +49,10 @@ class UserRequest extends FormRequest
                     'role' => ['required', 'string', Rule::in(['client', 'talent'])], #  New role validation rule
                     'country' => 'required|string',
                 ];
+            case 'forgetPassword':
+                return [
+                    'email' => 'required',
+                ];
             default:
                 return [];
         }

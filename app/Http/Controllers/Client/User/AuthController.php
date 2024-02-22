@@ -123,48 +123,23 @@ class AuthController extends Controller
 
      }
 
-    public function forgetPassword(Request $request)
+    public function forgetPassword(UserRequest $request)
     {
 
         try {
-            $rules = [
-                'email' => ['required', 'string'],
-            ];
 
-            $validatedData = $request->validate($rules);
+            $validatedData = $request->validated();
 
             $token = Utility::token();
             $email = $validatedData['email'];
 
-            #  Find the user by the provided token
-            $user = User::where('otp', $token)->first();
-            $user = User::where('email', $email)->where('password', $token)->first();
+            $result = $this->userService->forgetPassword($email);
 
-            #  If the user doesn't exist or the token is invalid
-            if (!$user) {
-                return Utility::outputData(false, "Invalid OTP", [], 422);
-            }
 
-            # Retrieve existing access token if available
-            $alreadyExist = $user->getCurrentToken();
-            if ($alreadyExist) {
-                #  If token exists, use it
-                $accessToken = $alreadyExist->token;
-            } else {
-                #  If token doesn't exist, generate a new one
-                $accessToken = $user->createToken('API Token of ' . $user->email, ['read'])->plainTextToken;
-            }
+            Mail::to($validatedData['email'])->send(new forgetPassword($validatedData['firstname']));
 
-            #  Mark the email as verified by setting the current timestamp
-            $user->email_verified_at = now();
-            $user->save();
+            return Utility::outputData($result['success'], $result['message'], [], 422);
 
-            Auth::login($user);
-
-            return Utility::outputData(true, 'Account has been activated', [
-                'user' => new UserResource($user),
-                'access_token' => $accessToken,
-            ], 200);
         } catch (ValidationException $e) {
             return Utility::outputData(false, 'Validation failed', [], 422);
         }

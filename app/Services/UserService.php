@@ -10,7 +10,8 @@ use Dotenv\Exception\ValidationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class UserService {
+class UserService
+{
 
 
     public function registerUser(array $userData)
@@ -39,7 +40,6 @@ class UserService {
 
         return ['success' => true, 'message' => 'User registered successfully.', 'data' => new UserResource($user), 'access_token' => $accessToken, 'status_code' => 200];
     }
-
 
 
     public function login(array $credentials)
@@ -79,7 +79,8 @@ class UserService {
         ];
     }
 
-    public function verifyOTP(array $credentials){
+    public function verifyOTP(array $credentials)
+    {
 
         $otp = $credentials['otp'];
         $email = $credentials['email'];
@@ -116,7 +117,7 @@ class UserService {
     {
 
         $user = User::find($credentials['usertoken']);
-        if(!$user){
+        if (!$user) {
             return ['success' => false, 'message' => 'User not found', 'status' => 422];
         }
 
@@ -160,6 +161,20 @@ class UserService {
         }
     }
 
+
+    public function forgetPassword($email)
+    {
+
+        $user = User::where('email', $email)->first();
+        if (!$user) {
+            return ['success' => false, 'message' => 'Email not found', 'status' => 422];
+        }
+
+
+
+        return ['success' => true, 'message' => 'Done',  'data' => $user, 'status' => 200];
+
+    }
 
 
 }

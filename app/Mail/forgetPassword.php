@@ -43,7 +43,7 @@ class forgetPassword extends Mailable
     public function content()
     {
         return new Content(
-            view: 'view.name',
+            view: 'view.forgetPassword',
         );
     }
 
@@ -55,5 +55,17 @@ class forgetPassword extends Mailable
     public function attachments()
     {
         return [];
+    }
+
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->subject('Forget Password')
+            ->view('email.forgetPassword');
     }
 }

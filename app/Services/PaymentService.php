@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+use PhpParser\Node\NullableType;
 
 class PaymentService
 {
@@ -15,8 +16,10 @@ class PaymentService
         try {
             #   Send a POST request to Paystack's initialize transaction endpoint
 
+            $amountInKobo = $data['budget'] * 100;
+
             $paymentDetails = [
-                'amount' => $data['budget'], #   Amount in kobo
+                'amount' => $amountInKobo, #   Amount in kobo
                 'email' => Auth::user()->email,
                 'metadata' => [
                     'usertoken' => Auth::user()->id,
@@ -29,7 +32,7 @@ class PaymentService
                     'numbers_of_proposals' => $data['numbers_of_proposals'],
                     'project_link_attachment' => $data['project_link_attachment'],
                     'payment_channel' => $data['payment_channel'],
-                    'keywords' => $data['keywords'],
+                    'keywords' => 0,
 
                 ],
             ];
@@ -173,6 +176,12 @@ class PaymentService
         DB::table('tbljob_keywords')->insert($data);
     }
 
+    public function getJobPostingKeyWords($jobPostingId)
+    {
+        return DB::table('tbljob_keywords')
+            ->where('job_post_id', $jobPostingId)
+            ->get();
+    }
 
 
     public function saveJobPostingTools(int $jobPostingId, array $tools): void
@@ -191,12 +200,13 @@ class PaymentService
     }
 
 
-    public function getJobPostingKeyWords($jobPostingId)
+    public function getJobPostingTools($jobPostingId)
     {
-        return DB::table('tbljob_keywords')
+        return DB::table('tbljob_tools')
             ->where('job_post_id', $jobPostingId)
             ->get();
     }
+
 
 
 

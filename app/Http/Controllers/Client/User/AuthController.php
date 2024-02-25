@@ -51,7 +51,7 @@ class AuthController extends Controller
             $validatedData = $request->validated();
             $verifyResult = $this->userService->verifyOTP($validatedData);
 
-            return Utility::outputData($verifyResult['success'], $verifyResult['message'],  $verifyResult['data'], $verifyResult['status']);
+            return Utility::outputData($verifyResult['success'], $verifyResult['message'],  $verifyResult['data'] ?? [], $verifyResult['status']);
         } catch (\Exception $e) {
             return Utility::outputData(false, $e->getMessage(), [], 500);
         }
@@ -79,7 +79,7 @@ class AuthController extends Controller
 
              $saveCountry  = $this->userService->saveUserCountry($validatedData);
 
-            return Utility::outputData($saveCountry['success'], $saveCountry['message'],  $saveCountry['data'], $saveCountry['status']);
+            return Utility::outputData($saveCountry['success'], $saveCountry['message'],  $saveCountry['data'] ??[], $saveCountry['status']);
         } catch (ValidationException $e) {
             return Utility::outputData(false, 'Validation failed', $e->getMessage(), 422);
         }
@@ -102,7 +102,7 @@ class AuthController extends Controller
 
     public function googleRedirect()
     {
-        return  $redirectUrl = Socialite::driver('google')->stateless()->redirect();
+        return   Socialite::driver('google')->stateless()->redirect();
 
     }
 
@@ -114,10 +114,11 @@ class AuthController extends Controller
              'firstname' => $googleUser->user['given_name'],
              'lastname' => $googleUser->user['family_name'],
              'email' => $googleUser->email,
-             'password' => 0
+             'password' => Hash::make('google') # default password google
          ];
 
          $result = $this->userService->registerUserViaGoogle($validatedData);
+
 
          return Utility::outputResult($result['success'], $result['message'], new UserResource($result['data']), $result['access_token']);
 

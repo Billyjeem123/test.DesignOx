@@ -37,11 +37,12 @@ Route::prefix('client')->group(function () {
     });
 
     #Post Job client1...
-    Route::middleware(['auth:sanctum', 'client'])->group(function () {
+    Route::middleware(['client'])->group(function () {
         Route::post('/post-job', [JobController::class, 'createJob'])->name('postJobPayment');
-        Route::post('/payment/callback', [JobController::class, 'payForJobPosting'])->name('payment.callback');
-        Route::post('/get-client-jobs', [JobController::class, 'getClientJobs'])->name('client.jobs');
+        Route::get('/payment/callback', [JobController::class, 'payForJobPosting'])->name('payment.callback');
+        Route::post('/get-client-jobs', [JobController::class, 'getClientJobPosting'])->name('client.jobs');
     });
+
 
 
 

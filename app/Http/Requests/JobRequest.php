@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ArrayValidation;
 use Illuminate\Foundation\Http\FormRequest;
 
 class JobRequest extends FormRequest
@@ -26,9 +27,9 @@ class JobRequest extends FormRequest
         return [
             'usertoken' => ['required', 'numeric'],
             'project_desc' => ['required', 'string', 'max:255'],
-            'project_type' => ['required', 'string', 'max:255'],
+            'project_type' => ['required', new ArrayValidation()],
             'tools_used' => ['required', 'string', 'max:255'],
-//            'key_words' => ['required', 'string', 'max:255'],
+            'keywords' => ['required', new ArrayValidation()],
             'budget' => ['required', 'numeric', 'min:0'],
             'duration' => ['required', 'string', 'max:255'],
             'numbers_of_proposals' => ['required', 'integer', 'min:1'],

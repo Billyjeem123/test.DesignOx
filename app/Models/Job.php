@@ -15,5 +15,13 @@ class Job extends Model
         'experience_level', 'numbers_of_proposals', 'project_link_attachment', 'on_going', 'work_start_time', 'work_end_time'];
 
 
+    /**
+     * Get the tools associated with the job.
+     */
+    public function jobTools()
+    {
+        return $this->hasMany(tbljob_tools::class);
+    }
+
     
 }

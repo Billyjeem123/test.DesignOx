@@ -41,7 +41,7 @@ return [
     'paystack' => [
         'secrete_key' => env('PAYSTACK_SECRET_KEY', 'sk_test_755a02d78f2777eb99ac6ba0b69d8a729b4e1992'),
         'public_key' => env('PAYSTACK_PUBLIC_KEY', 'pk_test_41542043f72482b6dfad6fc342c062ed6088f84c'),
-        'url' => env('PAYSTACK_PAYMENT_URL', 'https://iccflifeskills.com.ng/v0.1/api/payment/callback'),
+        'url' => env('PAYSTACK_PAYMENT_URL', 'https://designox.iccflifeskills.com.ng/v0.1/api/client/payment/callback'),
     ],
 
     'app_config' =>[

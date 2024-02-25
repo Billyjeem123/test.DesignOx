@@ -2,11 +2,9 @@
 
 namespace App\Services;
 use App\Helpers\Utility;
-use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Role;
 use App\Models\User;
-use Dotenv\Exception\ValidationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -36,7 +34,7 @@ class UserService
 
         $accessToken = $user->createToken('API Token of ' . $user->email, ['read'])->plainTextToken;
 
-        Auth::login($user);
+        Auth::loginUsingId($user->id);
 
         return ['success' => true, 'message' => 'User registered successfully.', 'data' => new UserResource($user), 'access_token' => $accessToken, 'status_code' => 200];
     }
@@ -97,9 +95,9 @@ class UserService
         $user->email_verified_at = now();
         $user->save();
 
-        $accessToken = $this->generateAccessToken($user);
+        $accessToken = $user->createToken('API Token of ' . $user->email, ['read'])->plainTextToken;
 
-        Auth::login($user);
+         Auth::login($user);
 
         return [
             'success' => true,

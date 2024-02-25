@@ -6,7 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="861e98c6-30f6-4f11-b5ad-92d992e44a28" name="Changes" comment="initialized new repo for desingOx">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Client/PostJob/JobController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Client/PostJob/JobController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/CheckClientRole.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/CheckClientRole.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/JobRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/JobRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Job.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Job.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Services/PaymentService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/PaymentService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Services/UserService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/UserService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/services.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/storage/logs/laravel.log" beforeDir="false" afterPath="$PROJECT_DIR$/storage/logs/laravel.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -160,31 +170,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "PHP Script.Role.php.executor": "Debug",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowPanel.toolwindow.highlight.mappings": "true",
-    "WebServerToolWindowPanel.toolwindow.highlight.symlinks": "true",
-    "WebServerToolWindowPanel.toolwindow.show.date": "false",
-    "WebServerToolWindowPanel.toolwindow.show.permissions": "false",
-    "WebServerToolWindowPanel.toolwindow.show.size": "false",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/xampp/htdocs/test.enicom",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "ssh.settings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;PHP Script.Role.php.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.highlight.mappings&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.highlight.symlinks&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.date&quot;: &quot;false&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.permissions&quot;: &quot;false&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.size&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/xampp/htdocs/test.enicom&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;ssh.settings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="PHP Script.Role.php">
     <configuration name="Main" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
       <TestRunner configuration_file="$PROJECT_DIR$/phpunit.xml" scope="XML" use_alternative_configuration_file="true" />
@@ -235,7 +245,12 @@
       <workItem from="1708589982524" duration="103000" />
       <workItem from="1708615706722" duration="2862000" />
       <workItem from="1708620599682" duration="1002000" />
-      <workItem from="1708629818080" duration="2530000" />
+      <workItem from="1708629818080" duration="8055000" />
+      <workItem from="1708688290511" duration="3123000" />
+      <workItem from="1708751858404" duration="3301000" />
+      <workItem from="1708786322767" duration="1379000" />
+      <workItem from="1708796045188" duration="229000" />
+      <workItem from="1708829674291" duration="2661000" />
     </task>
     <task id="LOCAL-00001" summary="initialized new repo for desingOx">
       <option name="closed" value="true" />
@@ -307,15 +322,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="php-line-method">
-          <url>file://$PROJECT_DIR$/app/Http/Controllers/Client/PostJob/JobController.php</url>
-          <line>61</line>
-          <properties>
-            <option name="className" value="\App\Http\Controllers\Client\PostJob\JobController" />
-            <option name="methodName" value="handleGatewayCallback" />
-          </properties>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/Helpers/Utility.php</url>
           <line>37</line>
           <properties>
@@ -335,7 +341,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/Services/UserService.php</url>
-          <line>44</line>
+          <line>42</line>
           <properties>
             <option name="className" value="\App\Services\UserService" />
             <option name="methodName" value="login" />
@@ -363,7 +369,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/Services/UserService.php</url>
-          <line>170</line>
+          <line>168</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>

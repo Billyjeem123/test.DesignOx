@@ -45,7 +45,9 @@ return [
     ],
 
     'app_config' =>[
-        'app_mail' => env('APP_MAIL', 'billyhadiattaofeeq@gmail.com')
+        'app_mail' => env('APP_MAIL', 'billyhadiattaofeeq@gmail.com'),
+        'app_name' => env('APP_NAME', 'DESIGNOX')
+
 
 ]
 

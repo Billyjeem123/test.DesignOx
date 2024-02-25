@@ -31,7 +31,8 @@ Route::prefix('client')->group(function () {
         Route::post('/save-country', [AuthController::class, 'saveUserCountry']);
         Route::post('/login', [AuthController::class, 'login']);
         Route::post('/logout', [AuthController::class, 'logout']);
-        Route::get('google-redirect', [AuthController::class, 'googleRedirect'])->name('google.redirect');
+        Route::get('google-signup', [AuthController::class, 'googleRedirect'])->name('google.redirect');
+        Route::post('forget-password', [AuthController::class, 'forgetPassword']);
         Route::get('google-callback', [AuthController::class, 'googleCallBack'])->name('google.callback');
 
     });

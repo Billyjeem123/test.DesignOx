@@ -55,19 +55,19 @@
     <div class="logo">
         <img src="https://example.com/logo.png" alt="Logo">
     </div>
-    <h1>Dear Admin</h1>
+    <h1>Dear {{ $fullName }}</h1>
     <p>You are receiving this email because you have requested to reset your password for your account.</p>
     <p>To log in to your account, please use the following temporary password:</p>
-    <p>Temporary Password: [Temporary Password]</p>
+    <p>Temporary Password: {{$token }}</p>
     <p>We advise you to log in using this temporary password and then update it to a more secure and personalized password</p>
     <p>If you did not request a password reset, please disregard this email. Your account is secure, and no changes have been made.
 
         If you have any questions or need further assistance, please don't hesitate to contact our support team at [Support Email Address].
 
-        Thank you for using [Your Application Name].
+        Thank you for using {{$appname}}.
 
         Best regards,
-        [Your Application Name] Team</p>
+        {{$appname}} Team</p>
     
     <div style="text-align: center;">
         <a href="https://example.com" class="btn">Browse Services</a>

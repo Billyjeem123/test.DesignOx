@@ -6,6 +6,7 @@ use App\Helpers\Utility;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
+use App\Mail\forgetPassword;
 use App\Mail\WelcomeEmail;
 use App\Models\User;
 use App\Services\UserService;
@@ -36,7 +37,7 @@ class AuthController extends Controller
             $user = $this->userService->registerUser($validatedData);
 
             # Send email verification notification
-            Mail::to($validatedData['email'])->send(new WelcomeEmail($validatedData['firstname']));
+            Mail::to($validatedData['email'])->send(new WelcomeEmail($validatedData['fullname']));
 
             return Utility::outputData(true, 'User created successfully.', new UserResource($user), 201);
         } catch (ValidationException $e) {
@@ -111,38 +112,35 @@ class AuthController extends Controller
      {
          $googleUser = Socialite::driver('google')->stateless()->user();
          $validatedData = [
-             'firstname' => $googleUser->user['given_name'],
-             'lastname' => $googleUser->user['family_name'],
+             'fullname' => $googleUser->name,
+             'phone_number' => 0 ,
              'email' => $googleUser->email,
-             'password' => Hash::make('google') # default password google
+             'password' => Hash::make('google'), # default password google
+             'google_id' => $googleUser->id
          ];
 
          $result = $this->userService->registerUserViaGoogle($validatedData);
-
 
          return Utility::outputResult($result['success'], $result['message'], new UserResource($result['data']), $result['access_token']);
 
      }
 
-    public function forgetPassword(UserRequest $request)
-    {
 
+    public function forgetPassword(UserRequest $request)
+
+    {
         try {
 
             $validatedData = $request->validated();
 
-            $token = Utility::token();
             $email = $validatedData['email'];
 
             $result = $this->userService->forgetPassword($email);
 
-
-            Mail::to($validatedData['email'])->send(new forgetPassword($validatedData['firstname']));
-
-            return Utility::outputData($result['success'], $result['message'], [], 422);
+            return Utility::outputData($result['success'], $result['message'], new UserResource($result['data']), 200);
 
         } catch (ValidationException $e) {
-            return Utility::outputData(false, 'Validation failed', [], 422);
+            return Utility::outputData(false, 'Validation failed'. $e->getMessage(), [], 422);
         }
     }
 }

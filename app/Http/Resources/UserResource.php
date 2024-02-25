@@ -17,8 +17,8 @@ class UserResource extends JsonResource
     return [
         'type' => 'users',
         'usertoken' => $this->id,
-            'firstname' => $this->firstname,
-            'lastname' => $this->lastname,
+            'fullname' => $this->fullname,
+            'phone_number' => $this->phone_number,
             'account_type' => $this->account_type,
             'google_id' => $this->google_id,
             'country' => $this->country,

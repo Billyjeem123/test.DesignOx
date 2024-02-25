@@ -27,10 +27,12 @@ class UserRequest extends FormRequest
         switch ($this->route()->getActionMethod()) {
             case 'register':
                 return [
-                    'firstname' => 'required|string|max:255',
-                    'lastname' => 'required|string|max:255',
+                    'fullname' => 'required|string|max:255',
+                    'phone_number' => 'required|string|max:255',
                     'email' => 'required|email|unique:tblusers',
-                    'password' => 'required|string',
+                    'password' => 'required|string|min:8',
+                    'confirm_password' => 'required|string'
+
                 ];
             case 'verifyOTP':
                 return [

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('tblusers', function (Blueprint $table) {
             $table->id();
-            $table->string('firstname');
-            $table->string('lastname');
+            $table->string('fullname');
+            $table->string('phone_number');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -25,7 +25,6 @@ return new class extends Migration
             $table->string('country')->nullable();
             $table->string('google_id')->nullable();
             $table->rememberToken();
-            $table->string('country')->nullable();
             $table->timestamps();
         });
     }

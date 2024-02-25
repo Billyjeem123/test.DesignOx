@@ -56,9 +56,9 @@ class JobController extends Controller
     public function payForJobPosting()
     {
 
-        $transactionId = request('reference'); #   received the transaction ID in the request
-
-        return $this->paymentService->handleGatewayCallback($transactionId);
+//        $transactionId = request('reference'); #   received the transaction ID in the request
+//
+//        return $this->paymentService->handleGatewayCallback($transactionId);
 
     }
 
@@ -78,6 +78,10 @@ class JobController extends Controller
 
             # Paginate the results
             $jobsByClient = $query->paginate(10); # Change the number as per your requirement
+
+            if ($jobsByClient->isEmpty()) {
+                return Utility::outputData(false, "No results found", [], 404);
+            }
 
             # Fetch tools for each job
             foreach ($jobsByClient as $job) {

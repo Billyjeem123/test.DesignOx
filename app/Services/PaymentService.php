@@ -3,6 +3,7 @@ namespace App\Services;
 use App\Helpers\Utility;
 use App\Mail\adminJobNotify;
 use App\Models\Job;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -17,12 +18,13 @@ class PaymentService
             #   Send a POST request to Paystack's initialize transaction endpoint
 
             $amountInKobo = $data['budget'] * 100;
+            $user = User::findOrFail($data['client_id']);
 
             $paymentDetails = [
                 'amount' => $amountInKobo, #   Amount in kobo
-                'email' => Auth::user()->email,
+                'email' => $user->email,
                 'metadata' => [
-                    'usertoken' => Auth::user()->id,
+                    'usertoken' => $user->id,
                     'project_desc' => $data['project_desc'],
                     'project_type' => $data['project_type'],
                     'tools_used' => $data['tools_used'],
@@ -96,6 +98,7 @@ class PaymentService
                 $email  = $tranxRecord['data']['customer']['email'];
                 $keywords = $tranxRecord['data']['metadata']['keywords'];
                 $reference = $tranxRecord['data']['reference'];
+
 
 
                 $saveClientJob = Job::create([

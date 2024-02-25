@@ -3,10 +3,12 @@
 namespace App\Services;
 use App\Helpers\Utility;
 use App\Http\Resources\UserResource;
+use App\Mail\forgetPassword;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class UserService
 {
@@ -17,6 +19,8 @@ class UserService
         # Generate token for OTP
         $token = Utility::token();
 
+        unset($userData['confirm_password']);
+
         # Create user record with additional data
         return User::create(array_merge($userData, ['otp' => $token, 'account_type' => 'local']));
     }
@@ -24,9 +28,13 @@ class UserService
     public function registerUserViaGoogle(array $userData): array
     {
         # Check if the user already exists
-        $existingUser = User::where('email', $userData['email'])->first();
+        $existingUser = User::where('email', $userData['email'])->where('account_type', 'google')->first();
         if ($existingUser) {
-            return ['success' => false, 'message' => 'User already exists.', 'data' => new UserResource($existingUser), 'access_token' => null, 'status_code' => 200];
+            $accessToken = $existingUser->createToken('API Token of ' . $existingUser['email'], ['read'])->plainTextToken;
+            #Update existing google_id records.
+            $existingUser->google_id =  $userData['google_id'];
+            $existingUser->save();
+            return ['success' => false, 'message' => 'User logged in successfully.', 'data' => new UserResource($existingUser), 'access_token' => $accessToken, 'status_code' => 200];
         }
 
         # Create user record with additional data
@@ -168,9 +176,15 @@ class UserService
             return ['success' => false, 'message' => 'Email not found', 'status' => 422];
         }
 
+        $token =  Utility::token();
+        $hashedPassword = Hash::make($token);
 
+        $user->password = $hashedPassword;
+        $user->save();
 
-        return ['success' => true, 'message' => 'Done',  'data' => $user, 'status' => 200];
+        Mail::to($user->email)->send(new forgetPassword($user->fullname, $token, config('services.app_config.app_name') ));
+
+        return ['success' => true, 'message' => 'Password sent to mail',  'data' => $user, 'status' => 200];
 
     }
 

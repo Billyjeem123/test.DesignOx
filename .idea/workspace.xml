@@ -8,16 +8,16 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Client/PostJob/JobController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Client/PostJob/JobController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/CheckClientRole.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/CheckClientRole.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/JobRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/JobRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Job.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Job.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/UserRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/UserRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Resources/UserResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Resources/UserResource.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Mail/forgetPassword.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Mail/forgetPassword.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Services/PaymentService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/PaymentService.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Services/UserService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/UserService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/services.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/email/forgetPassword.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/email/forgetPassword.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/logs/laravel.log" beforeDir="false" afterPath="$PROJECT_DIR$/storage/logs/laravel.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -250,7 +250,8 @@
       <workItem from="1708751858404" duration="3301000" />
       <workItem from="1708786322767" duration="1379000" />
       <workItem from="1708796045188" duration="229000" />
-      <workItem from="1708829674291" duration="2661000" />
+      <workItem from="1708829674291" duration="4868000" />
+      <workItem from="1708894438919" duration="8250000" />
     </task>
     <task id="LOCAL-00001" summary="initialized new repo for desingOx">
       <option name="closed" value="true" />
@@ -332,7 +333,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php</url>
-          <line>28</line>
+          <line>29</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\Client\User\AuthController" />
             <option name="methodName" value="register" />
@@ -341,7 +342,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/Services/UserService.php</url>
-          <line>42</line>
+          <line>50</line>
           <properties>
             <option name="className" value="\App\Services\UserService" />
             <option name="methodName" value="login" />
@@ -350,12 +351,21 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php</url>
-          <line>73</line>
+          <line>74</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\Client\User\AuthController" />
             <option name="methodName" value="saveUserCountry" />
           </properties>
           <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php-line-method">
+          <url>file://$PROJECT_DIR$/app/Services/UserService.php</url>
+          <line>27</line>
+          <properties>
+            <option name="className" value="\App\Services\UserService" />
+            <option name="methodName" value="registerUserViaGoogle" />
+          </properties>
+          <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php</url>
@@ -369,7 +379,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/Services/UserService.php</url>
-          <line>168</line>
+          <line>176</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>

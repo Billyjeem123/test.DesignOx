@@ -13,14 +13,20 @@ class forgetPassword extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $fullName;
+    public $token;
+    public $appname;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($fullName, $token, $appname)
     {
-        //
+        $this->fullName = $fullName;
+        $this->token = $token;
+        $this->$appname = $appname;
     }
 
     /**
@@ -43,7 +49,7 @@ class forgetPassword extends Mailable
     public function content()
     {
         return new Content(
-            view: 'view.forgetPassword',
+            view: 'email.forgetPassword',
         );
     }
 
@@ -66,6 +72,12 @@ class forgetPassword extends Mailable
     public function build()
     {
         return $this->subject('Forget Password')
-            ->view('email.forgetPassword');
+            ->view('email.forgetPassword')
+            ->with([
+                'fullName' => $this->fullName,
+                'token' => $this->token,
+                'appname' => $this->appname,
+            ]);
+
     }
 }

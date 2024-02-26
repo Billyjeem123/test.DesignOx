@@ -11,7 +11,7 @@ class Job extends Model
 
     protected $table = 'tbljob_posts';
 
-    protected  $fillable = ['client_id', 'project_desc', 'project_type', 'tools_used', 'budget', 'duration',
+    protected  $fillable = ['client_id', 'project_desc', 'budget', 'duration',
         'experience_level', 'numbers_of_proposals', 'project_link_attachment', 'on_going', 'work_start_time', 'work_end_time'];
 
 

@@ -7,19 +7,19 @@ use App\Http\Requests\JobRequest;
 use App\Helpers\Utility;
 use App\Http\Resources\JobResource;
 use App\Models\Job;
-use App\Services\PaymentService;
+use App\Services\JobService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class JobController extends Controller
 {
-    protected  $paymentService;
+    protected  $jobService;
     public  $tools;
     public  $keywords;
 
-    public function __construct(PaymentService $paymentService)
+    public function __construct(JobService $jobService)
     {
-        $this->paymentService = $paymentService; #  Inject PaymentService instance
+        $this->jobService = $jobService; #  Inject PaymentService instance
     }
 
     public function createJob(JobRequest $request)
@@ -36,11 +36,10 @@ class JobController extends Controller
                 'experience_level' => $request['experience_level'],
                 'numbers_of_proposals' => $request['numbers_of_proposals'],
                 'project_link_attachment' => $request['project_link_attachment'],
-                'payment_channel' => $request['payment_channel'],
                 'keywords' => $request['keywords']
             ];
 
-            return $this->paymentService->processPayment($data);
+            return $this->jobService->processClientJob($data);
 
 
         } catch (ValidationException $e) {

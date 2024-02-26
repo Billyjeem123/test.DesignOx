@@ -17,8 +17,6 @@ return new class extends Migration
         $table->id();
         $table->foreignId('client_id')->constrained('tblusers');
         $table->string('project_desc');
-        $table->string('project_type');
-        $table->string('tools_used');
         $table->decimal('budget', 10, 2); // Assuming a decimal data type for budget
         $table->string('duration'); // You can store the duration as a string
         $table->string('experience_level');

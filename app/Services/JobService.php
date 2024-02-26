@@ -10,54 +10,27 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use PhpParser\Node\NullableType;
 
-class PaymentService
+class JobService
 {
-    public function processPayment(array $data)
+    public function processClientJob(array $data)
     {
         try {
-            #   Send a POST request to Paystack's initialize transaction endpoint
+            #   Process client jobs postings..
 
-            $amountInKobo = $data['budget'] * 100;
-            $user = User::findOrFail($data['client_id']);
+            $saveClientJob = Job::create([
+                'client_id' => $data['client_id'],
+                'project_desc' => $data['project_desc'],
+                'project_type' => $data['project_type'],
+                'tools_used' => $tools_used,
+                'budget' => $budget,
+                'duration' => $duration,
+                'experience_level' => $experience_level,
+                'numbers_of_proposals' => $numbers_of_proposals,
+                'project_link_attachment' => $project_link_attachment
 
-            $paymentDetails = [
-                'amount' => $amountInKobo, #   Amount in kobo
-                'email' => $user->email,
-                'metadata' => [
-                    'usertoken' => $user->id,
-                    'project_desc' => $data['project_desc'],
-                    'project_type' => $data['project_type'],
-                    'tools_used' => $data['tools_used'],
-                    'duration' => $data['duration'],
-                    'experience_level' => $data['experience_level'],
-                    'budget' => $data['budget'],
-                    'numbers_of_proposals' => $data['numbers_of_proposals'],
-                    'project_link_attachment' => $data['project_link_attachment'],
-                    'payment_channel' => $data['payment_channel'],
-                    'keywords' => 0,
+            ]);
+            $newlyCreatedJobId = $saveClientJob->id;
 
-                ],
-            ];
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' .config('services.paystack.secrete_key'), // Replace with your actual secret key
-                'Content-Type' => 'application/json',
-            ])->post('https://api.paystack.co/transaction/initialize', $paymentDetails);
-
-            #   Check if the request was successful
-            if ($response->successful()) {
-                #   Get the authorization URL from the response
-                $authorizationUrl = $response['data']['authorization_url'];
-
-                #   Return the authorization URL
-                return Utility::outputData(true, "Paystack Authorization Url", ['paystack_url' =>$authorizationUrl], 200);
-            } else {
-                #   Log the error response
-                $errorResponse = $response->json();
-                $error = 'Paystack API error: ' . json_encode($errorResponse);
-
-                #   Handle the case where the request was not successful
-                return Utility::outputData(false, 'Failed to initialize payment.', $error, 200);
-            }
         } catch (\Exception $e) {
             #   Handle exceptions
             return Utility::outputData(false, 'An error occurred while initializing payment.' . $e->getMessage(), [], 500);
@@ -101,19 +74,7 @@ class PaymentService
 
 
 
-                $saveClientJob = Job::create([
-                    'client_id' => $usertoken,
-                    'project_desc' => $project_desc,
-                    'project_type' => $project_type,
-                    'tools_used' => $tools_used,
-                    'budget' => $budget,
-                    'duration' => $duration,
-                    'experience_level' => $experience_level,
-                    'numbers_of_proposals' => $numbers_of_proposals,
-                    'project_link_attachment' => $project_link_attachment
 
-                ]);
-                $newlyCreatedJobId = $saveClientJob->id;
 
                 $this->saveJobPaymentTranx($newlyCreatedJobId, $reference, $email, $amount, $currency, $payment_channel);
                 $this->saveJobPostingKeyWords($newlyCreatedJobId, $keywords);

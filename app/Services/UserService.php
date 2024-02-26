@@ -103,7 +103,7 @@ class UserService
         $user->email_verified_at = now();
         $user->save();
 
-        $accessToken = $user->createToken('API Token of ' . $user->email, ['read'])->plainTextToken;
+
 
          Auth::login($user);
 
@@ -112,7 +112,7 @@ class UserService
             'message' => 'Verification completed',
             'data' => [
                 'user' => new UserResource($user),
-                'access_token' => $accessToken,
+
             ],
             'status' => 200
         ];
@@ -130,11 +130,14 @@ class UserService
         $this->updateUserCountry($user, $credentials['country']);
         $this->attachUserRole($user, $credentials['role']);
 
+        $accessToken = $user->createToken('API Token of ' . $user->email, ['read'])->plainTextToken;
+
         return [
             'success' => true,
             'message' => 'Record saved successfully',
             'data' => [
-                'user' => new UserResource($user)
+                'user' => new UserResource($user),
+                'access_token' => $accessToken,
             ],
             'status' => 200
         ];

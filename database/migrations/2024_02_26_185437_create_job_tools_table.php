@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('tbljob_posts', function (Blueprint $table) {
-            //
-            $table->dropColumn('tools_used');
-            $table->dropColumn('project_type');
-
+        Schema::create('tbljob_projecttype', function (Blueprint $table) {
+            $table->id();
+            $table->string('project_type');
+            $table->timestamps();
         });
     }
 
@@ -28,10 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('tbljob_posts', function (Blueprint $table) {
-            //
-            $table->dropColumn('tools_used');
-            $table->dropColumn('project_type');
-        });
+        Schema::dropIfExists('tbljob_projecttype');
     }
 };

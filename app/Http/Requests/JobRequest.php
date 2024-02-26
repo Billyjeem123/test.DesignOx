@@ -28,14 +28,13 @@ class JobRequest extends FormRequest
             'usertoken' => ['required', 'numeric'],
             'project_desc' => ['required', 'string', 'max:255'],
             'project_type' => ['required', new ArrayValidation()],
-            'tools_used' => ['required', 'string', 'max:255'],
+            'tools_used' => ['required', new ArrayValidation()],
             'keywords' => ['required', new ArrayValidation()],
             'budget' => ['required', 'numeric', 'min:0'],
             'duration' => ['required', 'string', 'max:255'],
             'numbers_of_proposals' => ['required', 'integer', 'min:1'],
             'experience_level' => ['required', 'string', 'max:255'],
-            'project_link_attachment' => ['required', 'url', 'max:255'],
-            'payment_channel' => ['required', 'string', 'max:50'],
+            'project_link_attachment' => ['required', 'url', 'max:255']
         ];
     }
 

@@ -25,18 +25,19 @@ class JobController extends Controller
     public function createJob(JobRequest $request)
     {
         try {
-
+            $validatedData = $request->validated();
             $data = [
-                'client_id' => $request['usertoken'],
-                'project_desc' => $request['project_desc'],
-                'project_type' => $request['project_type'],
-                'tools_used' => $request['tools_used'],
-                'budget' => $request['budget'],
-                'duration' => $request['duration'],
-                'experience_level' => $request['experience_level'],
-                'numbers_of_proposals' => $request['numbers_of_proposals'],
-                'project_link_attachment' => $request['project_link_attachment'],
-                'keywords' => $request['keywords']
+                'client_id' => $validatedData['usertoken'],
+                'project_desc' => $validatedData['project_desc'],
+                'project_type' => $validatedData['project_type'],
+                'tools_used' => $validatedData['tools_used'],
+                'budget' => $validatedData['budget'],
+                'duration' => $validatedData['duration'],
+                'experience_level' => $validatedData['experience_level'],
+                'numbers_of_proposals' => $validatedData['numbers_of_proposals'],
+                'project_link_attachment' => $validatedData['project_link_attachment'],
+                'keywords' => $validatedData['keywords'],
+                'job_status' =>0
             ];
 
             return $this->jobService->processClientJob($data);

@@ -6,16 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="861e98c6-30f6-4f11-b5ad-92d992e44a28" name="Changes" comment="initialized new repo for desingOx">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Client/PostJob/JobController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Client/PostJob/JobController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Kernel.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Requests/UserRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/UserRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Resources/JobResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Resources/JobResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Services/JobService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/JobService.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Services/UserService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/UserService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/auth.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/auth.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2024_02_26_180409_remove_column_name_from_tblpostjob_table.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2024_02_26_185437_create_job_tools_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2024_02_26_185437_create_job_tools_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2024_02_29_092258_create_secuity_question.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2024_02_29_092258_create_secuity_question.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/storage/logs/laravel.log" beforeDir="false" afterPath="$PROJECT_DIR$/storage/logs/laravel.log" afterDir="false" />
     </list>
@@ -258,7 +252,9 @@
       <workItem from="1709127651800" duration="407000" />
       <workItem from="1709128317974" duration="96000" />
       <workItem from="1709129012770" duration="953000" />
-      <workItem from="1709186544383" duration="11657000" />
+      <workItem from="1709186544383" duration="13866000" />
+      <workItem from="1709202415834" duration="7271000" />
+      <workItem from="1709236490370" duration="3267000" />
     </task>
     <task id="LOCAL-00001" summary="initialized new repo for desingOx">
       <option name="closed" value="true" />
@@ -340,39 +336,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php</url>
-          <line>29</line>
+          <line>30</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\Client\User\AuthController" />
             <option name="methodName" value="register" />
           </properties>
           <option name="timeStamp" value="14" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php-line-method">
-          <url>file://$PROJECT_DIR$/app/Services/UserService.php</url>
-          <line>49</line>
-          <properties>
-            <option name="className" value="\App\Services\UserService" />
-            <option name="methodName" value="login" />
-          </properties>
-          <option name="timeStamp" value="16" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php-line-method">
-          <url>file://$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php</url>
-          <line>74</line>
-          <properties>
-            <option name="className" value="\App\Http\Controllers\Client\User\AuthController" />
-            <option name="methodName" value="saveUserCountry" />
-          </properties>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php-line-method">
-          <url>file://$PROJECT_DIR$/app/Services/UserService.php</url>
-          <line>28</line>
-          <properties>
-            <option name="className" value="\App\Services\UserService" />
-            <option name="methodName" value="registerUserViaGoogle" />
-          </properties>
-          <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/Services/JobService.php</url>
@@ -401,6 +370,15 @@
           </properties>
           <option name="timeStamp" value="32" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="php-line-method">
+          <url>file://$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php</url>
+          <line>191</line>
+          <properties>
+            <option name="className" value="\App\Http\Controllers\Client\User\AuthController" />
+            <option name="methodName" value="disableSecurityQuestion" />
+          </properties>
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php</url>
           <line>4</line>
@@ -410,11 +388,6 @@
           <url>file://$PROJECT_DIR$/routes/api.php</url>
           <line>2</line>
           <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/app/Services/UserService.php</url>
-          <line>167</line>
-          <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/routes/api.php</url>

@@ -13,6 +13,7 @@ use App\Services\UserService;
 use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
@@ -72,7 +73,8 @@ class AuthController extends Controller
 
 
 
-    public function saveUserCountry(UserRequest $request){
+    public function saveUserCountry(UserRequest $request): \Illuminate\Http\JsonResponse
+    {
 
         try {
             # Sanitize input
@@ -163,4 +165,67 @@ class AuthController extends Controller
             return Utility::outputData(false, 'Validation failed'. $e->getMessage(), [], 422);
         }
     }
+
+
+    public function enableSecurityQuestion(UserRequest $request): array
+    {
+        try {
+            $validatedData = $request->validated();
+
+            $data = [
+                'user_id'=> $validatedData['usertoken'],
+                'question'=> $validatedData['question'],
+                'answer'=> $validatedData['answer'],
+                'is_activated' => 1
+            ];
+
+            # process table to process security
+            return $this->userService->processSecurityQuestion($data);
+
+        } catch (\Exception $e) {
+            return ['success' => false, 'message' => 'Failed to insert data: ' . $e->getMessage(), 'status' => 500];
+        }
+    }
+
+
+
+    public function manageSecurityQuestion(UserRequest $request): array
+    {
+        try {
+            $validatedData = $request->validated();
+
+            $data = [
+                'usertoken'=> $validatedData['usertoken'],
+                'is_activated' => $validatedData['is_activated']
+            ];
+
+            # Process the disablement of security question
+           return  $this->userService->manageSecurityQuestion($data);
+
+        } catch (\Exception $e) {
+            return ['success' => false, 'message' => 'An error occurred: ' . $e->getFile(), 'status' => 500];
+        }
+    }
+
+
+    public function getSecurityQuestion(UserRequest $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $validatedData = $request->validated();
+
+            $data = [
+                'usertoken'=> $validatedData['usertoken'],
+                'answer' => $validatedData['answer'] ?? ''
+            ];
+
+            # Process the verification of security question
+            return  $this->userService->getSecurityQuestions($data['usertoken'],$data['answer']);
+
+        } catch (\Exception $e) {
+            return Utility::outputData(false, "Unable to process". $e->getMessage(), [], 500);
+        }
+    }
+
+
+
 }

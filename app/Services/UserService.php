@@ -7,6 +7,7 @@ use App\Mail\forgetPassword;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Nette\Schema\ValidationException;
@@ -47,7 +48,7 @@ class UserService
     }
 
 
-    public function login(array $credentials)
+    public function login(array $credentials): array
     {
         $email = $credentials['email'];
         $password = $credentials['password'];
@@ -70,6 +71,8 @@ class UserService
             return ['success' => false, 'message' => 'Account not verified', 'status' => 422];
         }
 
+       $isActive =  $this->checkIfUserHasSecurityQuestions($user->id);
+
         $accessToken = $user->createToken('API Token of ' . $user->email, ['read'])->plainTextToken;
         Auth::login($user);
 
@@ -78,13 +81,16 @@ class UserService
             'message' => 'Login successful',
             'data' => [
                 'user' => new UserResource($user),
-                'access_token' => $accessToken,
+                'security_access' => [
+                    'access_token' => $accessToken,
+                    'security_question' => $isActive
+                    ],
             ],
             'status' => 200
         ];
     }
 
-    public function verifyOTP(array $credentials)
+    public function verifyOTP(array $credentials): array
     {
 
         $otp = $credentials['otp'];
@@ -212,6 +218,93 @@ class UserService
             return Utility::outputData(false, "An error occurred", $e->getMessage(), 500);
         }
     }
+
+
+    public function processSecurityQuestion(array $data): array
+    {
+        # Check if the user has already set up a security question
+        $existingQuestion = DB::table('tblsecurity_question')
+            ->where('user_id', $data['usertoken'])
+            ->first();
+
+        if ($existingQuestion) {
+            # User already has a security question set up
+            return ['success' => false, 'message' => 'You have already set up a security question.', 'status' => 400];
+        }
+
+        # Insert the security question into the database
+        DB::table('tblsecurity_question')->insert($data);
+
+        return ['success' => true, 'message' => 'Security question set successfully', 'status' => 201];
+    }
+
+    private function checkIfUserHasSecurityQuestions(int $userid): bool
+    {
+
+        # Check if the user exists in the security questions table
+        $securityQuestion = DB::table('tblsecuity_question')
+            ->where('user_id', $userid)
+            ->where('is_activated', 1)
+            ->first();
+
+        # Return true if a security question record is found, false otherwise
+        return (bool)$securityQuestion;
+    }
+
+
+    public function manageSecurityQuestion(array $data): array
+    {
+
+        # Update the is_activated column for the user in the security questions table
+        $updated = DB::table('tblsecuity_question')
+            ->where('user_id', $data['usertoken'])
+            ->update(['is_activated' => $data['is_activated']]);
+
+        $message = ($data['is_activated'] === 1) ? 'Activated successfully' : 'Deactivated successfully';
+
+
+        # Return true if the update operation was successful, false otherwise
+        return ['success' => true, 'message' => $message, 'status' => 201];
+    }
+
+
+
+    public function getSecurityQuestions(int $userId, $verify = null): \Illuminate\Http\JsonResponse
+    {
+        # Check if the user exists in the security questions table
+        $securityQuestion = DB::table('tblsecuity_question')
+            ->where('user_id', $userId)
+            ->where('is_activated', 1)
+            ->first();
+
+        # If verification is requested and answer is provided, verify the answer
+        if ($verify) {
+            if ($securityQuestion && $verify === $securityQuestion->answer) {
+                #  Return success response if answer matches
+                return Utility::outputData(true, "Verification successful", [], 200);
+            } else {
+                # Return failure response if answer does not match
+                return Utility::outputData(false, "Incorrect security answer", [], 422);
+            }
+        }
+
+        # Return the security question
+        if ($securityQuestion) {
+            $data =  [
+                'question' => $securityQuestion->question,
+                'usertoken' => $securityQuestion->user_id, # Include user ID for reference
+            ];
+            return Utility::outputData(true, "Question fetched successfully", $data, 200);
+
+        } else {
+            # Return error response if no security question is found
+            return Utility::outputData(false, "No security question found for the user", [], 404);
+        }
+    }
+
+
+
+
 
 
 

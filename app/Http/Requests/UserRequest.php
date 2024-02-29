@@ -59,7 +59,26 @@ class UserRequest extends FormRequest
                 return [
                     'usertoken' => 'required',
                     'new_password' => 'required',
-                    'old_password' => 'required',                ];
+                    'old_password' => 'required',
+                    ];
+            case 'enableSecurityQuestion':
+                return [
+                    'usertoken' => 'required',
+                    'question' => 'required',
+                    'answer' => 'required',
+                ];
+
+            case 'manageSecurityQuestion':
+                return [
+                    'usertoken' => 'required',
+                    'is_activated' => 'required'
+                ];
+
+            case 'getSecurityQuestion':
+                return [
+                    'usertoken' => 'required',
+                    'answer' => ''
+                ];
             default:
                 return [];
         }

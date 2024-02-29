@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('tbljob_posts'); // Define user_id as a foreign key
             $table->string('question', 255);
             $table->string('answer', 255);
+            $table->integer('is_activated', 0);
             $table->timestamps();
         });
     }

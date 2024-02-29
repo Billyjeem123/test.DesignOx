@@ -39,6 +39,7 @@ Route::prefix('client')->group(function () {
         Route::get('google-signup', [AuthController::class, 'googleRedirect'])->name('google.redirect');
         Route::post('forget-password', [AuthController::class, 'forgetPassword']);
         Route::get('google-callback', [AuthController::class, 'googleCallBack'])->name('google.callback');
+        Route::post('/get-security-question', [AuthController::class, 'getSecurityQuestion'])->name('question.get');
 
     });
     #Post Job client1...
@@ -51,6 +52,11 @@ Route::prefix('client')->group(function () {
 
         Route::prefix('profile')->group(function () {
             Route::post('/update-password', [AuthController::class, 'updatePassword'])->name('password.update');
+            Route::post('/set-security-question', [AuthController::class, 'enableSecurityQuestion'])->name('security.set');
+            Route::patch('/manage-security-question', [AuthController::class, 'manageSecurityQuestion'])->name('security.manage');
+
+
+
         });
 
 

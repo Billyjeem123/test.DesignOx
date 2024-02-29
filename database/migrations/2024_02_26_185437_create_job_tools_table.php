@@ -15,8 +15,10 @@ return new class extends Migration
     {
         Schema::create('tbljob_posting_projecttype', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('job_post_id');
             $table->string('project_type');
             $table->timestamps();
+            $table->foreign('job_post_id')->references('id')->on('tbljob_posts');
         });
     }
 

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('tbljob_posts', function (Blueprint $table) {
             //
-            $table->string('job_status', 0);
+
         });
     }
 

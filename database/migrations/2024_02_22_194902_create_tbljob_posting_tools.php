@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('tbljob_posting_tools', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('job_post_id')->constrained('tbljob_posts'); // Define job_post_id as a foreign key
+            $table->unsignedBigInteger('job_post_id');
             $table->string('tools');
             $table->timestamps();
+
+            $table->foreign('job_post_id')->references('id')->on('tbljob_posts');
         });
     }
 

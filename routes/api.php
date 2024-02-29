@@ -37,8 +37,8 @@ Route::prefix('client')->group(function () {
         Route::post('/login', [AuthController::class, 'login']);
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('google-signup', [AuthController::class, 'googleRedirect'])->name('google.redirect');
-        Route::post('forget-password', [AuthController::class, 'forgetPassword']);
         Route::get('google-callback', [AuthController::class, 'googleCallBack'])->name('google.callback');
+        Route::post('forget-password', [AuthController::class, 'forgetPassword']);
         Route::post('/get-security-question', [AuthController::class, 'getSecurityQuestion'])->name('question.get');
 
     });

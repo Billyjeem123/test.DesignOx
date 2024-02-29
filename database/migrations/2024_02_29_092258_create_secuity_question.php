@@ -15,11 +15,13 @@ return new class extends Migration
     {
         Schema::create('tblsecuity_question', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('tbljob_posts'); // Define user_id as a foreign key
+            $table->unsignedBigInteger('user_id');
             $table->string('question', 255);
             $table->string('answer', 255);
             $table->integer('is_activated', 0);
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('tblusers');
         });
     }
 

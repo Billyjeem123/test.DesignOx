@@ -219,7 +219,7 @@ class AuthController extends Controller
             ];
 
             # Process the verification of security question
-            return  $this->userService->getSecurityQuestions($data['usertoken'],$data['answer']);
+            return $this->userService->getSecurityQuestions($data['usertoken'],$data['answer']);
 
         } catch (\Exception $e) {
             return Utility::outputData(false, "Unable to process". $e->getMessage(), [], 500);

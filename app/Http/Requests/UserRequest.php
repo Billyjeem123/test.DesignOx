@@ -55,6 +55,11 @@ class UserRequest extends FormRequest
                 return [
                     'email' => 'required',
                 ];
+            case 'updatePassword':
+                return [
+                    'usertoken' => 'required',
+                    'new_password' => 'required',
+                    'old_password' => 'required',                ];
             default:
                 return [];
         }

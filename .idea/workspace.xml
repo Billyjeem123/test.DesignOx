@@ -7,10 +7,17 @@
     <list default="true" id="861e98c6-30f6-4f11-b5ad-92d992e44a28" name="Changes" comment="initialized new repo for desingOx">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Client/PostJob/JobController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Client/PostJob/JobController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/JobRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/JobRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Job.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Job.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Kernel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/UserRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/UserRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Resources/JobResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Resources/JobResource.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Services/JobService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/JobService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2024_02_26_173037_remove_column_name_from_tblpostjob_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Services/UserService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/UserService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/auth.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/auth.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2024_02_26_180409_remove_column_name_from_tblpostjob_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2024_02_26_185437_create_job_tools_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2024_02_26_185437_create_job_tools_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/logs/laravel.log" beforeDir="false" afterPath="$PROJECT_DIR$/storage/logs/laravel.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -245,7 +252,13 @@
       <workItem from="1708796045188" duration="229000" />
       <workItem from="1708829674291" duration="4868000" />
       <workItem from="1708894438919" duration="8559000" />
-      <workItem from="1708964212797" duration="7420000" />
+      <workItem from="1708964212797" duration="11135000" />
+      <workItem from="1709012996368" duration="7762000" />
+      <workItem from="1709066285401" duration="8824000" />
+      <workItem from="1709127651800" duration="407000" />
+      <workItem from="1709128317974" duration="96000" />
+      <workItem from="1709129012770" duration="953000" />
+      <workItem from="1709186544383" duration="11657000" />
     </task>
     <task id="LOCAL-00001" summary="initialized new repo for desingOx">
       <option name="closed" value="true" />
@@ -336,7 +349,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/Services/UserService.php</url>
-          <line>50</line>
+          <line>49</line>
           <properties>
             <option name="className" value="\App\Services\UserService" />
             <option name="methodName" value="login" />
@@ -354,7 +367,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/Services/UserService.php</url>
-          <line>27</line>
+          <line>28</line>
           <properties>
             <option name="className" value="\App\Services\UserService" />
             <option name="methodName" value="registerUserViaGoogle" />
@@ -370,6 +383,24 @@
           </properties>
           <option name="timeStamp" value="22" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="php-line-method">
+          <url>file://$PROJECT_DIR$/app/Services/JobService.php</url>
+          <line>71</line>
+          <properties>
+            <option name="className" value="\App\Services\JobService" />
+            <option name="methodName" value="saveJobPostingTools" />
+          </properties>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php-line-method">
+          <url>file://$PROJECT_DIR$/app/Http/Controllers/Client/PostJob/JobController.php</url>
+          <line>81</line>
+          <properties>
+            <option name="className" value="\App\Http\Controllers\Client\PostJob\JobController" />
+            <option name="methodName" value="getJobById" />
+          </properties>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php</url>
           <line>4</line>
@@ -382,13 +413,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/Services/UserService.php</url>
-          <line>179</line>
+          <line>167</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/database/migrations/2024_02_26_180409_remove_column_name_from_tblpostjob_table.php</url>
-          <line>6</line>
-          <option name="timeStamp" value="23" />
+          <url>file://$PROJECT_DIR$/routes/api.php</url>
+          <line>30</line>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/app/Http/Controllers/Client/PostJob/JobController.php</url>
+          <line>76</line>
+          <option name="timeStamp" value="31" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

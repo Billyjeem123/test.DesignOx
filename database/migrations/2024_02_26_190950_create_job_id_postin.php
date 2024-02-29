@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('tblpostjob_table', function (Blueprint $table) {
-            $table->dropColumn('has_paid');
+        Schema::table('tbljob_posting_projecttype', function (Blueprint $table) {
+            $table->foreignId('job_post_id')->constrained('tbljob_posts')->before('project_type'); // Define job_post_id as a foreign key
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('tblpostjob_table', function (Blueprint $table) {
-            $table->dropColumn('has_paid');
+        Schema::table('tbljob_posting_projecttype', function (Blueprint $table) {
+//
         });
     }
 };

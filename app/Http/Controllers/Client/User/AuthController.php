@@ -121,12 +121,12 @@ class AuthController extends Controller
 
          $result = $this->userService->registerUserViaGoogle($validatedData);
 
-         return Utility::outputResult($result['success'], $result['message'], new UserResource($result['data']), $result['access_token']);
+         return Utility::outputData($result['success'], $result['message'], new UserResource($result['data']), $result['status_code']);
 
      }
 
 
-    public function forgetPassword(UserRequest $request)
+    public function forgetPassword(UserRequest $request): \Illuminate\Http\JsonResponse
 
     {
         try {
@@ -138,6 +138,26 @@ class AuthController extends Controller
             $result = $this->userService->forgetPassword($email);
 
             return Utility::outputData($result['success'], $result['message'], new UserResource($result['data']), 200);
+
+        } catch (ValidationException $e) {
+            return Utility::outputData(false, 'Validation failed'. $e->getMessage(), [], 422);
+        }
+    }
+
+
+    public function updatePassword(UserRequest $request): \Illuminate\Http\JsonResponse
+
+    {
+        try {
+            $validatedData = $request->validated();
+
+            $data = [
+                'usertoken' => $validatedData['usertoken'],
+                'new_password' => $validatedData['new_password'],
+                'old_password' => $validatedData['old_password'],
+            ];
+
+           return  $this->userService->updatePassword($data);
 
         } catch (ValidationException $e) {
             return Utility::outputData(false, 'Validation failed'. $e->getMessage(), [], 422);

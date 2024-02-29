@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Nette\Schema\ValidationException;
 
 class UserService
 {
@@ -40,11 +41,9 @@ class UserService
         # Create user record with additional data
         $user = User::create(array_merge($userData, ['otp' => 0, 'account_type' => 'google']));
 
-        $accessToken = $user->createToken('API Token of ' . $user->email, ['read'])->plainTextToken;
-
         Auth::loginUsingId($user->id);
 
-        return ['success' => true, 'message' => 'User registered successfully.', 'data' => new UserResource($user), 'access_token' => $accessToken, 'status_code' => 200];
+        return ['success' => true, 'message' => 'User registered successfully.', 'data' => new UserResource($user), 'status_code' => 200];
     }
 
 
@@ -103,10 +102,6 @@ class UserService
         $user->email_verified_at = now();
         $user->save();
 
-
-
-         Auth::login($user);
-
         return [
             'success' => true,
             'message' => 'Verification completed',
@@ -129,6 +124,9 @@ class UserService
 
         $this->updateUserCountry($user, $credentials['country']);
         $this->attachUserRole($user, $credentials['role']);
+
+        # Authenticate the user
+        Auth::loginUsingId($user->id);
 
         $accessToken = $user->createToken('API Token of ' . $user->email, ['read'])->plainTextToken;
 
@@ -160,18 +158,8 @@ class UserService
         }
     }
 
-    public function generateAccessToken(User $user)
-    {
-        $alreadyExist = $user->getCurrentToken();
-        if ($alreadyExist) {
-            return $alreadyExist->bearerToken;
-        } else {
-            return $user->createToken('API Token of ' . $user->email, ['read'])->plainTextToken;
-        }
-    }
 
-
-    public function forgetPassword($email)
+    public function forgetPassword($email): array
     {
 
         $user = User::where('email', $email)->first();
@@ -190,6 +178,41 @@ class UserService
         return ['success' => true, 'message' => 'Password sent to mail',  'data' => $user, 'status' => 200];
 
     }
+
+    public function updatePassword(array $data): \Illuminate\Http\JsonResponse
+    {
+        try {
+
+            # Retrieve the authenticated user
+            $user = Auth::user();
+
+            if($user->account_type == 'google'){
+                return Utility::outputData(false, "You cannot update your password because you registered with Google.", [], 200);
+
+            }
+
+            # Verify the old password
+            if (!Hash::check($data['old_password'], $user->password)) {
+                return Utility::outputData(false, "Old password is incorrect", [], 400);
+            }
+
+            # Hash the new password
+            $hashedPassword = Hash::make($data['new_password']);
+
+            #  Update the user's password
+            $user->password = $hashedPassword;
+            $user->save();
+
+            return Utility::outputData(true, "Password updated successfully", [], 200);
+        } catch (ValidationException $e) {
+            // Handle validation errors
+            return Utility::outputData(false, "Validation failed", $e->getMessage(), 422);
+        } catch (\Exception $e) {
+            // Handle other exceptions
+            return Utility::outputData(false, "An error occurred", $e->getMessage(), 500);
+        }
+    }
+
 
 
 }

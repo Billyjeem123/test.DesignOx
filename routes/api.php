@@ -3,6 +3,8 @@
 use App\Http\Controllers\Client\PostJob\JobController;
 use App\Http\Controllers\Client\User\AuthController;
 use App\Http\Controllers\Role\RoleController;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +18,10 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return auth()->user();
+});
+
 // Roles Routes
 Route::resource('roles', RoleController::class)->only(['index', 'store']);
 /**
@@ -23,7 +29,6 @@ Route::resource('roles', RoleController::class)->only(['index', 'store']);
  */
 
 Route::prefix('client')->group(function () {
-
     #Client authorization Endpoint
     Route::prefix('auth')->group(function () {
         Route::post('/register', [AuthController::class, 'register']);
@@ -36,12 +41,19 @@ Route::prefix('client')->group(function () {
         Route::get('google-callback', [AuthController::class, 'googleCallBack'])->name('google.callback');
 
     });
-
     #Post Job client1...
-    Route::middleware(['client'])->group(function () {
+    Route::middleware(['auth:sanctum', 'client'])->group(function () {
         Route::post('/post-job', [JobController::class, 'createJob'])->name('postJobPayment');
-        Route::get('/payment/callback', [JobController::class, 'payForJobPosting'])->name('payment.callback');
-        Route::post('/get-client-jobs', [JobController::class, 'getClientJobPosting'])->name('client.jobs');
+        Route::get('/get-client-jobs/{usertoken}/{on_going?}', [JobController::class, 'getClientJobPosting'])->name('client.getjobs');
+        Route::get('/get-job-by-id/{usertoken}/{job_post_id}', [JobController::class, 'getJobById'])->name('client.view_job');
+        Route::patch('/update-job-by-id/{job_post_id}', [JobController::class, 'updateJobById'])->name('client.update_job');
+        # Profile Endpoint...
+
+        Route::prefix('profile')->group(function () {
+            Route::post('/update-password', [AuthController::class, 'updatePassword'])->name('password.update');
+        });
+
+
     });
 
 
@@ -51,5 +63,8 @@ Route::prefix('client')->group(function () {
 });
 
 Route::fallback(function () {
-    abort(404, 'API resource not found');
+    return new JsonResponse([
+        'message' => 'API resource not found',
+        'status_code' => 404
+    ], 404);
 });

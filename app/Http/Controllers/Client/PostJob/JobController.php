@@ -9,6 +9,7 @@ use App\Http\Resources\JobResource;
 use App\Models\Job;
 use App\Services\JobService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class JobController extends Controller
@@ -16,6 +17,8 @@ class JobController extends Controller
     protected  $jobService;
     public  $tools;
     public  $keywords;
+
+    public $project_type;
 
     public function __construct(JobService $jobService)
     {
@@ -26,6 +29,7 @@ class JobController extends Controller
     {
         try {
             $validatedData = $request->validated();
+
             $data = [
                 'client_id' => $validatedData['usertoken'],
                 'project_desc' => $validatedData['project_desc'],
@@ -42,7 +46,6 @@ class JobController extends Controller
 
             return $this->jobService->processClientJob($data);
 
-
         } catch (ValidationException $e) {
             #  Return validation errors
             return Utility::outputData(false, "Validation failed", $e->errors(), 422);
@@ -53,50 +56,73 @@ class JobController extends Controller
     }
 
 
-    public function payForJobPosting()
-    {
 
-//        $transactionId = request('reference'); #   received the transaction ID in the request
-//
-//        return $this->paymentService->handleGatewayCallback($transactionId);
 
-    }
-
-    public function getClientJobPosting(Request $request)
+    public function getClientJobPosting($usertoken, $on_going=null): \Illuminate\Http\JsonResponse
     {
         try {
-            $clientId = $request->input('usertoken');
-            $onGoing = $request->input('on_going', null);
-
-            // Apply conditional filtering based on the 'on_going' parameter
-            $query = Job::where('client_id', $clientId);
-            if ($onGoing === '1') {
-                $query->where('on_going', 1);
-            } elseif ($onGoing === '0') {
-                $query->where('on_going', 0);
-            }
-
-            # Paginate the results
-            $jobsByClient = $query->paginate(10); # Change the number as per your requirement
+            $jobsByClient = $this->jobService->fetchJobsByClient($usertoken, $on_going);
 
             if ($jobsByClient->isEmpty()) {
                 return Utility::outputData(false, "No results found", [], 404);
             }
 
-            # Fetch tools for each job
-            foreach ($jobsByClient as $job) {
-                $job->tools = $this->paymentService->getJobPostingTools($job->id);
-                $job->keywords = $this->paymentService->getJobPostingKeyWords($job->id);
-            }
+            $responseData = $this->jobService->transformJobData($jobsByClient);
 
             # Return paginated response
-           return  Utility::outputData(true, "Client jobs fetched  successfully", JobResource::collection($jobsByClient), 200);
+           return  Utility::outputData(true, "Client jobs fetched  successfully", new JobResource($responseData), 200);
 
         } catch (\PDOException $e) {
             # Handle PDOException
            return  Utility::outputData(false, "Unable to process request". $e->getMessage(), [], 400);
         }
     }
+
+
+    public function getJobById(int $usertoken, int $jobId): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $job = $this->jobService->fetchJobById($usertoken, $jobId);
+
+            if (!$job) {
+                return Utility::outputData(false, "Job not found", [], 404);
+            }
+
+
+            return  Utility::outputData(true, "Job fetched successfully", ($job), 200);
+        } catch (\PDOException $e) {
+            return  Utility::outputData(false, "Unable to process request: " . $e->getMessage(), [], 400);
+        }
+    }
+
+
+
+    public function updateJobById(JobRequest $request, $jobId)
+    {
+        try {
+            $validatedData = $request->validated();
+
+            $data = [
+                'client_id' => $validatedData['usertoken'],
+                'project_desc' => $validatedData['project_desc'],
+                'budget' => $validatedData['budget'],
+                'duration' => $validatedData['duration'],
+                'experience_level' => $validatedData['experience_level'],
+                'numbers_of_proposals' => $validatedData['numbers_of_proposals'],
+                'project_link_attachment' => $validatedData['project_link_attachment'],
+            ];
+
+            return $this->jobService->updateJob($jobId, $data, $validatedData['keywords'], $validatedData['tools_used'], $validatedData['project_type']);
+
+
+        } catch (ValidationException $e) {
+            return Utility::outputData(false, "Validation failed", $e->errors(), 422);
+        } catch (\Exception $e) {
+            return Utility::outputData(false, "An error occurred", $e->getMessage(), 500);
+        }
+    }
+
+
 
 
 

@@ -6,17 +6,17 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class JobResource extends JsonResource
 {
-    private mixed $user_id;
-    private mixed $project_desc;
-    private mixed $budget;
-    private mixed $duration;
-    private mixed $numbers_of_proposals;
-    private mixed $project_link_attachment;
-    private mixed $on_going;
-    private mixed $experience_level;
-    private mixed $tools;
-    private mixed $keywords;
-    private mixed $project_type;
+     public  mixed $user_id;
+    public mixed $project_desc;
+    public mixed $budget;
+    public mixed $duration;
+    public mixed $numbers_of_proposals;
+    public mixed $project_link_attachment;
+    public mixed $on_going;
+    public mixed $experience_level;
+    public mixed $tools;
+    public mixed $keywords;
+    public mixed $project_type;
 
     /**
      * Transform the resource into an array.
@@ -26,19 +26,26 @@ class JobResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'id' => $this->id,
-            'client_id' => $this->user_id, // Assuming user_id is the client_id
-            'project_desc' => $this->project_desc,
-            'project_type' => $this->project_type,
-            'budget' => $this->budget,
-            'duration' => $this->duration,
-            'experience_level' => $this->experience_level,
-            'numbers_of_proposals' => $this->numbers_of_proposals,
-            'project_link_attachment' => $this->project_link_attachment,
-            'on_going' => $this->on_going == 0 ? 'pending' : ($this->on_going == 1 ? 'done' : 'unknown'),
-            'tools' => $this->tools,
-            'keywords' => $this->keywords
-        ];
+        return $this->map(function ($job) {
+            $on_going = $job->on_going === 0 ? 'pending' : ($job->on_going === 1 ? 'approved' : 'finished');
+            return [
+                'job_post_id' => $job->id,
+                'usertoken' => $job->client_id ?? 0,
+                'project_desc' => $job->project_desc ?? null,
+                'project_budget' => $job->budget ?? 0,
+                'project_duration' => $job->duration ?? 0,
+                'experience_level' => $job->experience_level ?? 0,
+                'numbers_of_proposals' => $job->numbers_of_proposals ?? 0,
+                'project_link_attachment' => $job->project_link_attachment ?? 0,
+                'on_going' => $on_going,
+                'project_tools' => $job->tools ?? [],
+                'project_keywords' => $job->keywords ?? [],
+                'project_type' => $job->project_type ?? null,
+            ];
+        });
     }
+
+
+
+
 }

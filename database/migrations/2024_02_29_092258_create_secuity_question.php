@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbljob_posting_projecttype', function (Blueprint $table) {
+        Schema::create('tblsecuity_question', function (Blueprint $table) {
             $table->id();
-            $table->string('project_type');
+            $table->foreignId('user_id')->constrained('tbljob_posts'); // Define user_id as a foreign key
+            $table->string('question', 255);
+            $table->string('answer', 255);
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbljob_posting_projecttype');
+        Schema::dropIfExists('tblsecuity_question');
     }
 };

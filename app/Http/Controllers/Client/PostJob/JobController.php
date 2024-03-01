@@ -22,16 +22,17 @@ class JobController extends Controller
 
     public function __construct(JobService $jobService)
     {
-        $this->jobService = $jobService; #  Inject PaymentService instance
+        $this->jobService = $jobService; #  Inject JobService instance
     }
 
     public function createJob(JobRequest $request)
     {
         try {
             $validatedData = $request->validated();
+            $user = auth('api')->user();
 
             $data = [
-                'client_id' => $validatedData['usertoken'],
+                'client_id' => $user->id,
                 'project_desc' => $validatedData['project_desc'],
                 'project_type' => $validatedData['project_type'],
                 'tools_used' => $validatedData['tools_used'],
@@ -58,10 +59,11 @@ class JobController extends Controller
 
 
 
-    public function getClientJobPosting($usertoken, $on_going=null): \Illuminate\Http\JsonResponse
+    public function getClientJobPosting($on_going=null): \Illuminate\Http\JsonResponse
     {
         try {
-            $jobsByClient = $this->jobService->fetchJobsByClient($usertoken, $on_going);
+            $user = auth('api')->user();
+            $jobsByClient = $this->jobService->fetchJobsByClient($user->id, $on_going);
 
             if ($jobsByClient->isEmpty()) {
                 return Utility::outputData(false, "No results found", [], 404);
@@ -79,10 +81,11 @@ class JobController extends Controller
     }
 
 
-    public function getJobById(int $usertoken, int $jobId): \Illuminate\Http\JsonResponse
+    public function getJobById(int $jobId): \Illuminate\Http\JsonResponse
     {
         try {
-            $job = $this->jobService->fetchJobById($usertoken, $jobId);
+            $user = auth('api')->user();
+            $job = $this->jobService->fetchJobById($user->id, $jobId);
 
             if (!$job) {
                 return Utility::outputData(false, "Job not found", [], 404);
@@ -101,9 +104,10 @@ class JobController extends Controller
     {
         try {
             $validatedData = $request->validated();
+            $user = auth('api')->user();
 
             $data = [
-                'client_id' => $validatedData['usertoken'],
+                'client_id' => $user->id,
                 'project_desc' => $validatedData['project_desc'],
                 'budget' => $validatedData['budget'],
                 'duration' => $validatedData['duration'],
@@ -113,6 +117,27 @@ class JobController extends Controller
             ];
 
             return $this->jobService->updateJob($jobId, $data, $validatedData['keywords'], $validatedData['tools_used'], $validatedData['project_type']);
+
+
+        } catch (ValidationException $e) {
+            return Utility::outputData(false, "Validation failed", $e->errors(), 422);
+        } catch (\Exception $e) {
+            return Utility::outputData(false, "An error occurred", $e->getMessage(), 500);
+        }
+    }
+
+
+
+    public function deleteJobById(JobRequest $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $validatedData = $request->validated();
+
+            $data = [
+                'job_post_id' => $validatedData['job_post_id'],
+            ];
+
+            return $this->jobService->deleteJob($data['job_post_id']);
 
 
         } catch (ValidationException $e) {

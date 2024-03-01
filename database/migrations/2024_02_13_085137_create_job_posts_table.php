@@ -23,7 +23,7 @@ return new class extends Migration
         $table->integer('numbers_of_proposals');
         $table->integer('on_going')->default(0);
         $table->string('project_link_attachment')->nullable();
-        $table->string('job_status', 0);
+        $table->string('job_status')->default(0);
         $table->timestamp('work_start_time')->nullable(); // Timestamp for project start time
         $table->timestamp('work_end_time')->nullable(); // Timestamp for project end time
         $table->timestamps();

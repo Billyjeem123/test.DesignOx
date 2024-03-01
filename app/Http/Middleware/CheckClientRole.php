@@ -23,7 +23,7 @@ class CheckClientRole
     {
         try {
             # Find the user details by user token
-            $user = User::findOrFail($request->usertoken);
+            $user = Auth::user();
 
             # Retrieve the 'client' role
             $clientRole = Role::where('role_name', 'client')->first();

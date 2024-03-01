@@ -289,6 +289,24 @@ class JobService
         }
     }
 
+    public function deleteJob(int $jobId): \Illuminate\Http\JsonResponse
+    {
+        try {
+            # Delete job details
+            $affectedRows = Job::where('id', $jobId)->delete();
+
+            if ($affectedRows === 0) {
+                # No job was found with the given ID
+                return Utility::outputData(false, "Job not found", [], 404);
+            }
+
+            return Utility::outputData(true, "Job deleted successfully", [], 200);
+
+        } catch (\Exception $e) {
+            throw new \Exception('An error occurred while deleting job and related data: ' . $e->getMessage());
+        }
+    }
+
 
 
 

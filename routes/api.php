@@ -43,11 +43,12 @@ Route::prefix('client')->group(function () {
 
     });
     #Post Job client1...
-    Route::middleware(['auth:sanctum', 'client'])->group(function () {
+    Route::middleware(['auth:sanctum','client'])->group(function () {
         Route::post('/post-job', [JobController::class, 'createJob'])->name('postJobPayment');
-        Route::get('/get-client-jobs/{usertoken}/{on_going?}', [JobController::class, 'getClientJobPosting'])->name('client.getjobs');
-        Route::get('/get-job-by-id/{usertoken}/{job_post_id}', [JobController::class, 'getJobById'])->name('client.view_job');
+        Route::get('/get-client-jobs/{on_going?}', [JobController::class, 'getClientJobPosting'])->name('client.getjobs');
+        Route::get('/get-job-by-id/{job_post_id}', [JobController::class, 'getJobById'])->name('client.view_job');
         Route::patch('/update-job-by-id/{job_post_id}', [JobController::class, 'updateJobById'])->name('client.update_job');
+        Route::delete('/delete-job-by-id', [JobController::class, 'deleteJobById'])->name('client.delete_job');
         # Profile Endpoint...
 
         Route::prefix('profile')->group(function () {

@@ -9,6 +9,7 @@ class Job extends Model
 {
     use HasFactory;
 
+//    public mixed $user_id;
     protected $table = 'tbljob_posts';
 
     protected  $fillable = ['client_id', 'project_desc', 'budget', 'duration',

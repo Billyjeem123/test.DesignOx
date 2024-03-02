@@ -110,7 +110,7 @@ class AuthController extends Controller
     }
 
 
-    public function googleCallBack(): string
+    public function googleCallBackClient(): string
      {
          $googleUser = Socialite::driver('google')->stateless()->user();
          $validatedData = [

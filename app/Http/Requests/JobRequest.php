@@ -27,7 +27,6 @@ class JobRequest extends FormRequest
         switch ($this->route()->getActionMethod()) {
             case 'createJob':
                 return [
-//                    'usertoken' => ['required', 'numeric'],
                     'project_desc' => ['required', 'string', 'max:255'],
                     'project_type' => ['required', new ArrayValidation()],
                     'tools_used' => ['required', new ArrayValidation()],
@@ -43,6 +42,20 @@ class JobRequest extends FormRequest
                 return [
                     'job_post_id' => 'required'
                 ];
+
+            case 'updateJobById':
+                return [
+                    'project_desc' => ['required', 'string', 'max:255'],
+                    'project_type' => ['required', new ArrayValidation()],
+                    'tools_used' => ['required', new ArrayValidation()],
+                    'keywords' => ['required', new ArrayValidation()],
+                    'budget' => ['required', 'numeric', 'min:0'],
+                    'duration' => ['required', 'string', 'max:255'],
+                    'numbers_of_proposals' => ['required', 'integer', 'min:1'],
+                    'experience_level' => ['required', 'string', 'max:255'],
+                    'project_link_attachment' => ['required', 'url', 'max:255']
+                ];
+
                 break;
             default:
                 return [];

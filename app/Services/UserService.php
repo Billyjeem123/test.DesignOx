@@ -30,16 +30,24 @@ class UserService
     public function registerUserViaGoogle(array $userData): array
     {
         # Check if the user already exists
-        $existingUser = User::where('email', $userData['email'])->where('account_type', 'google')->first();
+        $existingUser = User::where('email', $userData['email'])->first();
+
         if ($existingUser) {
-            $accessToken = $existingUser->createToken('API Token of ' . $existingUser['email'], ['read'])->plainTextToken;
-            #Update existing google_id records.
+            # Check if the existing user's account is local
+            if ($existingUser->account_type === 'local') {
+                # User already has an account, cannot register using Gmail
+                return ['success' => false, 'message' => 'A user account with this email already exists. Please log in using your existing account or use a different email to register.', 'status_code' => 409];
+            }
+
+            # Update existing user's account to link with Google authentication
             $existingUser->google_id =  $userData['google_id'];
+            $existingUser->account_type = 'google';
             $existingUser->save();
+            $accessToken = $existingUser->createToken('API Token of ' . $existingUser['email'], ['read'])->plainTextToken;
             return ['success' => false, 'message' => 'User logged in successfully.', 'data' => new UserResource($existingUser), 'access_token' => $accessToken, 'status_code' => 200];
         }
 
-        # Create user record with additional data
+        # Create new user record with Google authentication
         $user = User::create(array_merge($userData, ['otp' => 0, 'account_type' => 'google']));
 
         Auth::loginUsingId($user->id);

@@ -7,8 +7,10 @@ use App\Http\Requests\JobRequest;
 use App\Helpers\Utility;
 use App\Http\Resources\JobResource;
 use App\Models\Job;
+use App\Models\User;
+use App\Policies\JobPolicy;
 use App\Services\JobService;
-use Illuminate\Http\Request;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
@@ -18,18 +20,22 @@ class JobController extends Controller
     public  $tools;
     public  $keywords;
 
-    public $project_type;
+    public  int  $id;
 
     public function __construct(JobService $jobService)
     {
         $this->jobService = $jobService; #  Inject JobService instance
+
     }
 
     public function createJob(JobRequest $request)
     {
         try {
             $validatedData = $request->validated();
+
             $user = auth('api')->user();
+
+            $this->authorize('create', [Job::class]);
 
             $data = [
                 'client_id' => $user->id,
@@ -63,7 +69,12 @@ class JobController extends Controller
     {
         try {
             $user = auth('api')->user();
+
             $jobsByClient = $this->jobService->fetchJobsByClient($user->id, $on_going);
+            # Authorize access for each job
+            foreach ($jobsByClient as $job) {
+                $this->authorize('view',  $job);
+            }
 
             if ($jobsByClient->isEmpty()) {
                 return Utility::outputData(false, "No results found", [], 404);
@@ -77,6 +88,8 @@ class JobController extends Controller
         } catch (\PDOException $e) {
             # Handle PDOException
            return  Utility::outputData(false, "Unable to process request". $e->getMessage(), [], 400);
+        } catch (AuthorizationException $e) {
+            return  Utility::outputData(false, "Unauthorized access ",  $e->getMessage(), 404);
         }
     }
 
@@ -106,8 +119,10 @@ class JobController extends Controller
             $validatedData = $request->validated();
             $user = auth('api')->user();
 
+
+
             $data = [
-                'client_id' => $user->id,
+                'client_id' =>$user->id,
                 'project_desc' => $validatedData['project_desc'],
                 'budget' => $validatedData['budget'],
                 'duration' => $validatedData['duration'],
@@ -128,7 +143,7 @@ class JobController extends Controller
 
 
 
-    public function deleteJobById(JobRequest $request): \Illuminate\Http\JsonResponse
+    public function deleteJobById(JobRequest $request , Job $job): \Illuminate\Http\JsonResponse
     {
         try {
             $validatedData = $request->validated();
@@ -136,6 +151,8 @@ class JobController extends Controller
             $data = [
                 'job_post_id' => $validatedData['job_post_id'],
             ];
+
+            $this->authorize('delete', Job::findOrFail($data['job_post_id']));
 
             return $this->jobService->deleteJob($data['job_post_id']);
 

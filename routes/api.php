@@ -37,7 +37,7 @@ Route::prefix('client')->group(function () {
         Route::post('/login', [AuthController::class, 'login']);
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('google-signup', [AuthController::class, 'googleRedirect'])->name('google.redirect');
-        Route::get('google-callback', [AuthController::class, 'googleCallBack'])->name('google.callback');
+        Route::get('google-callback', [AuthController::class, 'googleCallBackClient'])->name('google.callback');
         Route::post('forget-password', [AuthController::class, 'forgetPassword']);
         Route::post('/get-security-question', [AuthController::class, 'getSecurityQuestion'])->name('question.get');
 
@@ -50,24 +50,35 @@ Route::prefix('client')->group(function () {
         Route::patch('/update-job-by-id/{job_post_id}', [JobController::class, 'updateJobById'])->name('client.update_job');
         Route::delete('/delete-job-by-id', [JobController::class, 'deleteJobById'])->name('client.delete_job');
         # Profile Endpoint...
-
+ 
         Route::prefix('profile')->group(function () {
             Route::post('/update-password', [AuthController::class, 'updatePassword'])->name('password.update');
             Route::post('/set-security-question', [AuthController::class, 'enableSecurityQuestion'])->name('security.set');
             Route::patch('/manage-security-question', [AuthController::class, 'manageSecurityQuestion'])->name('security.manage');
-
-
-
         });
+    });
 
+});
+
+#Talent Endpoint
+Route::prefix('talent')->group(function () {
+    # Talent authorization Endpoint
+    Route::prefix('auth')->group(function () {
+        Route::post('/register', [AuthController::class, 'register']);
+        Route::post('/verify-otp', [AuthController::class, 'verifyOTP']); #sww
+        Route::post('/save-country', [AuthController::class, 'saveUserCountry']);
+        Route::post('/login', [AuthController::class, 'login']);
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::get('google-signup', [AuthController::class, 'googleRedirect'])->name('google.redirect');
+        Route::get('google-callback', [AuthController::class, 'googleCallBack'])->name('google.callback');
+        Route::post('forget-password', [AuthController::class, 'forgetPassword']);
+        Route::post('/get-security-question', [AuthController::class, 'getSecurityQuestion'])->name('question.get');
 
     });
 
 
-
-
-
 });
+
 
 Route::fallback(function () {
     return new JsonResponse([

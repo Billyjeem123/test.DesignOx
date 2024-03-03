@@ -36,6 +36,7 @@ return [
         'client_id' => '1041698225513-nitgtg4a6daeu4g9i89ag4lgn42c9u6k.apps.googleusercontent.com',
         'client_secret' => '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',
         'redirect' => 'https://designox.iccflifeskills.com.ng/v0.1/api/client/auth/google-callback',
+        'redirect_talent' => env('GOOGLE_REDIRECT_TALENT', 'https://designox.iccflifeskills.com.ng/v0.1/api/talent/auth/google-callback')
     ],
 
     'paystack' => [

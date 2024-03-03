@@ -227,5 +227,12 @@ class AuthController extends Controller
     }
 
 
+    public function googleRedirectTalent()
+    {
+        return Socialite::driver('google')->stateless()->redirect(config('services.google.redirect_talent'));
+//      # client sanctum 1|M9JDbKz41RsdmrwravP8hCWfT8uHUfOiDCiGxWGy8bdcca00
+    }
+
+
 
 }

@@ -64,18 +64,13 @@ Route::prefix('client')->group(function () {
 Route::prefix('talent')->group(function () {
     # Talent authorization Endpoint
     Route::prefix('auth')->group(function () {
-        Route::post('/register', [AuthController::class, 'register']);
-        Route::post('/verify-otp', [AuthController::class, 'verifyOTP']); #sww
-        Route::post('/save-country', [AuthController::class, 'saveUserCountry']);
-        Route::post('/login', [AuthController::class, 'login']);
-        Route::post('/logout', [AuthController::class, 'logout']);
-        Route::get('google-signup', [AuthController::class, 'googleRedirect'])->name('google.redirect');
-        Route::get('google-callback', [AuthController::class, 'googleCallBack'])->name('google.callback');
-        Route::post('forget-password', [AuthController::class, 'forgetPassword']);
-        Route::post('/get-security-question', [AuthController::class, 'getSecurityQuestion'])->name('question.get');
+        Route::get('google-signup', [AuthController::class, 'googleRedirectTalent'])->name('talent.google.redirect');
 
     });
 
+    Route::middleware(['auth:sanctum','talent'])->group(function () {
+        Route::get('get-all-jobs', [AuthController::class, 'googleRedirectTalent'])->name('talent.google.redirect');
+    });
 
 });
 

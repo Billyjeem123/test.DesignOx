@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbluser_role', function (Blueprint $table) {
+        Schema::create('role_user', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('role_id');
             // Optionally, add additional columns if needed
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('tblusers');
-            $table->foreign('role_id')->references('id')->on('tblroles');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('role_id')->references('id')->on('roles');
         });
     }
 
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbluser_role');
+        Schema::dropIfExists('role_user');
     }
 };

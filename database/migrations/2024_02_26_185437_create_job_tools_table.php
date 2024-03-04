@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbljob_type', function (Blueprint $table) {
+        Schema::create('job_type', function (Blueprint $table) {
             $table->id();
             $table->string('project_type');
         });
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbljob_posting_projecttype');
+        Schema::dropIfExists('job_type');
     }
 };

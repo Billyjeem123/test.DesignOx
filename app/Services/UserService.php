@@ -251,7 +251,7 @@ class UserService
     {
 
         # Check if the user exists in the security questions table
-        $securityQuestion = DB::table('tblsecuity_question')
+        $securityQuestion = DB::table('security_questions')
             ->where('user_id', $userid)
             ->where('is_activated', 1)
             ->first();
@@ -265,7 +265,7 @@ class UserService
     {
 
         # Update the is_activated column for the user in the security questions table
-        $updated = DB::table('tblsecuity_question')
+        $updated = DB::table('security_questions')
             ->where('user_id', $data['usertoken'])
             ->update(['is_activated' => $data['is_activated']]);
 
@@ -281,7 +281,7 @@ class UserService
     public function getSecurityQuestions(int $userId, $verify = null): \Illuminate\Http\JsonResponse
     {
         # Check if the user exists in the security questions table
-        $securityQuestion = DB::table('tblsecuity_question')
+        $securityQuestion = DB::table('security_questions')
             ->where('user_id', $userId)
             ->where('is_activated', 1)
             ->first();

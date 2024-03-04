@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbljob_posting_tools', function (Blueprint $table) {
+        Schema::create('job_tools', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('job_post_id');
             $table->string('tools');
             $table->timestamps();
 
-            $table->foreign('job_post_id')->references('id')->on('tbljob_posts');
+            $table->foreign('job_post_id')->references('id')->on('job_posts');
         });
     }
 
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbljob_posting_tools');
+        Schema::dropIfExists('job_tools');
     }
 };

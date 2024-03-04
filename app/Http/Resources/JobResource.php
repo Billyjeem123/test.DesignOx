@@ -40,7 +40,7 @@ class JobResource extends JsonResource
                 'on_going' => $on_going,
                 'project_tools' => $job->tools ?? [],
                 'project_keywords' => $job->keywords ?? [],
-                'project_type' => $job->project_type ?? null,
+                'project_types' => $job->projectTypes()->pluck('job_type.project_type')->toArray(),
                 'user' => [
                     'client_name' => $job->user->fullname ?? null,
                     'current_location' => $job->user->country ?? null

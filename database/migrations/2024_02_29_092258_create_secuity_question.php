@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tblsecuity_question', function (Blueprint $table) {
+        Schema::create('security_questions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('question', 255);
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('is_activated', 0);
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('tblusers');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tblsecuity_question');
+        Schema::dropIfExists('security_questions');
     }
 };

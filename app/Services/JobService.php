@@ -29,10 +29,16 @@ class JobService
             ]);
             $newlyCreatedJobId = $saveClientJob->id;
 
+            # Save project types (job types) using attach()
+            if (isset($data['project_type'])) {
+                $projectTypes = $data['project_type'];
+                $saveClientJob->projectTypes()->attach($projectTypes, ['job_post_id' => $newlyCreatedJobId]);
+            }
+
+
 
             $this->saveJobPostingKeyWords($newlyCreatedJobId, $data['keywords']);
             $this->saveJobPostingTools($newlyCreatedJobId, $data['tools_used']);
-            $this->saveJobPostingProjectType($newlyCreatedJobId, $data['project_type']);
 
             Mail::to(config('services.app_config.app_mail'))->send(new adminJobNotify());
 
@@ -57,12 +63,12 @@ class JobService
         }
 
         // Insert data into the table
-        DB::table('tbljob_keywords')->insert($data);
+        DB::table('job_keywords')->insert($data);
     }
 
     public function getJobPostingKeyWords($jobPostingId): \Illuminate\Support\Collection
     {
-        return DB::table('tbljob_keywords')
+        return DB::table('job_keywords')
             ->select(['keywords']) // Specify the columns you want to include
             ->where('job_post_id', $jobPostingId)
             ->get();
@@ -81,13 +87,13 @@ class JobService
         }
 
         // Insert data into the table
-        DB::table('tbljob_posting_tools')->insert($data);
+        DB::table('job_tools')->insert($data);
     }
 
 
     public function getJobPostingTools($jobPostingId): \Illuminate\Support\Collection
     {
-        return DB::table('tbljob_posting_tools')
+        return DB::table('job_tools')
             ->select(['tools']) // Specify the columns you want to include
             ->where('job_post_id', $jobPostingId)
             ->get();
@@ -95,21 +101,6 @@ class JobService
 
 
 
-
-    public function saveJobPostingProjectType(int $jobPostingId, array $project_types): void
-    {
-        // Prepare data for insertion
-        $data = [];
-        foreach ($project_types as $project_type) {
-            $data[] = [
-                'job_post_id' => $jobPostingId,
-                'project_type' => $project_type,
-            ];
-        }
-
-        // Insert data into the table
-        DB::table('tbljob_posting_projecttype')->insert($data);
-    }
 
 
     public function getJobPostingProjectType($jobPostingId): \Illuminate\Support\Collection
@@ -174,7 +165,6 @@ class JobService
         $jobs->getCollection()->transform(function ($job) {
             $job->tools = $this->getJobPostingTools($job->id);
             $job->keywords = $this->getJobPostingKeyWords($job->id);
-            $job->project_type = $this->getJobPostingProjectType($job->id);
             return $job;
         });
 
@@ -202,7 +192,7 @@ class JobService
     private function updateJobKeywords(int $jobId, array $keywords): void
     {
         # Get the existing keywords for the job
-        $existingKeywords = DB::table('tbljob_keywords')->where('job_post_id', $jobId)->pluck('keywords')->toArray();
+        $existingKeywords = DB::table('job_keywords')->where('job_post_id', $jobId)->pluck('keywords')->toArray();
 
         # Find keywords to delete
         $keywordsToDelete = array_diff($existingKeywords, $keywords);
@@ -212,7 +202,7 @@ class JobService
 
         # Delete keywords that are no longer present
         if (!empty($keywordsToDelete)) {
-            DB::table('tbljob_keywords')->where('job_post_id', $jobId)->whereIn('keywords', $keywordsToDelete)->delete();
+            DB::table('job_keywords')->where('job_post_id', $jobId)->whereIn('keywords', $keywordsToDelete)->delete();
         }
 
         # Insert new keywords
@@ -224,7 +214,7 @@ class JobService
                     'keywords' => $keyword,
                 ];
             }
-            DB::table('tbljob_keywords')->insert($data);
+            DB::table('job_keywords')->insert($data);
         }
     }
 
@@ -232,7 +222,7 @@ class JobService
     private function updateJobTools(int $jobId, array $tools):void
     {
         # Get the existing tools for the job
-        $existingTools = DB::table('tbljob_posting_tools')->where('job_post_id', $jobId)->pluck('tools')->toArray();
+        $existingTools = DB::table('job_tools')->where('job_post_id', $jobId)->pluck('tools')->toArray();
 
         # Find tools to delete
         $toolsToDelete = array_diff($existingTools, $tools);
@@ -242,7 +232,7 @@ class JobService
 
         # Delete tools that are no longer present
         if (!empty($toolsToDelete)) {
-            DB::table('tbljob_posting_tools')->where('job_post_id', $jobId)->whereIn('tools', $toolsToDelete)->delete();
+            DB::table('job_tools')->where('job_post_id', $jobId)->whereIn('tools', $toolsToDelete)->delete();
         }
 
         # Insert new tools
@@ -254,7 +244,7 @@ class JobService
                     'tools' => $tool,
                 ];
             }
-            DB::table('tbljob_posting_tools')->insert($data);
+            DB::table('job_tools')->insert($data);
         }
     }
 

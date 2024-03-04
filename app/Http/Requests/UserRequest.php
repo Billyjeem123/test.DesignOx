@@ -29,7 +29,7 @@ class UserRequest extends FormRequest
                 return [
                     'fullname' => 'required|string|max:255',
                     'phone_number' => 'required|string|max:255',
-                    'email' => 'required|email|unique:tblusers',
+                    'email' => 'required|email|unique:users',
                     'password' => 'required|string|min:8',
                     'confirm_password' => 'required|string'
 

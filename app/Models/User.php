@@ -14,7 +14,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     public mixed $user_id;
-    protected $table = 'tblusers';
+    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
@@ -76,7 +76,7 @@ class User extends Authenticatable
      */
     public function roles(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Role::class, 'tbluser_role', 'user_id', 'role_id');
+        return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
     }
 
 

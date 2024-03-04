@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
 {
-    Schema::create('tbljob_posts', function (Blueprint $table) {
+    Schema::create('job_posts', function (Blueprint $table) {
         $table->id();
         $table->unsignedBigInteger('client_id');
         $table->string('project_desc');
@@ -27,7 +27,7 @@ return new class extends Migration
         $table->timestamp('work_start_time')->nullable(); // Timestamp for project start time
         $table->timestamp('work_end_time')->nullable(); // Timestamp for project end time
         $table->timestamps();
-        $table->foreign('client_id')->references('id')->on('tblusers');
+        $table->foreign('client_id')->references('id')->on('users');
     });
 }
 
@@ -39,6 +39,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbljob_posts');
+        Schema::dropIfExists('job_posts');
     }
 };

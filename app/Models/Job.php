@@ -17,11 +17,11 @@ class Job extends Model
 
 
     /**
-     * Get the tools associated with the job.
+     * Relationship: a job belongs to a user (client)
      */
-    public function jobTools()
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->hasMany(tbljob_tools::class);
+        return $this->belongsTo(User::class, 'client_id');
     }
 
     

@@ -1,0 +1,6 @@
+php artisan migrate:rollback --path=/database/migrations/2024_02_26_185437_create_job_tools_table.php
+to unmigrate  a specific file in migration
+
+2024_03_04_121800_create_job_type_tabe.php
+
+php artisan migrate:rollback --path=/database/migrations/2024_03_04_121800_create_job_type_tabe.php

@@ -27,20 +27,24 @@ class JobResource extends JsonResource
     public function toArray($request)
     {
         return $this->map(function ($job) {
-            $on_going = $job->on_going === 0 ? 'pending' : ($job->on_going === 1 ? 'approved' : 'finished');
+            $on_going = $job->on_going === 0 ? 'pending' : ($job->on_going === 1 ? 'on_going' : 'completed');
             return [
                 'job_post_id' => $job->id,
-                'usertoken' => $job->client_id ?? 0,
                 'project_desc' => $job->project_desc ?? null,
                 'project_budget' => $job->budget ?? 0,
                 'project_duration' => $job->duration ?? 0,
                 'experience_level' => $job->experience_level ?? 0,
                 'numbers_of_proposals' => $job->numbers_of_proposals ?? 0,
                 'project_link_attachment' => $job->project_link_attachment ?? 0,
+                'time_posted' => $job->created_at->diffForHumans(),
                 'on_going' => $on_going,
                 'project_tools' => $job->tools ?? [],
                 'project_keywords' => $job->keywords ?? [],
                 'project_type' => $job->project_type ?? null,
+                'user' => [
+                    'client_name' => $job->user->fullname ?? null,
+                    'current_location' => $job->user->country ?? null
+                ]
             ];
         });
     }

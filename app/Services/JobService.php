@@ -308,6 +308,107 @@ class JobService
     }
 
 
+    public function fetchAllJobs($filters = []): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    {
+        $query = Job::query()->orderByDesc('created_at'); # Newest first by default
+
+        if (isset($filters['on_going'])) {
+            $query->where('on_going', $filters['on_going']);
+        }
+
+        if (isset($filters['experience'])) {
+            $query->where('experience_level', $filters['experience']);
+        }
+
+        if (isset($filters['proposals'])) {
+            $this->applyProposalFiler($query, $filters['proposals']);
+        }
+
+        if (isset($filters['budget'])) {
+            $this->applyPriceFilter($query, $filters['budget']);
+        }
+
+        if (isset($filters['time_posted'])) {
+            $this->applyTimePostedFilter($query, $filters['time_posted']);
+        }
+
+        # Paginate the results
+        return $query->paginate(10);
+    }
+
+
+      private function applyProposalFiler($query, $proposals): void
+      {
+          if (isset($proposals)) {
+              switch ($proposals) {
+                  case '1-10':
+                      $query->whereBetween('numbers_of_proposals', [1, 10]);
+                      break;
+                  case '11-20':
+                      $query->whereBetween('numbers_of_proposals', [11, 20]);
+                      break;
+                  case '21-30':
+                      $query->whereBetween('numbers_of_proposals', [21, 30]);
+                      break;
+                  // If 'all' or unknown value is provided, don't apply proposal  filter
+                  default:
+                      break;
+              }
+          }
+
+      }
+
+    private function applyPriceFilter($query, $priceRange): void
+    {
+        if (isset($priceRange)) {
+            switch ($priceRange) {
+                case 'below_100':
+                    $query->where('budget', '<', 100);
+                    break;
+                case '100_500':
+                    $query->whereBetween('budget', [100, 500]);
+                    break;
+                case 'above_500':
+                    $query->where('budget', '>', 500);
+                    break;
+                // If 'all' or unknown value is provided, don't apply price filter
+                default:
+                    break;
+            }
+        }
+    }
+
+
+
+    # Helper method to apply time posted filter
+    private function applyTimePostedFilter($query, $timePosted): void
+    {
+        switch ($timePosted) {
+            case '7':
+                $query->whereDate('created_at', '>=', now()->subDays(7));
+                break;
+            case '14':
+                $query->whereDate('created_at', '>=', now()->subDays(14));
+                break;
+            case '24':
+                $query->where('created_at', '>=', now()->subHours(24));
+                break;
+            case '30':
+                $query->whereDate('created_at', '>=', now()->subDays(30));
+                break;
+            case '90':
+                $query->whereDate('created_at', '>=', now()->subMonths(3));
+                break;
+            // If 'all' or unknown value is provided, don't apply time filter
+            default:
+                break;
+        }
+
+    }
+
+
+
+
 
 
 }

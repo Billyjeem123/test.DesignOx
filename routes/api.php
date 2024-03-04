@@ -69,7 +69,7 @@ Route::prefix('talent')->group(function () {
     });
 
     Route::middleware(['auth:sanctum','talent'])->group(function () {
-        Route::get('get-all-jobs', [AuthController::class, 'googleRedirectTalent'])->name('talent.google.redirect');
+        Route::post('get-all-jobs', [JobController::class, 'getAllJobPosting'])->name('get.all.jobs.talent');
     });
 
 });

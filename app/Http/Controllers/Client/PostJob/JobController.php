@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Policies\JobPolicy;
 use App\Services\JobService;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
@@ -166,7 +167,28 @@ class JobController extends Controller
 
 
 
+    public function getAllJobPosting(Request $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $filter = $request->all();
 
+            $jobsByClient = $this->jobService->fetchAllJobs($filter);
+
+            if ($jobsByClient->isEmpty()) {
+                return Utility::outputData(false, "No results found", [], 404);
+            }
+
+
+            # Return paginated response
+            return  Utility::outputData(true, "All jobs fetched  successfully", new JobResource($jobsByClient), 200);
+
+        } catch (\PDOException $e) {
+            # Handle PDOException
+            return  Utility::outputData(false, "Unable to process request". $e->getMessage(), [], 400);
+        } catch (AuthorizationException $e) {
+            return  Utility::outputData(false, "Unauthorized access ",  $e->getMessage(), 404);
+        }
+    }
 
 
 

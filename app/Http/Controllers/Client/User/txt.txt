@@ -250,4 +250,28 @@ class AuthController extends Controller
             return Utility::outputData(false, 'Validation failed', [], 422);
         }
     }
+
+    public function fetchAllJobs($filters = []): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+        {
+            $query = Job::query()->orderByDesc('created_at'); # Newest first by default
+
+            if (isset($filters['on_going'])) {
+                $query->where('on_going', $filters['on_going']);
+            }
+
+            if (isset($filters['experience'])) {
+                $query->where('experience_level', $filters['experience']);
+            }
+
+            if (isset($filters['proposals'])) {
+                $query->where('number_of_proposals', $filters['proposals']);
+            }
+
+            if (isset($filters['time_posted'])) {
+                $this->applyTimePostedFilter($query, $filters['time_posted']);
+            }
+
+            # Paginate the results
+            return $query->paginate(10);
+        }
 }

@@ -80,23 +80,11 @@ class User extends Authenticatable
     }
 
 
-     /**
-     * The sanctum token that belong to the user.
-     * #U
-     */
-
-    public function accessToken()
-    {
-        return $this->morphMany(PersonalAccessToken::class, 'tokenable');
-    }
  /**
-     * The fetches current token associated with the user
+     * A user[client] has many jobs
      */
-    public function getCurrentToken()
+    public function jobs(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        // Retrieve the latest access token associated with the user
-        $latestAccessToken = $this->accessToken()->latest()->first();
-
-        return $latestAccessToken;
+        return $this->hasMany(Job::class);
     }
 }

@@ -12,7 +12,7 @@ use PhpParser\Node\NullableType;
 
 class JobService
 {
-    public function processClientJob(array $data)
+    public function processClientJob(array $data): \Illuminate\Http\JsonResponse
     {
         try {
             #   Process client jobs postings..
@@ -32,7 +32,7 @@ class JobService
             # Save project types (job types) using attach()
             if (isset($data['project_type'])) {
                 $projectTypes = $data['project_type'];
-                $saveClientJob->projectTypes()->attach($projectTypes, ['job_post_id' => $newlyCreatedJobId]);
+                $saveClientJob->job_type()->attach($projectTypes, ['job_post_id' => $newlyCreatedJobId]);
             }
 
 
@@ -101,16 +101,6 @@ class JobService
 
 
 
-
-
-    public function getJobPostingProjectType($jobPostingId): \Illuminate\Support\Collection
-    {
-        return DB::table('tbljob_posting_projecttype')
-            ->select(['project_type']) # Specify the columns you want to include
-            ->where('job_post_id', $jobPostingId)
-            ->get();
-    }
-
     public function fetchJobsByClient($clientId, $onGoing)
     {
         $query = Job::where('client_id', $clientId);
@@ -132,17 +122,18 @@ class JobService
             ->where('id', $jobId)
             ->first();
 
-        if (!$job) {
-            return null; # Or handle the case where the job is not found
+        if(!$job){
+            return Utility::outputData(false, "Job not found", [], 404);
         }
+
 
         # Load additional data
         $tools = $this->getJobPostingTools($job->id);
         $keywords = $this->getJobPostingKeyWords($job->id);
-        $projectType = $this->getJobPostingProjectType($job->id);
+        $projectType   =  $job->job_type()->pluck('job_type.project_type')->toArray();
 
         # Return both the job data and additional data as an array
-        return [
+        $jobById =  [
             'job' => [
                 'job_post_id' => $job->id,
                 'usertoken' => $job->client_id ?? 0,
@@ -152,12 +143,14 @@ class JobService
                 'experience_level' => $job->experience_level ?? 0,
                 'numbers_of_proposals' => $job->numbers_of_proposals ?? 0,
                 'project_link_attachment' => $job->project_link_attachment ?? 0,
-                'on_going' => $job->on_going === 0 ? 'pending' : ($job->on_going === 1 ? 'approved' : 'finished'),
+                'on_going' => $job->on_going === 0 ? 'pending' : ($job->on_going === 1 ? 'on_going' : 'completed'),
             ],
             'tools' => $tools,
             'keywords' => $keywords,
             'project_type' => $projectType,
         ];
+
+        return  Utility::outputData(true, "Job fetched successfully", ($jobById), 200);
     }
 
     public function transformJobData($jobs)
@@ -171,16 +164,26 @@ class JobService
         return $jobs->getCollection();
     }
 
-    public function updateJob(int $jobId, array $data, array $keywords, array $tools, array $project_tools)
+    public function updateJob(int $jobId, array $data, array $keywords, array $tools, array $project_tools): \Illuminate\Http\JsonResponse
     {
         try {
             # Update job details
-            Job::where('id', $jobId)->update($data);
+            $affectedRows = Job::where('id', $jobId)->update($data);
 
-            # Update keywords
+            # Check if any rows were affected
+            if ($affectedRows === 0) {
+                return Utility::outputData(false, "Job not found or no changes were made", [], 404);
+            }
+
+            # Retrieve the updated job instance
+            $job = Job::findOrFail($jobId);
+
+            # Update keywords and tools
             $this->updateJobKeywords($jobId, $keywords);
-             $this->updateJobTools($jobId, $tools);
-            $this->updateJobProjectType($jobId, $project_tools);
+            $this->updateJobTools($jobId, $tools);
+
+            # Sync project types
+            $job->job_type()->sync($project_tools);
 
             return Utility::outputData(true, "Job updated successfully", [], 200);
 
@@ -188,6 +191,7 @@ class JobService
             throw new \Exception('An error occurred while updating job and keywords: ' . $e->getMessage());
         }
     }
+
 
     private function updateJobKeywords(int $jobId, array $keywords): void
     {
@@ -248,37 +252,6 @@ class JobService
         }
     }
 
-
-
-    private function updateJobProjectType(int $jobId, array $project_type): void
-    {
-        # Get the existing project types for the job
-        $existingProjectTypes = DB::table('tbljob_posting_projecttype')->where('job_post_id', $jobId)->pluck('project_type')->toArray();
-
-        # Find project types to delete
-        $projectTypesToDelete = array_diff($existingProjectTypes, $project_type);
-
-        # Find project types to insert
-        $projectTypesToInsert = array_diff($project_type, $existingProjectTypes);
-
-        # Delete project types that are no longer present
-        if (!empty($projectTypesToDelete)) {
-            DB::table('tbljob_posting_projecttype')->where('job_post_id', $jobId)->whereIn('project_type', $projectTypesToDelete)->delete();
-        }
-
-        # Insert new project types
-        if (!empty($projectTypesToInsert)) {
-            $data = [];
-            foreach ($projectTypesToInsert as $project) {
-                $data[] = [
-                    'job_post_id' => $jobId,
-                    'project_type' => $project,
-                ];
-            }
-            DB::table('tbljob_posting_projecttype')->insert($data);
-        }
-    }
-
     public function deleteJob(int $jobId): \Illuminate\Http\JsonResponse
     {
         try {
@@ -306,28 +279,41 @@ class JobService
             $query->where('on_going', $filters['on_going']);
         }
 
-        if (isset($filters['experience'])) {
-            $query->where('experience_level', $filters['experience']);
+        if (isset($filters['experience_level'])) {
+            $query->where('experience_level', $filters['experience_level']);
         }
 
-        if (isset($filters['proposals'])) {
-            $this->applyProposalFiler($query, $filters['proposals']);
+        if (isset($filters['numbers_of_proposals'])) {
+            $this->applyProposalFiler($query, $filters['numbers_of_proposals']);
         }
 
-        if (isset($filters['budget'])) {
-            $this->applyPriceFilter($query, $filters['budget']);
+        if (isset($filters['project_budget'])) {
+            $this->applyPriceFilter($query, $filters['project_budget']);
         }
 
         if (isset($filters['time_posted'])) {
             $this->applyTimePostedFilter($query, $filters['time_posted']);
         }
 
+        if (isset($filters['project_type'])) {
+            $this->applyProjectTypeFilter($query, $filters['project_type']);
+        }
+
         # Paginate the results
         return $query->paginate(10);
     }
 
+    private function applyProjectTypeFilter($query, $projectTypeId): void
+    {
+        $query->whereHas('job_type', function ($subQuery) use ($projectTypeId) {
+            $subQuery->where('job_type_id', $projectTypeId);
+        });
+    }
 
-      private function applyProposalFiler($query, $proposals): void
+
+
+
+    private function applyProposalFiler($query, $proposals): void
       {
           if (isset($proposals)) {
               switch ($proposals) {
@@ -394,6 +380,32 @@ class JobService
                 break;
         }
 
+    }
+
+    public function saveJob(int $jobPostingId, int $usertoken): \Illuminate\Http\JsonResponse
+    {
+        # Check if the user token already exists in the save_jobs table
+        $existingRecord = DB::table('save_jobs')
+            ->where('job_post_id', $jobPostingId)
+            ->where('user_id', $usertoken)
+            ->exists();
+
+        if ($existingRecord) {
+            return Utility::outputData(false, "Job already saved for this user", [], 400);
+        }
+
+        # Prepare data for insertion
+        $data =  [
+            'job_post_id' => $jobPostingId,
+            'user_id' => $usertoken,
+        ];
+
+        # Insert data into the table
+        if (!empty($data)) {
+            DB::table('save_jobs')->insert($data);
+        }
+
+        return Utility::outputData(true, "Job saved successfully", [], 201);
     }
 
 

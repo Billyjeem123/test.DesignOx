@@ -70,6 +70,7 @@ Route::prefix('talent')->group(function () {
 
     Route::middleware(['auth:sanctum','talent'])->group(function () {
         Route::post('get-all-jobs', [JobController::class, 'getAllJobPosting'])->name('get.all.jobs.talent');
+        Route::post('save-job', [JobController::class, 'saveJob'])->name('save.job');
     });
 
 });

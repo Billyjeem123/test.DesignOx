@@ -99,14 +99,8 @@ class JobController extends Controller
     {
         try {
             $user = auth('api')->user();
-            $job = $this->jobService->fetchJobById($user->id, $jobId);
+            return $this->jobService->fetchJobById($user->id, $jobId);
 
-            if (!$job) {
-                return Utility::outputData(false, "Job not found", [], 404);
-            }
-
-
-            return  Utility::outputData(true, "Job fetched successfully", ($job), 200);
         } catch (\PDOException $e) {
             return  Utility::outputData(false, "Unable to process request: " . $e->getMessage(), [], 400);
         }
@@ -114,14 +108,11 @@ class JobController extends Controller
 
 
 
-    public function updateJobById(JobRequest $request, $jobId)
+    public function updateJobById(JobRequest $request, $jobId): \Illuminate\Http\JsonResponse
     {
         try {
             $validatedData = $request->validated();
             $user = auth('api')->user();
-
-
-
             $data = [
                 'client_id' =>$user->id,
                 'project_desc' => $validatedData['project_desc'],
@@ -181,6 +172,22 @@ class JobController extends Controller
 
             # Return paginated response
             return  Utility::outputData(true, "All jobs fetched  successfully", new JobResource($jobsByClient), 200);
+
+        } catch (\PDOException $e) {
+            # Handle PDOException
+            return  Utility::outputData(false, "Unable to process request". $e->getMessage(), [], 400);
+        } catch (AuthorizationException $e) {
+            return  Utility::outputData(false, "Unauthorized access ",  $e->getMessage(), 404);
+        }
+    }
+
+    public function saveJob(JobRequest $requests): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $validatedData = $requests->validated();
+            $auth = Auth::user();
+
+            return $this->jobService->saveJob($validatedData['job_post_id'], $auth->id);
 
         } catch (\PDOException $e) {
             # Handle PDOException

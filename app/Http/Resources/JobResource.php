@@ -24,7 +24,7 @@ class JobResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public function toArray($request)
+    public function toArray($request): array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable
     {
         return $this->map(function ($job) {
             $on_going = $job->on_going === 0 ? 'pending' : ($job->on_going === 1 ? 'on_going' : 'completed');
@@ -40,7 +40,7 @@ class JobResource extends JsonResource
                 'on_going' => $on_going,
                 'project_tools' => $job->tools ?? [],
                 'project_keywords' => $job->keywords ?? [],
-                'project_types' => $job->projectTypes()->pluck('job_type.project_type')->toArray(),
+                'project_types' => $job->job_type()->pluck('job_type.project_type')->toArray(),
                 'user' => [
                     'client_name' => $job->user->fullname ?? null,
                     'current_location' => $job->user->country ?? null

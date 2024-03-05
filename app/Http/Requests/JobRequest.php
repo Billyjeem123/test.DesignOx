@@ -43,6 +43,11 @@ class JobRequest extends FormRequest
                     'job_post_id' => 'required'
                 ];
 
+            case 'saveJob':
+                return [
+                    'job_post_id' => 'required'
+                ];
+
             case 'updateJobById':
                 return [
                     'project_desc' => ['required', 'string', 'max:255'],

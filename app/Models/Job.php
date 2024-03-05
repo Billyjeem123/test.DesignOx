@@ -28,14 +28,10 @@ class Job extends Model
      * Relationship: a job has many Job_types
      */
 
-    public function projectTypes()
+    public function job_type()
     {
-        return $this->belongsToMany(
-            JobType::class,
-            'tbljob_post_types as tpe',
-            'tpe.job_post_id',
-            'tpe.job_type_id'
-        );
+        return $this->belongsToMany(JobType::class, 'job_type_job_post', 'job_post_id', 'job_type_id');
+
 
     }
 

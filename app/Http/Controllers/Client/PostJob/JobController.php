@@ -229,10 +229,7 @@ class JobController extends Controller
     }
 
 
-    public function sendClientProposal(Request $request)
-    {
 
-    }
 
 
 

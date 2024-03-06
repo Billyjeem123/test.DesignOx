@@ -41,7 +41,7 @@ class JobController extends Controller
             $data = [
                 'client_id' => $user->id,
                 'project_desc' => $validatedData['project_desc'],
-                'project_type' => $validatedData['project_type'],
+                'project_title' => $validatedData['project_title'],
                 'tools_used' => $validatedData['tools_used'],
                 'budget' => $validatedData['budget'],
                 'duration' => $validatedData['duration'],
@@ -116,6 +116,7 @@ class JobController extends Controller
             $data = [
                 'client_id' =>$user->id,
                 'project_desc' => $validatedData['project_desc'],
+                'project_title' => $validatedData['project_title'],
                 'budget' => $validatedData['budget'],
                 'duration' => $validatedData['duration'],
                 'experience_level' => $validatedData['experience_level'],
@@ -171,7 +172,8 @@ class JobController extends Controller
 
 
             # Return paginated response
-            return  Utility::outputData(true, "All jobs fetched  successfully", new JobResource($jobsByClient), 200);
+            return  Utility::outputData(true, "All jobs fetched  successfully", (new JobResource($jobsByClient))->toArrayWithMinimalData()
+                , 200);
 
         } catch (\PDOException $e) {
             # Handle PDOException
@@ -196,6 +198,43 @@ class JobController extends Controller
             return  Utility::outputData(false, "Unauthorized access ",  $e->getMessage(), 404);
         }
     }
+
+
+    public function viewRelatedJobs($clickedJobId): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $clickedJob = Job::find($clickedJobId);
+
+            $relatedJobs = $this->jobService->viewRelatedJobs($clickedJob);
+
+            return Utility::outputData(true, "Related jobs fetched successfully", new JobResource($relatedJobs), 200);
+        } catch (\PDOException $e) {
+            // Handle PDOException
+            return Utility::outputData(false, "Unable to process request: " . $e->getMessage(), [], 400);
+        } catch (\Exception $e) {
+            // Handle other exceptions
+            return Utility::outputData(false, "An error occurred: " . $e->getMessage(), [], 500);
+        }
+    }
+
+    public function getSpecificJobById(int $jobId): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $user = auth('api')->user();
+            return $this->jobService->getSpecificJobById($jobId);
+
+        } catch (\PDOException $e) {
+            return  Utility::outputData(false, "Unable to process request: " . $e->getMessage(), [], 400);
+        }
+    }
+
+
+    public function sendClientProposal(Request $request)
+    {
+
+    }
+
+
 
 
 

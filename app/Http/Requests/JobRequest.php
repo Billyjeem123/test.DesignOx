@@ -12,7 +12,7 @@ class JobRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -28,6 +28,7 @@ class JobRequest extends FormRequest
             case 'createJob':
                 return [
                     'project_desc' => ['required', 'string', 'max:255'],
+                    'project_title' => ['required', 'string', 'max:255'],
                     'project_type' => ['required', new ArrayValidation()],
                     'tools_used' => ['required', new ArrayValidation()],
                     'keywords' => ['required', new ArrayValidation()],
@@ -51,6 +52,7 @@ class JobRequest extends FormRequest
             case 'updateJobById':
                 return [
                     'project_desc' => ['required', 'string', 'max:255'],
+                    'project_title' => ['required', 'string', 'max:255'],
                     'project_type' => ['required', new ArrayValidation()],
                     'tools_used' => ['required', new ArrayValidation()],
                     'keywords' => ['required', new ArrayValidation()],

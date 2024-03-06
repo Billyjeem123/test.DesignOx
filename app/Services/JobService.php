@@ -4,6 +4,7 @@ use App\Helpers\Utility;
 use App\Mail\adminJobNotify;
 use App\Models\Job;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -20,6 +21,7 @@ class JobService
             $saveClientJob = Job::create([
                 'client_id' => $data['client_id'],
                 'project_desc' => $data['project_desc'],
+                'project_title' => $data['project_title'],
                 'budget' => $data['budget'],
                 'duration' => $data['duration'],
                 'experience_level' => $data['experience_level'],
@@ -126,6 +128,9 @@ class JobService
             return Utility::outputData(false, "Job not found", [], 404);
         }
 
+        # Update view count and last viewed timestamp
+        $this->viewJob($job);
+
 
         # Load additional data
         $tools = $this->getJobPostingTools($job->id);
@@ -138,8 +143,12 @@ class JobService
                 'job_post_id' => $job->id,
                 'usertoken' => $job->client_id ?? 0,
                 'project_desc' => $job->project_desc ?? null,
+                'project_title' => $job->project_title ?? null,
                 'project_budget' => $job->budget ?? 0,
                 'project_duration' => $job->duration ?? 0,
+                'views' => $job->view_count,
+                'last_viewed' => $job->last_viewed_at->diffForHumans(),
+                'date_posted' => $job->created_at->diffForHumans(),
                 'experience_level' => $job->experience_level ?? 0,
                 'numbers_of_proposals' => $job->numbers_of_proposals ?? 0,
                 'project_link_attachment' => $job->project_link_attachment ?? 0,
@@ -151,6 +160,16 @@ class JobService
         ];
 
         return  Utility::outputData(true, "Job fetched successfully", ($jobById), 200);
+    }
+
+    public function viewJob(Job $job): void
+    {
+        // Update view count
+        $job->increment('view_count');
+
+        // Update last viewed timestamp
+        $job->update(['last_viewed_at' => Carbon::now()]);
+
     }
 
     public function transformJobData($jobs)
@@ -409,6 +428,90 @@ class JobService
     }
 
 
+
+    public function viewRelatedJobs($clickedJob)
+    {
+        try {
+            // Initialize an empty array to store related jobs
+            $relatedJobs = collect();
+
+            // Get all project types associated with the clicked job
+            $projectTypes = $clickedJob->job_type()->pluck('id');
+
+            // Loop through each project type
+            foreach ($projectTypes as $projectTypeId) {
+                # Find related jobs with the same project type, excluding the clicked job
+                $related = Job::where('id', '!=', $clickedJob->id)
+                    ->whereHas('job_type', function ($query) use ($projectTypeId) {
+                        $query->where('id', $projectTypeId);
+                    })
+                    ->inRandomOrder()
+                    ->limit(5)
+                    ->get();
+
+                // Add the related jobs to the collection
+                $relatedJobs = $relatedJobs->concat($related);
+            }
+
+            // If no related jobs are found, fetch random jobs from the database
+            if ($relatedJobs->isEmpty()) {
+                // Fetch random jobs from the database
+                return  Job::inRandomOrder()
+                    ->limit(5)
+                    ->get();
+
+
+            }
+
+            return $relatedJobs->unique('id')->take(5); // Limit to unique jobs and take 5
+        } catch (\Exception $e) {
+            // Handle any exceptions
+            throw $e;
+        }
+    }
+
+
+    public function getSpecificJobById($jobId): \Illuminate\Http\JsonResponse
+    {
+        $job = Job::where('id', $jobId)
+            ->first();
+
+        if(!$job){
+            return Utility::outputData(false, "Job not found", [], 404);
+        }
+
+        # Update view count and last viewed timestamp
+        $this->viewJob($job);
+
+
+        # Load additional data
+        $tools = $this->getJobPostingTools($job->id);
+        $keywords = $this->getJobPostingKeyWords($job->id);
+        $projectType   =  $job->job_type()->pluck('job_type.project_type')->toArray();
+
+        # Return both the job data and additional data as an array
+        $jobById =  [
+            'job' => [
+                'job_post_id' => $job->id,
+                'usertoken' => $job->client_id ?? 0,
+                'project_desc' => $job->project_desc ?? null,
+                'project_budget' => $job->budget ?? 0,
+                'project_duration' => $job->duration ?? 0,
+                'views' => $job->view_count,
+                'last_viewed' => $job->last_viewed_at->diffForHumans(),
+                'date_posted' => $job->created_at->diffForHumans(),
+                'experience_level' => $job->experience_level ?? 0,
+                'numbers_of_proposals' => $job->numbers_of_proposals ?? 0,
+                'project_link_attachment' => $job->project_link_attachment ?? 0,
+                'on_going' => $job->on_going === 0 ? 'pending' : ($job->on_going === 1 ? 'on_going' : 'completed'),
+            ],
+            'tools' => $tools,
+            'keywords' => $keywords,
+            'project_type' => $projectType,
+        ];
+
+        return  Utility::outputData(true, "Job fetched successfully", ($jobById), 200);
+    }
 
 
 

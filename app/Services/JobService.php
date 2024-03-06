@@ -48,7 +48,7 @@ class JobService
 
         } catch (\Exception $e) {
             #   Handle exceptions
-            return Utility::outputData(false, 'An error occurred while processing job posting.' . $e->getMessage(), [], 500);
+            return Utility::outputData(false, 'An error occurred while processing job posting.' . $e->getMessage(), Utility::getExceptionDetails($e), 500);
         }
     }
 

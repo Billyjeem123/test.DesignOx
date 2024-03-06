@@ -42,8 +42,14 @@ class Job extends Model
 
 
     }
+    /**
+     * Relationship: a job has many proposals
+     */
 
-
+    public function proposals(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Proposal::class, 'job_post_id');
+    }
 
 
 

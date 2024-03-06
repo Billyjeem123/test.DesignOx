@@ -26,9 +26,8 @@ class ProposalRequest extends FormRequest
         switch ($this->route()->getActionMethod()) {
             case 'sendClientProposal':
                 return [
-                    'client_id' => ['required', 'string', 'max:255'],
-                    'job_post_id' => ['required', 'string', 'max:255'],
-                    'cover_letter' => ['required', 'integer', 'min:1'],
+                    'job_post_id' => ['required', 'integer', 'max:255'],
+                    'cover_letter' => ['required', 'string', 'min:1'],
                     'attachment' => ['required', 'url', 'max:255'],
                     'preferred_date' => ['required', 'string', 'max:255'],
 

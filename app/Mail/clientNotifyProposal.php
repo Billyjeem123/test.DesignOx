@@ -13,14 +13,16 @@ class clientNotifyProposal extends Mailable
 {
     use Queueable, SerializesModels;
 
+    private array $credential;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(array $credential)
     {
-        //
+        $this->credential = $credential;
     }
 
     /**
@@ -28,10 +30,10 @@ class clientNotifyProposal extends Mailable
      *
      * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function envelope()
+    public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Client Notify Proposal',
+            subject: 'New Proposal Received for  ' . $this->credential['project_title']
         );
     }
 
@@ -40,10 +42,10 @@ class clientNotifyProposal extends Mailable
      *
      * @return \Illuminate\Mail\Mailables\Content
      */
-    public function content()
+    public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'email.clientProposalNotify',
         );
     }
 
@@ -55,5 +57,12 @@ class clientNotifyProposal extends Mailable
     public function attachments()
     {
         return [];
+    }
+
+    public function build()
+    {
+        return $this->subject('New Proposal Received for [' . $this->credential['project_title'] . ']')
+        ->view('email.clientProposalNotify')
+            ->with('credential', $this->credential);
     }
 }

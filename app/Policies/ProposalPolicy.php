@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Proposal;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -36,4 +37,11 @@ class ProposalPolicy
         #  If the user has the 'client' role, allow access
         return true;
     }
+
+    public function delete(User $user, Proposal $proposal): bool
+    {
+        # Check if the user is the owner of the proposal
+        return $user->id == $proposal->talent_id;
+    }
+
 }

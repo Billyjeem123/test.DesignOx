@@ -66,5 +66,14 @@ class Utility
         return $endDate;
     }
 
+    public static function getExceptionDetails(\Exception $e): array
+    {
+        return [
+            'line' => $e->getLine(),
+            'file' => $e->getFile(),
+            'code' => $e->getCode(),
+        ];
+    }
+
 
 }

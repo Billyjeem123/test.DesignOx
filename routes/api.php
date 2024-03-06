@@ -3,6 +3,7 @@
 use App\Http\Controllers\Client\PostJob\JobController;
 use App\Http\Controllers\Client\User\AuthController;
 use App\Http\Controllers\Role\RoleController;
+use App\Http\Controllers\Talent\Proposal\ProposalController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
@@ -60,20 +61,20 @@ Route::prefix('client')->group(function () {
 
 });
 
-#Talent Endpoint
+#Talent Endpoint[Registration]
 Route::prefix('talent')->group(function () {
     # Talent authorization Endpoint
     Route::prefix('auth')->group(function () {
-        Route::get('google-signup', [AuthController::class, 'googleRedirectTalent'])->name('talent.google.redirect');
+        Route::get('/google-signup', [AuthController::class, 'googleRedirectTalent'])->name('talent.google.redirect');
 
     });
-
+#Talent Endpoint[PROPOSAL, GET JOBS, SAVE JOBS]
     Route::middleware(['auth:sanctum','talent'])->group(function () {
         Route::post('get-all-jobs', [JobController::class, 'getAllJobPosting'])->name('get.all.jobs.talent');
         Route::get('/get-job-by-id/{job_post_id}', [JobController::class, 'getSpecificJobById'])->name('talent.view_job');
         Route::get('get-related-jobs/{job_post_id}', [JobController::class, 'viewRelatedJobs'])->name('get.related.jobs');
         Route::post('/save-job', [JobController::class, 'saveJob'])->name('save.job');
-        Route::post('/send-proposal', [JobController::class, 'sendClientProposal'])->name('proposal.send');
+        Route::post('/send-proposal', [ProposalController::class, 'sendClientProposal'])->name('proposal.send');
 
 
     });

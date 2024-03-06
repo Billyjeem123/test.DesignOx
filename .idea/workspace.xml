@@ -5,16 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="861e98c6-30f6-4f11-b5ad-92d992e44a28" name="Changes" comment="initialized new repo for desingOx">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Services/ProposalService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Client/PostJob/JobController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Client/PostJob/JobController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/JobRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/JobRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Resources/JobResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Resources/JobResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Job.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Job.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Services/JobService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/JobService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learnt.txt" beforeDir="false" afterPath="$PROJECT_DIR$/learnt.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Talent/Proposal/ProposalController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Talent/Proposal/ProposalController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Proposal.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Proposal.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/services.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/logs/laravel.log" beforeDir="false" afterPath="$PROJECT_DIR$/storage/logs/laravel.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -269,6 +266,9 @@
       <workItem from="1709568990723" duration="12380000" />
       <workItem from="1709618799801" duration="13329000" />
       <workItem from="1709649135731" duration="3192000" />
+      <workItem from="1709703803374" duration="3413000" />
+      <workItem from="1709709483828" duration="2060000" />
+      <workItem from="1709711854185" duration="2419000" />
     </task>
     <task id="LOCAL-00001" summary="initialized new repo for desingOx">
       <option name="closed" value="true" />

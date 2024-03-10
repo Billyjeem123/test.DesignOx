@@ -5,19 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="861e98c6-30f6-4f11-b5ad-92d992e44a28" name="Changes" comment="initialized new repo for desingOx">
-      <change afterPath="$PROJECT_DIR$/resources/views/email/clientProposalNotify.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Helpers/Utility.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Helpers/Utility.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Talent/Proposal/ProposalController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Talent/Proposal/ProposalController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/ProposalRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/ProposalRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Mail/clientNotifyProposal.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Mail/clientNotifyProposal.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Job.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Job.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Proposal.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Proposal.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Policies/ProposalPolicy.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Policies/ProposalPolicy.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Providers/AuthServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/AuthServiceProvider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Services/JobService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/JobService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Services/ProposalService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/ProposalService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Services/UserService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/UserService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/queue.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/queue.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/logs/laravel.log" beforeDir="false" afterPath="$PROJECT_DIR$/storage/logs/laravel.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -275,6 +272,12 @@
       <workItem from="1709703803374" duration="3413000" />
       <workItem from="1709709483828" duration="2060000" />
       <workItem from="1709711854185" duration="14798000" />
+      <workItem from="1709740577085" duration="1999000" />
+      <workItem from="1709795533703" duration="1678000" />
+      <workItem from="1709826186317" duration="81000" />
+      <workItem from="1709827179786" duration="638000" />
+      <workItem from="1709992024737" duration="2505000" />
+      <workItem from="1710003313168" duration="4565000" />
     </task>
     <task id="LOCAL-00001" summary="initialized new repo for desingOx">
       <option name="closed" value="true" />
@@ -347,7 +350,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/Helpers/Utility.php</url>
-          <line>37</line>
+          <line>24</line>
           <properties>
             <option name="className" value="\App\Helpers\Utility" />
             <option name="methodName" value="calculateEndDate" />
@@ -356,7 +359,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php</url>
-          <line>30</line>
+          <line>31</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\Client\User\AuthController" />
             <option name="methodName" value="register" />
@@ -374,7 +377,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php</url>
-          <line>191</line>
+          <line>194</line>
           <properties>
             <option name="className" value="\App\Http\Controllers\Client\User\AuthController" />
             <option name="methodName" value="disableSecurityQuestion" />

@@ -16,19 +16,6 @@ class Utility
         ], $statusCode);
     }
 
-
-    public static function outputResult($boolean, $message, $data = null, $access_token)
-    {
-        return response()->json([
-            'status' => $boolean,
-            'message' => $message,
-            'data' => $data,
-            'access_token' => $access_token
-        ]);
-    }
-
-    
-
     public static function token()
     {
         return mt_rand(100000, 999999);

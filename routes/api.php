@@ -50,6 +50,7 @@ Route::prefix('client')->group(function () {
         Route::get('/get-job-by-id/{job_post_id}', [JobController::class, 'getJobById'])->name('client.view_job');
         Route::patch('/update-job-by-id/{job_post_id}', [JobController::class, 'updateJobById'])->name('client.update_job');
         Route::delete('/delete-job-by-id', [JobController::class, 'deleteJobById'])->name('client.delete_job');
+        Route::get('/get-job-proposal/{job_post_id}', [ProposalController::class, 'getJobProposal'])->name('proposal.get');
         # Profile Endpoint...
  
         Route::prefix('profile')->group(function () {
@@ -57,6 +58,8 @@ Route::prefix('client')->group(function () {
             Route::post('/set-security-question', [AuthController::class, 'enableSecurityQuestion'])->name('security.set');
             Route::patch('/manage-security-question', [AuthController::class, 'manageSecurityQuestion'])->name('security.manage');
         });
+
+
     });
 
 });

@@ -6,6 +6,7 @@ use App\Helpers\Utility;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
+use App\Jobs\authJob;
 use App\Mail\forgetPassword;
 use App\Mail\WelcomeEmail;
 use App\Models\User;
@@ -38,7 +39,9 @@ class AuthController extends Controller
             $user = $this->userService->registerUser($validatedData);
 
             # Send email verification notification
-            Mail::to($validatedData['email'])->send(new WelcomeEmail($validatedData['fullname']));
+//            Mail::to($validatedData['email'])->send(new WelcomeEmail($validatedData['fullname']));
+            # Dispatch the job to send welcome email asynchronously
+            authJob::dispatch($validatedData['email'], $validatedData['fullname'])->onQueue('emails');
 
             return Utility::outputData(true, 'User created successfully.', new UserResource($user), 201);
         } catch (ValidationException $e) {

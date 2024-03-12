@@ -41,7 +41,7 @@ class AuthController extends Controller
             # Send email verification notification
 //            Mail::to($validatedData['email'])->send(new WelcomeEmail($validatedData['fullname']));
             # Dispatch the job to send welcome email asynchronously
-            authJob::dispatch($validatedData['email'], $validatedData['fullname'])->onQueue('emails');
+            authJob::dispatch($validatedData['fullname'], $validatedData['fullname']);
 
             return Utility::outputData(true, 'User created successfully.', new UserResource($user), 201);
         } catch (ValidationException $e) {

@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="861e98c6-30f6-4f11-b5ad-92d992e44a28" name="Changes" comment="initialized new repo for desingOx">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Services/UserService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/UserService.php" afterDir="false" />
-    </list>
+    <list default="true" id="861e98c6-30f6-4f11-b5ad-92d992e44a28" name="Changes" comment="initialized new repo for desingOx" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -270,6 +267,9 @@
       <workItem from="1709827179786" duration="638000" />
       <workItem from="1709992024737" duration="2505000" />
       <workItem from="1710003313168" duration="7611000" />
+      <workItem from="1710194174004" duration="5436000" />
+      <workItem from="1710229818954" duration="737000" />
+      <workItem from="1710251006215" duration="714000" />
     </task>
     <task id="LOCAL-00001" summary="initialized new repo for desingOx">
       <option name="closed" value="true" />
@@ -350,15 +350,6 @@
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
-          <url>file://$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php</url>
-          <line>31</line>
-          <properties>
-            <option name="className" value="\App\Http\Controllers\Client\User\AuthController" />
-            <option name="methodName" value="register" />
-          </properties>
-          <option name="timeStamp" value="14" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/Services/JobService.php</url>
           <line>79</line>
           <properties>
@@ -366,15 +357,6 @@
             <option name="methodName" value="saveJobPostingTools" />
           </properties>
           <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php-line-method">
-          <url>file://$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php</url>
-          <line>194</line>
-          <properties>
-            <option name="className" value="\App\Http\Controllers\Client\User\AuthController" />
-            <option name="methodName" value="disableSecurityQuestion" />
-          </properties>
-          <option name="timeStamp" value="33" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/Http/Controllers/Client/PostJob/JobController.php</url>
@@ -411,11 +393,6 @@
             <option name="methodName" value="rules" />
           </properties>
           <option name="timeStamp" value="41" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/app/Http/Controllers/Client/User/AuthController.php</url>
-          <line>4</line>
-          <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/routes/api.php</url>

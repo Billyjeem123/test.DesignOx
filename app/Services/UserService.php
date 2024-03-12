@@ -23,7 +23,7 @@ class UserService
 
         unset($userData['confirm_password']);
 
-        # Create user record with additional data
+        # Create user record with additional data now()->format('Y-m-d H:i:s')
         return User::create(array_merge($userData, ['otp' => $token, 'account_type' => 'local']));
     }
 

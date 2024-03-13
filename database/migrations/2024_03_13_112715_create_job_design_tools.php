@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('colors', function (Blueprint $table) {
+        Schema::create('job_design_tools', function (Blueprint $table) {
             $table->id();
-            $table->string('colors');
+            $table->unsignedBigInteger('job_design_id');
+            $table->string('tools');
+            $table->foreign('job_design_id')->references('id')->on('job_designs')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('colors');
+        Schema::dropIfExists('job_design_tools');
     }
 };

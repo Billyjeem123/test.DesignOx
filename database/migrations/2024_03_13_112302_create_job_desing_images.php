@@ -13,12 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('colors', function (Blueprint $table) {
+        Schema::create('job_design_images', function (Blueprint $table) {
             $table->id();
-            $table->string('colors');
+            $table->unsignedBigInteger('job_design_id');
+            $table->string('images');
+            $table->foreign('job_design_id')->references('id')->on('job_designs')->onDelete('cascade');
             $table->timestamps();
-        });
+        }, 'ENGINE=InnoDB');
     }
+
 
     /**
      * Reverse the migrations.
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('colors');
+        Schema::dropIfExists('job_desing_images');
     }
 };

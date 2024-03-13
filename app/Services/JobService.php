@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 use App\Helpers\Utility;
+use App\Http\Resources\JobResource;
 use App\Mail\adminJobNotify;
 use App\Models\Job;
 use App\Models\User;
@@ -513,6 +514,63 @@ class JobService
         return  Utility::outputData(true, "Job fetched successfully", ($jobById), 200);
     }
 
+
+
+    public function getSavedJobs($user): \Illuminate\Http\JsonResponse
+    {
+        # Fetch saved job records associated with the user
+        $savedJobs = DB::table('save_jobs')
+            ->where('user_id', $user->id)
+            ->get();
+
+        #  Check if no records are found
+        if ($savedJobs->isEmpty()) {
+            return Utility::outputData(false, 'No saved jobs found for the user.', [], 404);
+        }
+
+        # Collection to store job objects
+        $jobObjects = collect();
+
+        $savedJobs->each(function ($savedJob) use ($jobObjects) {
+            $jobPostId = $savedJob->job_post_id;
+
+            # Fetch job object for the job post id and add to jobObjects
+            $jobObject = Job::select('id', 'project_title', 'budget', 'created_at')
+                ->find($jobPostId);
+
+            if ($jobObject) {
+                $jobObjects->push($jobObject);
+            }
+        });
+
+        return Utility::outputData(true, 'Saved jobs fetched successfully.', (new JobResource($jobObjects))->toArraySavedJobs(), 200);
+    }
+
+
+
+
+
+    public function deleteSavedJob(int $jobId): \Illuminate\Http\JsonResponse
+    {
+        try {
+            # Delete job details
+            $affectedRows = DB::table('save_jobs')
+                ->where('job_post_id', $jobId)
+                ->where('user_id', auth()->user()->id)
+                ->delete();
+
+
+            if ($affectedRows === 0) {
+                # No job was found with the given ID
+                return Utility::outputData(false, "Job not found", [], 404);
+            }
+
+            return Utility::outputData(true, "Record deleted successfully", [], 200);
+
+        } catch (\Exception $e) {
+            throw new \Exception('An error occurred while deleting job and related data: ' . $e->getMessage());
+        }
+    }
 
 
 

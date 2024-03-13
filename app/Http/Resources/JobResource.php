@@ -114,6 +114,21 @@ class JobResource extends JsonResource
     }
 
 
+    public function toArraySavedJobs(): array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable
+    {
+        return $this->map(function ($job) {
+                return [
+                    'job_post_id' => $job->id,
+                    'project_title' => $job->project_title,
+                    'project_budget' => $job->budget ?? 0,
+                    'date_posted' => $job->created_at->diffForHumans()
+                ];
+            });
+    }
+
+
+
+
 
 
 

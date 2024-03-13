@@ -44,6 +44,11 @@ class JobRequest extends FormRequest
                     'job_post_id' => 'required'
                 ];
 
+            case 'deleteSavedJobs':
+                return [
+                    'job_post_id' => 'required'
+                ];
+
             case 'saveJob':
                 return [
                     'job_post_id' => 'required'

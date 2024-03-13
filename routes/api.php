@@ -77,6 +77,8 @@ Route::prefix('talent')->group(function () {
         Route::get('/get-job-by-id/{job_post_id}', [JobController::class, 'getSpecificJobById'])->name('talent.view_job');
         Route::get('get-related-jobs/{job_post_id}', [JobController::class, 'viewRelatedJobs'])->name('get.related.jobs');
         Route::post('/save-job', [JobController::class, 'saveJob'])->name('save.job');
+        Route::get('/get-saved-jobs', [JobController::class, 'getSavedJobs'])->name('get.saved.jobs');
+        Route::delete('/delete-saved-jobs', [JobController::class, 'deleteSavedJobs'])->name('delete.saved.jobs');
         Route::post('/send-proposal', [ProposalController::class, 'sendClientProposal'])->name('proposal.send');
         Route::get('/get-job-proposal/{job_post_id}', [ProposalController::class, 'getJobProposal'])->name('proposal.get');
         Route::delete('/delete-job-proposal/{job_post_id}', [ProposalController::class, 'deleteJobProposal'])->name('proposal.delete');

@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
-class JobController extends Controller
+class  JobController extends Controller
 {
     protected  $jobService;
     public  $tools;
@@ -29,7 +29,7 @@ class JobController extends Controller
 
     }
 
-    public function createJob(JobRequest $request)
+    public function createJob(JobRequest $request): \Illuminate\Http\JsonResponse
     {
         try {
             $validatedData = $request->validated();
@@ -172,8 +172,7 @@ class JobController extends Controller
 
 
             # Return paginated response
-            return  Utility::outputData(true, "All jobs fetched  successfully", (new JobResource($jobsByClient))->toArrayWithMinimalData()
-                , 200);
+            return  Utility::outputData(true, "All jobs fetched  successfully", (new JobResource($jobsByClient))->toArrayWithMinimalData(), 200);
 
         } catch (\PDOException $e) {
             # Handle PDOException
@@ -227,6 +226,49 @@ class JobController extends Controller
             return  Utility::outputData(false, "Unable to process request: " . $e->getMessage(), [], 400);
         }
     }
+
+
+    public function getSavedJobs(): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $user = auth('api')->user(); # Retrieve the authenticated user
+
+            # Check if the user is authenticated
+            if (!$user) {
+                return Utility::outputData(false, "Unauthorized", [], 401);
+            }
+
+            # Fetch the saved jobs of the authenticated user
+            return $this->jobService->getSavedJobs($user);
+
+        } catch (\PDOException $e) {
+            return  Utility::outputData(false, "Unable to process request: " . $e->getMessage(), [], 400);
+        }
+    }
+
+
+    public function deleteSavedJobs(JobRequest $request , Job $job): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $validatedData = $request->validated();
+
+            $data = [
+                'job_post_id' => $validatedData['job_post_id'],
+            ];
+
+            $this->authorize('delete', Job::findOrFail($data['job_post_id']));
+
+            return $this->jobService->deleteSavedJob($data['job_post_id']);
+
+
+        } catch (ValidationException $e) {
+            return Utility::outputData(false, "Validation failed", $e->errors(), 422);
+        } catch (\Exception $e) {
+            return Utility::outputData(false, "An error occurred", $e->getMessage(), 500);
+        }
+    }
+
+
 
 
 

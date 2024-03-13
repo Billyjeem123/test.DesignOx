@@ -38,7 +38,7 @@ class Job extends Model
 
     public function job_type(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(JobType::class, 'job_type_job_post', 'job_post_id', 'job_type_id');
+        return $this->belongsToMany(Type::class, 'job_type_job_post', 'job_post_id', 'job_type_id');
 
 
     }

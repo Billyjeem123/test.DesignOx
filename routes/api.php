@@ -3,6 +3,7 @@
 use App\Http\Controllers\Client\PostJob\JobController;
 use App\Http\Controllers\Client\User\AuthController;
 use App\Http\Controllers\Role\RoleController;
+use App\Http\Controllers\Talent\Designs\DesignController;
 use App\Http\Controllers\Talent\Proposal\ProposalController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Request;
@@ -82,6 +83,14 @@ Route::prefix('talent')->group(function () {
         Route::post('/send-proposal', [ProposalController::class, 'sendClientProposal'])->name('proposal.send');
         Route::get('/get-job-proposal/{job_post_id}', [ProposalController::class, 'getJobProposal'])->name('proposal.get');
         Route::delete('/delete-job-proposal/{job_post_id}', [ProposalController::class, 'deleteJobProposal'])->name('proposal.delete');
+
+
+
+        Route::prefix('designs')->group(function () {
+            Route::get('/upload-design', [DesignController::class, 'uploadDesign'])->name('talent.upload.resign');
+
+        });
+
 
 
     });

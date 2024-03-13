@@ -28,7 +28,7 @@ class ColorSeeder extends Seeder
             'Baby Teal', 'Baby Olive', 'Baby Peach', 'Baby Lavender', 'Baby Coral', 'Baby Slate',
             'Baby Ivory', 'Baby Tan', 'Baby Burgundy', 'Baby Mint', 'Baby Charcoal', 'Baby Beige',
             'Baby Mustard', 'Baby Ruby', 'Baby Emerald', 'Baby Sapphire', 'Baby Aquamarine', 'Baby Ruby',
-            'Baby Garnet', 'Baby Amber', 'Baby Amethyst', 'Baby Topaz', 'Baby Citrine', 'Baby Peridot',
+            'Baby Garnet', 'Baby Amber', 'Baby Amethyst', 'Baby Topaz', 'Baby Vitrine', 'Baby Peridot',
             'Baby Opal', 'Baby Onyx', 'Baby Jade'
         ];
 

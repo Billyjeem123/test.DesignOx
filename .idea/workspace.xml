@@ -5,11 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="861e98c6-30f6-4f11-b5ad-92d992e44a28" name="Changes" comment="initialized new repo for desingOx">
+      <change afterPath="$PROJECT_DIR$/app/Http/Requests/DesignRequest.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Models/Design.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2024_03_13_132558_remove_project_tpr_from_job_designs_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2024_03_13_135342_create_job_design_job_type.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Client/PostJob/JobController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Client/PostJob/JobController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/JobRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/JobRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Resources/JobResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Resources/JobResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Services/JobService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/JobService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Talent/Designs/DesignController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Talent/Designs/DesignController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Job.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Job.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/JobType.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Type.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Policies/DesignPolicy.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Policies/DesignPolicy.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Services/DesignService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/DesignService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2024_03_13_112302_create_job_desing_images.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2024_03_13_112302_create_job_desing_images.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeders/ColorSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/ColorSeeder.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -184,7 +191,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;ssh.settings&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.appearance&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -277,7 +284,8 @@
       <workItem from="1710194174004" duration="5436000" />
       <workItem from="1710229818954" duration="737000" />
       <workItem from="1710251006215" duration="3373000" />
-      <workItem from="1710316007498" duration="9737000" />
+      <workItem from="1710316007498" duration="14922000" />
+      <workItem from="1710365884888" duration="566000" />
     </task>
     <task id="LOCAL-00001" summary="initialized new repo for desingOx">
       <option name="closed" value="true" />

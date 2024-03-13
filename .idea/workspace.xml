@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="861e98c6-30f6-4f11-b5ad-92d992e44a28" name="Changes" comment="initialized new repo for desingOx" />
+    <list default="true" id="861e98c6-30f6-4f11-b5ad-92d992e44a28" name="Changes" comment="initialized new repo for desingOx">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Talent/Designs/DesignController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Talent/Designs/DesignController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Services/DesignService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/DesignService.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -269,7 +273,8 @@
       <workItem from="1710003313168" duration="7611000" />
       <workItem from="1710194174004" duration="5436000" />
       <workItem from="1710229818954" duration="737000" />
-      <workItem from="1710251006215" duration="714000" />
+      <workItem from="1710251006215" duration="3373000" />
+      <workItem from="1710316007498" duration="2923000" />
     </task>
     <task id="LOCAL-00001" summary="initialized new repo for desingOx">
       <option name="closed" value="true" />

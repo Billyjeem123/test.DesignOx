@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 
 class DesignController extends Controller
 {
-
-
-     public function uploadDesign($data){
+    public function uploadDesign($data){
 
 
 

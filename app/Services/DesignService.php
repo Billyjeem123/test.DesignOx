@@ -46,7 +46,7 @@ class DesignService
 
         } catch (\Exception $e) {
             #   Handle exceptions
-            return Utility::outputData(false, 'An error occurred while processing job posting.' . $e->getMessage(), Utility::getExceptionDetails($e), 500);
+            return Utility::outputData(false, 'An error occurred while processing job posting', Utility::getExceptionDetails($e), 500);
         }
     }
 
@@ -59,8 +59,10 @@ class DesignService
                 # Assuming images are base64 encoded strings, decode and save each one
                 $decodedImage = base64_decode($image);
 
-                // Generate a unique filename for the image
-                $newName = time() . '_' . uniqid() . '.png'; # Adjust extension as per your image type
+                $extension = $this->getImageExtension($decodedImage);
+
+                # Generate a unique filename for the image
+                $newName = time() . '_' . uniqid() . '.' . $extension;
 
                 # Save the image to the storage directory
                 Storage::put('images/' . $newName, $decodedImage);
@@ -77,6 +79,24 @@ class DesignService
     }
 
 
+
+    private function getImageExtension($decodedImage): string
+    {
+        $mimeType = Storage::mimeType('data:image/png;base64,' . base64_encode($decodedImage));
+
+        // Determine the file extension based on MIME type
+        switch ($mimeType) {
+            case 'image/jpeg':
+                return 'jpg';
+            case 'image/png':
+                return 'png';
+            case 'image/gif':
+                return 'gif';
+            // Add more cases as needed for other image formats
+            default:
+                return 'jpg'; // Default to jpg if extension not recognized
+        }
+        }
 
         private  function saveJobColor(int $jobDesignId, array $jobColorIds): void
     {

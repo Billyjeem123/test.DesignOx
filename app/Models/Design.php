@@ -20,4 +20,12 @@ class Design extends Model
 
 
     }
+    /**
+     * Relationship: a  design has many  Images
+     */
+
+    public function images(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Images::class, 'job_design_id');
+    }
 }

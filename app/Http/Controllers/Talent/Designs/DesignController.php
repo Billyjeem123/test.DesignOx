@@ -36,7 +36,10 @@ class DesignController extends Controller
                 'tools_used' => $validatedData['tools_used'],
                 'project_price' => $validatedData['project_price'],
                 'attachment' => $validatedData['attachment'],
-                'downloadable_file' => $validatedData['downloadable_file']
+                'downloadable_file' => $validatedData['downloadable_file'],
+                'images' => $validatedData['images'],
+                'colors' => $validatedData['colors'],
+                 'project_type' => $validatedData['project_type']
             ];
 
             return $this->designService->processDesignUpload($data);

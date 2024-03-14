@@ -8,7 +8,7 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
+     *  Data inside this migration is seeded check seeder file for context
      * @return void
      */
     public function up()

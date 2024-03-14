@@ -7,8 +7,10 @@ namespace App\Services;
 use App\Helpers\Utility;
 use App\Mail\adminDesignNotify;
 use App\Models\Design;
+use App\Models\Images;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class DesignService
 {
@@ -36,10 +38,23 @@ class DesignService
                 $saveTalentDesign->design_type()->attach($projectTypes, ['job_design_id' => $newlyCreatedDesignId]);
             }
 
+            # Save uploaded images
+            if (isset($data['images'])) {
+                foreach ($data['images'] as $image) {
+                    # Assuming images are base64 encoded strings, decode and save each one
+                    $decodedImage = base64_decode($image);
+
+                    $newName = time().'.'.$decodedImage;
+                    $imageModel = new Images();
+                    $imageModel->job_design_id = $saveTalentDesign->id;
+                    # Save image to storage and get the path, adjust this according to your storage setup
+                    $imageModel->path = Storage::put('images', $newName);
+                    $imageModel->save();
+                }
+            }
+
             $this->saveDesignPostingKeyWords($newlyCreatedDesignId, $data['keywords']);
             $this->saveDesignPostingTools($newlyCreatedDesignId, $data['tools_used']);
-
-            Mail::to(config('services.app_config.app_mail'))->send(new adminJobNotify());
 
             return Utility::outputData(true, "Design posted", [], 201);
 
@@ -67,7 +82,7 @@ class DesignService
     private function saveDesignPostingTools($newlyCreatedDesignId, mixed $tools_used): void
     {
 
-        // Prepare data for insertion
+        # Prepare data for insertion
         $data = [];
         foreach ($tools_used as $tool) {
             $data[] = [
@@ -76,7 +91,7 @@ class DesignService
             ];
         }
 
-        // Insert data into the table
+        # Insert data into the table
         DB::table('job_design_tools')->insert($data);
     }
 

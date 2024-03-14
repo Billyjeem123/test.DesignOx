@@ -9,6 +9,11 @@ class Images extends Model
 {
     use HasFactory;
 
+    public mixed $job_design_id;
+    /**
+     * @var bool|mixed
+     */
+    public mixed $path;
     protected $table = 'job_design_images';
 
 

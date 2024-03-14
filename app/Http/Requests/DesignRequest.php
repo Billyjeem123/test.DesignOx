@@ -32,9 +32,9 @@ class DesignRequest extends FormRequest
                     'project_type' => ['required', new ArrayValidation()],
                     'tools_used' => ['required', new ArrayValidation()],
                     'keywords' => ['required', new ArrayValidation()],
-                    'images' => ['required', new ArrayValidation()],
+                    'images' => ['required|image|mimes:jpeg,png,jpg,gif|max:2048', new ArrayValidation()],
                     'project_price' => ['required', 'decimal', 'min:0'],
-                    'attachment' => ['required', 'string', 'max:255'],
+                    'attachment' => ['required', 'url', 'max:255'],
                     'downloadable_file' => ['required', 'url', 'max:255']
                 ];
 

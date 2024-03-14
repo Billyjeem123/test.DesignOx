@@ -9,6 +9,12 @@ class Design extends Model
 {
     use HasFactory;
 
+    public  $table = 'job_designs';
+
+    protected  $fillable  =  [
+        'talent_id', 'project_title', 'project_desc', 'project_price','attachment', 'downloadable_file'
+        ];
+
 
     /**
      * Relationship: a  design has many  design_types

@@ -59,6 +59,7 @@ class Utility
             'line' => $e->getLine(),
             'file' => $e->getFile(),
             'code' => $e->getCode(),
+            'message' => $e->getMessage()
         ];
     }
 

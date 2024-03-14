@@ -5,7 +5,6 @@ namespace App\Services;
 
 
 use App\Helpers\Utility;
-use App\Mail\adminDesignNotify;
 use App\Models\Design;
 use App\Models\Images;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +18,7 @@ class DesignService
     public function processDesignUpload(array $data): \Illuminate\Http\JsonResponse
     {
         try {
-            #   Process client jobs postings..
+            #   Process client jobs postings
 
             $saveTalentDesign = Design::create([
                 'talent_id' => $data['talent_id'],
@@ -38,23 +37,10 @@ class DesignService
                 $saveTalentDesign->design_type()->attach($projectTypes, ['job_design_id' => $newlyCreatedDesignId]);
             }
 
-            # Save uploaded images
-            if (isset($data['images'])) {
-                foreach ($data['images'] as $image) {
-                    # Assuming images are base64 encoded strings, decode and save each one
-                    $decodedImage = base64_decode($image);
-
-                    $newName = time().'.'.$decodedImage;
-                    $imageModel = new Images();
-                    $imageModel->job_design_id = $saveTalentDesign->id;
-                    # Save image to storage and get the path, adjust this according to your storage setup
-                    $imageModel->path = Storage::put('images', $newName);
-                    $imageModel->save();
-                }
-            }
-
+            $this->saveDesignImages($data['images'], $newlyCreatedDesignId);
             $this->saveDesignPostingKeyWords($newlyCreatedDesignId, $data['keywords']);
             $this->saveDesignPostingTools($newlyCreatedDesignId, $data['tools_used']);
+            $this->saveJobColor($newlyCreatedDesignId, $data['colors']);
 
             return Utility::outputData(true, "Design posted", [], 201);
 
@@ -63,6 +49,50 @@ class DesignService
             return Utility::outputData(false, 'An error occurred while processing job posting.' . $e->getMessage(), Utility::getExceptionDetails($e), 500);
         }
     }
+
+
+    private function saveDesignImages($images, $designId): void
+    {
+        // Save uploaded images
+        if (isset($images)) {
+            foreach ($images as $image) {
+                # Assuming images are base64 encoded strings, decode and save each one
+                $decodedImage = base64_decode($image);
+
+                // Generate a unique filename for the image
+                $newName = time() . '_' . uniqid() . '.png'; # Adjust extension as per your image type
+
+                # Save the image to the storage directory
+                Storage::put('images/' . $newName, $decodedImage);
+
+                #  Create a new Image model instance
+                $imageModel = new Images();
+                $imageModel->images = $newName; #  Save the filename
+                $imageModel->job_design_id = $designId;
+
+                // Save the image model
+                $imageModel->save();
+            }
+        }
+    }
+
+
+
+        private  function saveJobColor(int $jobDesignId, array $jobColorIds): void
+    {
+        // Prepare data for insertion
+        $data = [];
+        foreach ($jobColorIds as $jobColorId) {
+            $data[] = [
+                'job_design_id' => $jobDesignId,
+                'color_id' => $jobColorId,
+            ];
+        }
+
+        // Insert data into the pivot table
+        DB::table('job_design_job_colors')->insert($data);
+    }
+
 
     private function saveDesignPostingKeyWords($newlyCreatedDesignId, mixed $keywords): void
     {

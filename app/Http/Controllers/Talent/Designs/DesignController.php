@@ -20,7 +20,7 @@ class DesignController extends Controller
         $this->designService = $designService; #  Inject JobService instance
 
     }
-    public function createJob(DesignRequest $request): \Illuminate\Http\JsonResponse
+    public function uploadDesign(DesignRequest $request): \Illuminate\Http\JsonResponse
     {
         try {
             $validatedData = $request->validated();
@@ -39,7 +39,8 @@ class DesignController extends Controller
                 'downloadable_file' => $validatedData['downloadable_file'],
                 'images' => $validatedData['images'],
                 'colors' => $validatedData['colors'],
-                 'project_type' => $validatedData['project_type']
+                 'project_type' => $validatedData['project_type'],
+                'keywords' => $validatedData['keywords']
             ];
 
             return $this->designService->processDesignUpload($data);
@@ -49,7 +50,7 @@ class DesignController extends Controller
             return Utility::outputData(false, "Validation failed", $e->errors(), 422);
         } catch (\Exception $e) {
             #  Handle any other exceptions that may occur during role creation
-            return Utility::outputData(false, "An error occurred", $e->getMessage(), 500);
+            return Utility::outputData(false, "An error occurred", Utility::getExceptionDetails($e), 500);
         }
     }
 }

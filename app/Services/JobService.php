@@ -38,8 +38,6 @@ class JobService
                 $saveClientJob->job_type()->attach($projectTypes, ['job_post_id' => $newlyCreatedJobId]);
             }
 
-
-
             $this->saveJobPostingKeyWords($newlyCreatedJobId, $data['keywords']);
             $this->saveJobPostingTools($newlyCreatedJobId, $data['tools_used']);
 

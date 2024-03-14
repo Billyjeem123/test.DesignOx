@@ -14,7 +14,7 @@ class DesignRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,33 +25,21 @@ class DesignRequest extends FormRequest
     public function rules()
     {
         switch ($this->route()->getActionMethod()) {
-            case 'createJob':
+            case 'uploadDesign':
                 return [
                     'project_desc' => ['required', 'string', 'max:255'],
                     'project_title' => ['required', 'string', 'max:255'],
                     'project_type' => ['required', new ArrayValidation()],
                     'tools_used' => ['required', new ArrayValidation()],
                     'keywords' => ['required', new ArrayValidation()],
-                    'images' => ['required|image|mimes:jpeg,png,jpg,gif|max:2048', new ArrayValidation()],
-                    'project_price' => ['required', 'decimal', 'min:0'],
+                    'images' => ['required', 'array', new ArrayValidation()],
+                    'colors' => ['required', 'array', new ArrayValidation()],
+                    'images.*' => ['required', 'string', 'regex:/^data:image\/(jpeg|png|jpg|gif);base64/', 'max:5242880'], // Adjusted max size to accommodate Base64 encoding overhead
+                    'project_price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
                     'attachment' => ['required', 'url', 'max:255'],
                     'downloadable_file' => ['required', 'url', 'max:255']
                 ];
 
-            case 'deleteJobById':
-                return [
-                    'job_post_id' => 'required'
-                ];
-
-            case 'deleteSavedJobs':
-                return [
-                    'job_post_id' => 'required'
-                ];
-
-            case 'saveJob':
-                return [
-                    'job_post_id' => 'required'
-                ];
 
             case 'updateJobById':
                 return [

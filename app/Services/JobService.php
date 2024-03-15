@@ -1,5 +1,6 @@
 <?php
 namespace App\Services;
+use App\Events\NotifyAdminJob;
 use App\Helpers\Utility;
 use App\Http\Resources\JobResource;
 use App\Mail\adminJobNotify;
@@ -41,7 +42,7 @@ class JobService
             $this->saveJobPostingKeyWords($newlyCreatedJobId, $data['keywords']);
             $this->saveJobPostingTools($newlyCreatedJobId, $data['tools_used']);
 
-            Mail::to(config('services.app_config.app_mail'))->send(new adminJobNotify());
+            event(new NotifyAdminJob(config('services.app_config.app_mail')));
 
             return Utility::outputData(true, "Job posted", [], 201);
 

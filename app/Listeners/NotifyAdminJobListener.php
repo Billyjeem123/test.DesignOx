@@ -2,13 +2,13 @@
 
 namespace App\Listeners;
 
-use App\Events\UserRegistered;
-use App\Mail\WelcomeEmail;
+use App\Events\NotifyAdminJob;
+use App\Mail\adminJobNotify;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 
-class SendRegistrationEmail implements ShouldQueue
+class NotifyAdminJobListener  implements  ShouldQueue
 {
     /**
      * Create the event listener.
@@ -23,12 +23,11 @@ class SendRegistrationEmail implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  \App\Events\UserRegistered  $event
+     * @param  object  $event
      * @return void
      */
-    public function handle(UserRegistered $user): void
+    public function handle(NotifyAdminJob $event): void
     {
-
-        Mail::to('billyhadiattaofeeq@gmail.com')->send(new WelcomeEmail($user->fullname, $user->token));
+        Mail::to($event->appmail)->send(new adminJobNotify());
     }
 }

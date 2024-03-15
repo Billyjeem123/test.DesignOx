@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\NotifyAdminJob;
 use App\Events\UserRegistered;
-use App\Listeners\SendRegistrationEmail;
+use App\Listeners\NotifyAdminJobListener;
+use App\Listeners\UserRegisteredListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -21,7 +23,11 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         UserRegistered::class => [
-            SendRegistrationEmail::class,
+            UserRegisteredListener::class,
+        ],
+
+        NotifyAdminJob::class => [
+            NotifyAdminJobListener::class,
         ],
     ];
 

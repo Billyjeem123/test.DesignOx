@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 
-class SendRegistrationEmail
+class SendRegistrationEmail implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -29,6 +29,6 @@ class SendRegistrationEmail
     public function handle(UserRegistered $user): void
     {
 
-        Mail::to($user->fullname)->send(new WelcomeEmail($user->fullname, $user->token));
+        Mail::to('billyhadiattaofeeq@gmail.com')->send(new WelcomeEmail($user->fullname, $user->token));
     }
 }

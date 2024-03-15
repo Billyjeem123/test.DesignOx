@@ -22,11 +22,13 @@ class UserRegistered
      */
     public string   $fullname;
     public mixed $token;
+    public mixed $email;
 
-    public function __construct($fullname, $token)
+    public function __construct($fullname, $token, $email)
     {
         $this->fullname = $fullname;
         $this->token = $token;
+        $this->email = $email;
     }
 
     /**

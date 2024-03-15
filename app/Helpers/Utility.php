@@ -6,7 +6,7 @@ use Illuminate\Http\JsonResponse;
 
 class Utility
 {
-    public static function outputData($boolean, $message, $data = null, $statusCode)
+    public static function outputData($boolean, $message, $data = null, $statusCode): JsonResponse
     {
         return response()->json([
             'status' => $boolean,
@@ -16,13 +16,13 @@ class Utility
         ], $statusCode);
     }
 
-    public static function token()
+    public static function token(): int
     {
         return mt_rand(100000, 999999);
     }
 
 
-    public static function calculateEndDate($duration)
+    public static function calculateEndDate($duration): ?string
     {
         // Parse the duration string to extract the number and unit
         preg_match('/(\d+)\s*(\w+)/', $duration, $matches);

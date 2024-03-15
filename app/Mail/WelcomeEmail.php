@@ -14,7 +14,8 @@ class WelcomeEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $user;
+    protected $fullname;
+    protected $token;
 
 
     /**
@@ -22,9 +23,10 @@ class WelcomeEmail extends Mailable
      *
      * @return void
      */
-    public function __construct($userName)
+    public function __construct($fullname, $token)
     {
-        $this->user = $userName;
+        $this->fullname = $fullname;
+        $this->token = $token;
     }
 
     /**
@@ -71,6 +73,6 @@ class WelcomeEmail extends Mailable
     {
         return $this->subject('Welcome Email')
                     ->view('email.WelcomeMail')
-                    ->with(['user' => $this->user]);
+                    ->with(['user' => $this->fullname, 'token' => $this->token]);
     }
 }

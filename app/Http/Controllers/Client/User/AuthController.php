@@ -40,7 +40,7 @@ class AuthController extends Controller
 
             $user = $this->userService->registerUser($validatedData, $token);
 
-            event(new UserRegistered($validatedData['fullname'], $token));
+            event(new UserRegistered($validatedData['fullname'], $token, $validatedData['email']));
 
             return Utility::outputData(true, 'User created successfully.', new UserResource($user), 201);
         } catch (ValidationException $e) {
@@ -51,7 +51,7 @@ class AuthController extends Controller
 
 
 
-    public function VerifyOTP(UserRequest $request)
+    public function VerifyOTP(UserRequest $request): \Illuminate\Http\JsonResponse
     {
         try {
             $validatedData = $request->validated();
@@ -63,7 +63,7 @@ class AuthController extends Controller
         }
     }
 
-    public function login(UserRequest $request)
+    public function login(UserRequest $request): \Illuminate\Http\JsonResponse
     {
         try {
             $validatedData = $request->validated();

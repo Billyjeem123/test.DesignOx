@@ -51,13 +51,17 @@ class DesignService
     }
 
 
+
     private function saveDesignImages($images, $designId): void
     {
         // Save uploaded images
         if (isset($images)) {
             foreach ($images as $image) {
                 # Assuming images are base64 encoded strings, decode and save each one
-                $decodedImage = base64_decode($image);
+                list($type, $imageData) = explode(';', $image);
+                list(, $imageData) = explode(',', $imageData);
+
+                $decodedImage = base64_decode($imageData);
 
                 $extension = $this->getImageExtension($decodedImage);
 
@@ -65,11 +69,11 @@ class DesignService
                 $newName = time() . '_' . uniqid() . '.' . $extension;
 
                 # Save the image to the storage directory
-                Storage::put('images/' . $newName, $decodedImage);
+                Storage::put("images/{$newName}", $decodedImage);
 
-                #  Create a new Image model instance
+                # Create a new Image model instance
                 $imageModel = new Images();
-                $imageModel->images = $newName; #  Save the filename
+                $imageModel->images = $newName; # Save the filename
                 $imageModel->job_design_id = $designId;
 
                 // Save the image model

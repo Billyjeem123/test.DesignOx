@@ -88,6 +88,7 @@ Route::prefix('talent')->group(function () {
 
         Route::prefix('designs')->group(function () {
             Route::post('/upload-design', [DesignController::class, 'uploadDesign'])->name('talent.upload.design');
+            Route::post('/upload-image', [DesignController::class, 'uploadImage'])->name('talent.upload.image');
             Route::get('/get-uploaded-designs', [DesignController::class, 'getAllDesigns'])->name('get.talent.design');
 
         });

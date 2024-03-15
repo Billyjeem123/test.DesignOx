@@ -42,4 +42,14 @@ class Design extends Model
     {
         return $this->belongsTo(User::class, 'talent_id')->select(['fullname', 'country']); #get specific columns
     }
+
+
+    /**
+     * Relationship: all  design liked by a user...
+     */
+
+    public function likedByUsers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'job_design_likes', 'job_design_id', 'user_id');
+    }
 }

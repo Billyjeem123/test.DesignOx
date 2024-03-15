@@ -115,4 +115,22 @@ class DesignController extends Controller
             return  Utility::outputData(false, "Unable to process request: " . $e->getMessage(), [], 400);
         }
     }
+
+
+    public function likeDesign(DesignRequest $requests): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $validatedData = $requests->validated();
+            $auth = Auth::user();
+
+            return $this->designService->LikeDesign($validatedData['job_design_id'], $auth->id);
+
+        } catch (\PDOException $e) {
+            # Handle PDOException
+            return  Utility::outputData(false, "Unable to process request". $e->getMessage(), [], 400);
+        } catch (AuthorizationException $e) {
+            return  Utility::outputData(false, "Unauthorized access ",  $e->getMessage(), 404);
+        }
+    }
+
 }

@@ -9,9 +9,10 @@
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Talent/Designs/DesignController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Talent/Designs/DesignController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Requests/DesignRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/DesignRequest.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Resources/DesignResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Resources/DesignResource.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Design.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Design.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Services/DesignService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/DesignService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Services/JobService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/JobService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2024_03_15_103250_create_save_designs_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2024_03_15_103250_create_save_designs_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learnt.txt" beforeDir="false" afterPath="$PROJECT_DIR$/learnt.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -281,7 +282,7 @@
       <workItem from="1710251006215" duration="3373000" />
       <workItem from="1710316007498" duration="14922000" />
       <workItem from="1710365884888" duration="21717000" />
-      <workItem from="1710451098503" duration="14970000" />
+      <workItem from="1710451098503" duration="21608000" />
     </task>
     <task id="LOCAL-00001" summary="initialized new repo for desingOx">
       <option name="closed" value="true" />
@@ -423,6 +424,15 @@
             <option name="methodName" value="getSavedJobs" />
           </properties>
           <option name="timeStamp" value="46" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php-line-method">
+          <url>file://$PROJECT_DIR$/app/Services/DesignService.php</url>
+          <line>288</line>
+          <properties>
+            <option name="className" value="\App\Services\DesignService" />
+            <option name="methodName" value="LikeDesign" />
+          </properties>
+          <option name="timeStamp" value="48" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/routes/api.php</url>

@@ -87,4 +87,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Job::class);
     }
+
+
+    /**
+     * A user liked  has liked many designs
+     */
+    public function likedDesigns(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Design::class, 'job_design_likes', 'user_id', 'job_design_id');
+    }
 }

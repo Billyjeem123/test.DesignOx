@@ -16,36 +16,6 @@ class DesignResource extends JsonResource
     {
         return parent::toArray($request);
     }
-
-
-
-
-
-
-    public function toArrayWithMinimalData(): array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable
-    {
-        return $this->map(function ($design) {
-            return [
-                'job_design_id' => $design->id,
-                'project_title' => $design['project_title'],
-                'project_price' => $design->project_price ?? 0,
-                'date_posted' => $design->created_at->diffForHumans(),
-                 'views' => $design->view_count,
-                 'likes' => $design->likes,
-//                'project_types' => $job->job_type()->pluck('job_type.project_type')->toArray(),
-                'user' => [
-                    'client_name' => $design->user->fullname ?? null,
-                    'current_location' => $design->user->country ?? null,
-                    'profile_image' => 'https://via.placeholder.com/150'
-                ],
-                'images' => [
-                    'image' => $design->images  #get the associated images related to the design
-            ]
-            ];
-        });
-    }
-
-
     public function toArraySavedJobs(): array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable
     {
         return $this->map(function ($job) {
@@ -56,5 +26,29 @@ class DesignResource extends JsonResource
                 'date_posted' => $job->created_at->diffForHumans()
             ];
         });
+    }
+    public function toArrayWithMinimalData(): array
+    {
+        $currentUser = auth()->user();
+
+        return $this->map(function ($design) use ($currentUser) {
+            return [
+                'job_design_id' => $design->id,
+                'project_title' => $design['project_title'],
+                'project_price' => $design->project_price ?? 0,
+                'date_posted' => $design->created_at->diffForHumans(),
+                'views' => $design->view_count,
+                'likes' => $design->likes,
+                'liked_by_user' => $design->likedByUsers->contains($currentUser),
+                'user' => [
+                    'user_name' => $design->user->fullname ?? null,
+                    'current_location' => $design->user->country ?? null,
+                    'profile_image' => 'https://via.placeholder.com/150'
+                ],
+                'images' => [
+                    'image' => $design->images  #get the associated images related to the design
+                ]
+            ];
+        })->all();
     }
 }

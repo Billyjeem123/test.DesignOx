@@ -91,6 +91,7 @@ Route::prefix('talent')->group(function () {
             Route::post('/get-all-designs', [DesignController::class, 'getAllDesigns'])->name('get.all.design');
             Route::post('/save-design', [DesignController::class, 'saveDesign'])->name('save.design');
             Route::get('/get-saved-designs', [DesignController::class, 'getSavedDesigns'])->name('get.saved.design');
+            Route::post('/like-design', [DesignController::class, 'likeDesign'])->name('like.design');
 
         });
 

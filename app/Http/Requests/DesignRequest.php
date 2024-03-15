@@ -46,6 +46,12 @@ class DesignRequest extends FormRequest
                     'job_design_id' => ['required', 'int']
                 ];
 
+            case 'likeDesign':
+                return [
+                    'job_design_id' => ['required', 'int']
+                ];
+
+
                 break;
             default:
                 return [];

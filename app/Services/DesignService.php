@@ -155,6 +155,11 @@ class DesignService
     {
         $query = Design::query()->orderByDesc('created_at'); # Newest first by default
 
+        $user = auth()->user();
+
+        $query->with(['likedByUsers' => function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        }]);
 
         if (isset($filters['price_range'])) {
             $this->applyPriceFilter($query, $filters['price_range']);
@@ -167,7 +172,6 @@ class DesignService
         # Paginate the results
         return $query->paginate(10);
     }
-
 
 
     private function applyPriceFilter($query, $priceRange): void
@@ -278,6 +282,43 @@ class DesignService
         });
 
         return Utility::outputData(true, 'Saved  designs fetched successfully.', (new DesignResource($designObjects))->toArraySavedJobs(), 200);
+    }
+
+
+
+    public function LikeDesign(int $jobDesignId, int $usertoken): \Illuminate\Http\JsonResponse
+    {
+        $recordExists  = Design::find($jobDesignId);
+        if (!$recordExists) {
+            return Utility::outputData(false, "Record could not be found", [], 400);
+        }
+
+
+        # Check if the user token already exists in the save_design_like table
+        $existingRecord = DB::table('job_design_likes')
+            ->where('job_design_id', $jobDesignId)
+            ->where('user_id', $usertoken)
+            ->exists();
+
+        if ($existingRecord) {
+            return Utility::outputData(false, "Design already liked by this user", [], 400);
+        }
+
+        # Prepare data for insertion
+        $data =  [
+            'job_design_id' => $jobDesignId,
+            'user_id' => $usertoken,
+        ];
+
+        # Insert data into the table
+        if (!empty($data)) {
+            DB::table('job_design_likes')->insert($data);
+        }
+
+        # Update the like count in the designs table
+        Design::where('id', $jobDesignId)->increment('likes');
+
+        return Utility::outputData(true, "Design liked", [], 201);
     }
 
 

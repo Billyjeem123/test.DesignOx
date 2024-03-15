@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client\User;
 
+use App\Events\UserRegistered;
 use App\Helpers\Utility;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
@@ -35,19 +36,19 @@ class AuthController extends Controller
             # Sanitize password
             $validatedData = $request->validated();
             $validatedData['password'] = Hash::make($validatedData['password']);
+            $token = Utility::token();
 
-            $user = $this->userService->registerUser($validatedData);
+            $user = $this->userService->registerUser($validatedData, $token);
 
-            # Send email verification notification
-//            Mail::to($validatedData['email'])->send(new WelcomeEmail($validatedData['fullname']));
-            # Dispatch the job to send welcome email asynchronously
-            authJob::dispatch($validatedData['fullname'], $validatedData['fullname']);
+            event(new UserRegistered($validatedData['fullname'], $token));
 
             return Utility::outputData(true, 'User created successfully.', new UserResource($user), 201);
         } catch (ValidationException $e) {
             return Utility::outputData(false, 'Validation failed', $e->getMessage(), 422);
         }
     }
+
+
 
 
     public function VerifyOTP(UserRequest $request)

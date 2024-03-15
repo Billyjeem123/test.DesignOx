@@ -10,11 +10,3 @@ php artisan make:migration add_views_to_jobs_table --table=job_posts
 php artisan migrate:rollback 2024_02_13_085137_create_job_posts_table.php
 
 
-
-
-//        $query->addSelect(['liked_by_user' => function ($query) use ($user) {
-//            $query->selectRaw('CASE WHEN COUNT(*) > 0 THEN true ELSE false END')
-//                ->from('job_design_likes')
-//                ->whereColumn('job_design_likes.job_design_id', 'job_designs.id')
-//                ->where('job_design_likes.user_id', $user->id);
-//        }]);

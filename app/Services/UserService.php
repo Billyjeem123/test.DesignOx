@@ -16,11 +16,8 @@ class UserService
 {
 
 
-    public function registerUser(array $userData)
+    public function registerUser(array $userData, int $token)
     {
-        # Generate token for OTP
-        $token = Utility::token();
-
         unset($userData['confirm_password']);
 
         # Create user record with additional data now()->format('Y-m-d H:i:s')

@@ -149,4 +149,71 @@ class DesignService
         DB::table('job_design_tools')->insert($data);
     }
 
+
+    public function fetchAllDesigns($filters = []): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    {
+        $query = Design::query()->orderByDesc('created_at'); # Newest first by default
+
+
+        if (isset($filters['price_range'])) {
+            $this->applyPriceFilter($query, $filters['price_range']);
+        }
+
+        if (isset($filters['time_posted'])) {
+            $this->applyTimePostedFilter($query, $filters['time_posted']);
+        }
+
+        # Paginate the results
+        return $query->paginate(10);
+    }
+
+
+
+    private function applyPriceFilter($query, $priceRange): void
+    {
+        if (isset($priceRange)) {
+            switch ($priceRange) {
+                case 'below_100':
+                    $query->where('project_price', '<', 100);
+                    break;
+                case '100_500':
+                    $query->whereBetween('project_price', [100, 500]);
+                    break;
+                case 'above_500':
+                    $query->where('project_price', '>', 500);
+                    break;
+                // If 'all' or unknown value is provided, don't apply price filter
+                default:
+                    break;
+            }
+        }
+    }
+
+
+    # Helper method to apply time posted filter
+    private function applyTimePostedFilter($query, $timePosted): void
+    {
+        switch ($timePosted) {
+            case '7':
+                $query->whereDate('created_at', '>=', now()->subDays(7));
+                break;
+            case '14':
+                $query->whereDate('created_at', '>=', now()->subDays(14));
+                break;
+            case '24':
+                $query->where('created_at', '>=', now()->subHours(24));
+                break;
+            case '30':
+                $query->whereDate('created_at', '>=', now()->subDays(30));
+                break;
+            case '90':
+                $query->whereDate('created_at', '>=', now()->subMonths(3));
+                break;
+            // If 'all' or unknown value is provided, don't apply time filter
+            default:
+                break;
+        }
+
+    }
+
 }

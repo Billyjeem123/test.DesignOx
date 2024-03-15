@@ -8,6 +8,7 @@ use App\Http\Requests\DesignRequest;
 use App\Models\Design;
 use App\Models\Job;
 use App\Services\DesignService;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -51,6 +52,29 @@ class DesignController extends Controller
         } catch (\Exception $e) {
             #  Handle any other exceptions that may occur during role creation
             return Utility::outputData(false, "An error occurred", Utility::getExceptionDetails($e), 500);
+        }
+    }
+
+
+    public function getAllDesigns(Request $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $filter = $request->all();
+
+            $talentDesigns = $this->designService->fetchAllDesigns($filter);
+
+            if ($talentDesigns->isEmpty()) {
+                return Utility::outputData(false, "No results found", [], 404);
+            }
+
+            # Return paginated response
+            return  Utility::outputData(true, "All jobs fetched  successfully", (new JobResource($jobsByClient))->toArrayWithMinimalData(), 200);
+
+        } catch (\PDOException $e) {
+            # Handle PDOException
+            return  Utility::outputData(false, "Unable to process request". $e->getMessage(), [], 400);
+        } catch (AuthorizationException $e) {
+            return  Utility::outputData(false, "Unauthorized access ",  $e->getMessage(), 404);
         }
     }
 }

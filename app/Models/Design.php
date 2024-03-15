@@ -12,7 +12,7 @@ class Design extends Model
     public  $table = 'job_designs';
 
     protected  $fillable  =  [
-        'talent_id', 'project_title', 'project_desc', 'project_price','attachment', 'downloadable_file'
+        'talent_id', 'project_title', 'project_desc', 'project_price','attachment', 'downloadable_file', 'view_count', 'likes', 'last_viewed_at'
         ];
 
 
@@ -32,6 +32,14 @@ class Design extends Model
 
     public function images(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Images::class, 'job_design_id');
+        return $this->hasMany(Images::class, 'job_design_id')->select('images'); #get specific columns
+    }
+
+    /**
+     * Relationship: a design belongs to a user (client)
+     */
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'talent_id')->select(['fullname', 'country']); #get specific columns
     }
 }

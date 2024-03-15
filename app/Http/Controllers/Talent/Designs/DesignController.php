@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Talent\Designs;
 use App\Helpers\Utility;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DesignRequest;
+use App\Http\Resources\DesignResource;
 use App\Models\Design;
-use App\Models\Job;
 use App\Services\DesignService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
@@ -68,7 +68,7 @@ class DesignController extends Controller
             }
 
             # Return paginated response
-            return  Utility::outputData(true, "All jobs fetched  successfully", (new JobResource($jobsByClient))->toArrayWithMinimalData(), 200);
+            return  Utility::outputData(true, "All designs fetched successfully", (new DesignResource($talentDesigns))->toArrayWithMinimalData(), 200);
 
         } catch (\PDOException $e) {
             # Handle PDOException

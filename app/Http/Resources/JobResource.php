@@ -57,7 +57,8 @@ class JobResource extends JsonResource
                 'project_types' => $job->job_type()->pluck('job_type.project_type')->toArray(),
                 'user' => [
                     'client_name' => $job->user->fullname ?? null,
-                    'current_location' => $job->user->country ?? null
+                    'current_location' => $job->user->country ?? null,
+                    'profile_image' => 'https://via.placeholder.com/150'
                 ]
             ];
         });
@@ -74,7 +75,8 @@ class JobResource extends JsonResource
                 'project_types' => $job->job_type()->pluck('job_type.project_type')->toArray(),
                 'user' => [
                     'client_name' => $job->user->fullname ?? null,
-                    'current_location' => $job->user->country ?? null
+                    'current_location' => $job->user->country ?? null,
+                    'profile_image' => 'https://via.placeholder.com/150'
                 ]
             ];
         });
@@ -108,7 +110,8 @@ class JobResource extends JsonResource
             'project_types' => $job->job_type()->pluck('job_type.project_type')->toArray(),
             'user' => [
                 'client_name' => $job->user->fullname ?? null,
-                'current_location' => $job->user->country ?? null
+                'current_location' => $job->user->country ?? null,
+                'profile_image' => 'https://via.placeholder.com/150'
             ]
         ];
     }

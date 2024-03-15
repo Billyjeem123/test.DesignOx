@@ -402,6 +402,12 @@ class JobService
 
     public function saveJob(int $jobPostingId, int $usertoken): \Illuminate\Http\JsonResponse
     {
+
+        $recordExists  = Job::find($jobPostingId)->first();
+        if (!$recordExists) {
+            return Utility::outputData(false, "Record could not be found", [], 400);
+        }
+
         # Check if the user token already exists in the save_jobs table
         $existingRecord = DB::table('save_jobs')
             ->where('job_post_id', $jobPostingId)

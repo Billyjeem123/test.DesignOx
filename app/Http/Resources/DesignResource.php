@@ -44,4 +44,17 @@ class DesignResource extends JsonResource
             ];
         });
     }
+
+
+    public function toArraySavedJobs(): array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable
+    {
+        return $this->map(function ($job) {
+            return [
+                'job_design_id' => $job->id,
+                'project_title' => $job->project_title,
+                'project_price' => $job->project_price ?? 0,
+                'date_posted' => $job->created_at->diffForHumans()
+            ];
+        });
+    }
 }

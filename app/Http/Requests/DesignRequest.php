@@ -41,18 +41,9 @@ class DesignRequest extends FormRequest
                 ];
 
 
-            case 'updateJobById':
+            case 'saveDesign':
                 return [
-                    'project_desc' => ['required', 'string', 'max:255'],
-                    'project_title' => ['required', 'string', 'max:255'],
-                    'project_type' => ['required', new ArrayValidation()],
-                    'tools_used' => ['required', new ArrayValidation()],
-                    'keywords' => ['required', new ArrayValidation()],
-                    'budget' => ['required', 'numeric', 'min:0'],
-                    'duration' => ['required', 'string', 'max:255'],
-                    'numbers_of_proposals' => ['required', 'integer', 'min:1'],
-                    'experience_level' => ['required', 'string', 'max:255'],
-                    'project_link_attachment' => ['required', 'url', 'max:255']
+                    'job_design_id' => ['required', 'int']
                 ];
 
                 break;

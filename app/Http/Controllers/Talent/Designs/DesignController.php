@@ -10,6 +10,7 @@ use App\Models\Design;
 use App\Services\DesignService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class DesignController extends Controller
@@ -75,6 +76,43 @@ class DesignController extends Controller
             return  Utility::outputData(false, "Unable to process request". $e->getMessage(), [], 400);
         } catch (AuthorizationException $e) {
             return  Utility::outputData(false, "Unauthorized access ",  $e->getMessage(), 404);
+        }
+    }
+
+
+    public function saveDesign(DesignRequest $requests): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $validatedData = $requests->validated();
+            $auth = Auth::user();
+
+            return $this->designService->saveDesign($validatedData['job_design_id'], $auth->id);
+
+        } catch (\PDOException $e) {
+            # Handle PDOException
+            return  Utility::outputData(false, "Unable to process request". $e->getMessage(), [], 400);
+        } catch (AuthorizationException $e) {
+            return  Utility::outputData(false, "Unauthorized access ",  $e->getMessage(), 404);
+        }
+    }
+
+
+
+    public function getSavedDesigns(): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $user = auth('api')->user(); # Retrieve the authenticated user
+
+            # Check if the user is authenticated
+            if (!$user) {
+                return Utility::outputData(false, "Unauthorized", [], 401);
+            }
+
+            # Fetch the saved designs  of the authenticated user
+            return $this->designService->getSavedDesigns($user);
+
+        } catch (\PDOException $e) {
+            return  Utility::outputData(false, "Unable to process request: " . $e->getMessage(), [], 400);
         }
     }
 }

@@ -5,6 +5,7 @@ namespace App\Services;
 
 
 use App\Helpers\Utility;
+use App\Http\Resources\DesignResource;
 use App\Models\Design;
 use App\Models\Images;
 use Illuminate\Support\Facades\DB;
@@ -215,5 +216,70 @@ class DesignService
         }
 
     }
+
+
+    public function saveDesign(int $jobDesignId, int $usertoken): \Illuminate\Http\JsonResponse
+    {
+        $recordExists  = Design::find($jobDesignId)->first();
+        if (!$recordExists) {
+            return Utility::outputData(false, "Record could not be found", [], 400);
+        }
+
+
+        # Check if the user token already exists in the save_jobs table
+        $existingRecord = DB::table('save_designs')
+            ->where('job_design_id', $jobDesignId)
+            ->where('user_id', $usertoken)
+            ->exists();
+
+        if ($existingRecord) {
+            return Utility::outputData(false, "Design already saved by this user", [], 400);
+        }
+
+        # Prepare data for insertion
+        $data =  [
+            'job_design_id' => $jobDesignId,
+            'user_id' => $usertoken,
+        ];
+
+        # Insert data into the table
+        if (!empty($data)) {
+            DB::table('save_designs')->insert($data);
+        }
+
+        return Utility::outputData(true, "Design saved successfully", [], 201);
+    }
+
+    public function getSavedDesigns($user): \Illuminate\Http\JsonResponse
+    {
+        # Fetch saved designs  records associated with the user
+        $savedDesigns = DB::table('save_designs')
+            ->where('user_id', $user->id)
+            ->get();
+
+        #  Check if no records are found
+        if ($savedDesigns->isEmpty()) {
+            return Utility::outputData(false, 'No saved designs found for the user.', [], 404);
+        }
+
+        # Collection to store design objects
+        $designObjects = collect();
+
+        $savedDesigns->each(function ($savedDesigns) use ($designObjects) {
+            $jobDesignId = $savedDesigns->job_design_id;
+
+            # Fetch job object for the job post id and add to jobObjects
+            $designObject = Design::select('id', 'project_title', 'project_price', 'created_at')
+                ->find($jobDesignId);
+
+            if ($designObject) {
+                $designObjects->push($designObject);
+            }
+        });
+
+        return Utility::outputData(true, 'Saved  designs fetched successfully.', (new DesignResource($designObjects))->toArraySavedJobs(), 200);
+    }
+
+
 
 }

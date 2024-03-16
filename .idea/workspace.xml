@@ -5,12 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="861e98c6-30f6-4f11-b5ad-92d992e44a28" name="Changes" comment="initialized new repo for desingOx">
-      <change afterPath="$PROJECT_DIR$/resources/views/email/LikeDesign.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Events/LikeDesign.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Events/LikeDesign.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Listeners/LikeDesignListener.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Listeners/LikeDesignListener.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Mail/LikeDesignMailer.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Mail/LikeDesignMailer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Design.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Design.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Providers/EventServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/EventServiceProvider.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Services/DesignService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/DesignService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/services.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Services/ProposalService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/ProposalService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/email/LikeDesign.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/email/LikeDesign.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -279,7 +281,7 @@
       <workItem from="1710251006215" duration="3373000" />
       <workItem from="1710316007498" duration="14922000" />
       <workItem from="1710365884888" duration="21717000" />
-      <workItem from="1710451098503" duration="37437000" />
+      <workItem from="1710451098503" duration="40993000" />
     </task>
     <task id="LOCAL-00001" summary="initialized new repo for desingOx">
       <option name="closed" value="true" />
@@ -421,15 +423,6 @@
             <option name="methodName" value="getSavedJobs" />
           </properties>
           <option name="timeStamp" value="46" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php-line-method">
-          <url>file://$PROJECT_DIR$/app/Services/DesignService.php</url>
-          <line>289</line>
-          <properties>
-            <option name="className" value="\App\Services\DesignService" />
-            <option name="methodName" value="LikeDesign" />
-          </properties>
-          <option name="timeStamp" value="48" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/routes/api.php</url>

@@ -321,7 +321,7 @@ class DesignService
 
         $designUrl = config('services.app_config.design_link_url')  . '/' . $jobDesignId;
 
-        event(new LikeDesign($recordExists->user->email,$recordExists->user->fullname, $designUrl, $recordExists->project_title));
+        event(new LikeDesign($recordExists->user->email, $recordExists->user->fullname, $designUrl, $recordExists->project_title));
 
         return Utility::outputData(true, "Design liked", [], 201);
     }

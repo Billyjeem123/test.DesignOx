@@ -2,13 +2,13 @@
 
 namespace App\Listeners;
 
-use App\Events\LikeDesign;
-use App\Mail\LikeDesignMailer;
+use App\Events\JobProposal;
+use App\Mail\clientNotifyProposal;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 
-class LikeDesignListener  implements ShouldQueue
+class JobProposalListner  implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -26,8 +26,8 @@ class LikeDesignListener  implements ShouldQueue
      * @param  object  $event
      * @return void
      */
-    public function handle(LikeDesign $event): void
+    public function handle(JobProposal $event)
     {
-        Mail::to($event->email)->send(new LikeDesignMailer($event->email, $event->fullname, $event->designUrl,$event->project_title));
+        Mail::to($event->credential['client_email'])->send(new clientNotifyProposal($event->credential));
     }
 }

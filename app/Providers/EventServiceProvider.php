@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Events\JobProposal;
 use App\Events\LikeDesign;
 use App\Events\NotifyAdminJob;
 use App\Events\UserRegistered;
+use App\Listeners\JobProposalListner;
 use App\Listeners\LikeDesignListener;
 use App\Listeners\NotifyAdminJobListener;
 use App\Listeners\UserRegisteredListener;
@@ -34,6 +36,9 @@ class EventServiceProvider extends ServiceProvider
 
         LikeDesign::class => [
             LikeDesignListener::class,
+        ],
+        JobProposal::class => [
+            JobProposalListner::class,
         ],
     ];
 

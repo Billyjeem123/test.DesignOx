@@ -23,7 +23,7 @@ class LikeDesignMailer extends Mailable
      *
      * @return void
      */
-    public function __construct($fullname, $email, $designUrl, $project_title)
+    public function __construct( $email, $fullname,$designUrl, $project_title)
     {
         $this->fullname = $fullname;
         $this->email = $email;

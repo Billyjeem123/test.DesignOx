@@ -82,7 +82,7 @@
     </p>
 
     <p>Best regards,</p>
-    <p>Team Designox Team {{ config('services.app_config.app_name')}}</p>
+    <p>Team {{ config('services.app_config.app_name')}}</p>
 
     <div style="text-align: center;">
         <a href="https://example.com" class="btn">Browse Services</a>

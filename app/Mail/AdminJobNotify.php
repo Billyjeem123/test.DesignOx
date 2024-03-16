@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class adminJobNotify extends Mailable
+class AdminJobNotify extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -43,7 +43,7 @@ class adminJobNotify extends Mailable
     public function content()
     {
         return new Content(
-            view: 'email.adminJobNotify',
+            view: 'email.AdminJobNotify',
         );
     }
 
@@ -66,6 +66,6 @@ class adminJobNotify extends Mailable
     public function build()
     {
         return $this->subject('Job Posting Notification')
-            ->view('email.adminJobNotify');
+            ->view('email.AdminJobNotify');
     }
 }

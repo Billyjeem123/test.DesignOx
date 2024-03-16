@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Helpers\Utility;
 use App\Http\Resources\ProposalResource;
-use App\Mail\adminJobNotify;
+use App\Mail\AdminJobNotify;
 use App\Mail\clientNotifyProposal;
 use App\Models\Job;
 use App\Models\Proposal;

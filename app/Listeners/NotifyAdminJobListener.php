@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\NotifyAdminJob;
-use App\Mail\adminJobNotify;
+use App\Mail\AdminJobNotify;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
@@ -28,6 +28,6 @@ class NotifyAdminJobListener  implements  ShouldQueue
      */
     public function handle(NotifyAdminJob $event): void
     {
-        Mail::to($event->appmail)->send(new adminJobNotify());
+        Mail::to($event->appmail)->send(new AdminJobNotify());
     }
 }

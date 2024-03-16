@@ -3,7 +3,7 @@ namespace App\Services;
 use App\Events\NotifyAdminJob;
 use App\Helpers\Utility;
 use App\Http\Resources\JobResource;
-use App\Mail\adminJobNotify;
+use App\Mail\AdminJobNotify;
 use App\Models\Job;
 use App\Models\User;
 use Carbon\Carbon;

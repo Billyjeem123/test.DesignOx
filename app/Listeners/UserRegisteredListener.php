@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 
 class UserRegisteredListener implements ShouldQueue
 {
+
     /**
      * Create the event listener.
      *
@@ -29,6 +30,6 @@ class UserRegisteredListener implements ShouldQueue
     public function handle(UserRegistered $user): void
     {
 
-        Mail::to( $this->email)->send(new WelcomeEmail($user->fullname, $user->token));
+        Mail::to( $user->email)->send(new WelcomeEmail($user->fullname, $user->token));
     }
 }

@@ -48,7 +48,8 @@ return [
     'app_config' =>[
         'app_mail' => env('APP_MAIL', 'billyhadiattaofeeq@gmail.com'),
         'app_name' => env('APP_NAME', 'DESIGNOX'),
-        'app_proposal_url' => env('PROPOSAL_LINK_URL', 'https://test.designox/talent/proposals')
+        'app_proposal_url' => env('PROPOSAL_LINK_URL', 'https://test.designox/talent/proposals'),
+        'design_link_url' => env('DESIGN_LINK_URL', 'https://test.designox/talent/design')
 
 
     ]

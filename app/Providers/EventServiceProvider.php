@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\LikeDesign;
 use App\Events\NotifyAdminJob;
 use App\Events\UserRegistered;
+use App\Listeners\LikeDesignListener;
 use App\Listeners\NotifyAdminJobListener;
 use App\Listeners\UserRegisteredListener;
 use Illuminate\Auth\Events\Registered;
@@ -28,6 +30,10 @@ class EventServiceProvider extends ServiceProvider
 
         NotifyAdminJob::class => [
             NotifyAdminJobListener::class,
+        ],
+
+        LikeDesign::class => [
+            LikeDesignListener::class,
         ],
     ];
 

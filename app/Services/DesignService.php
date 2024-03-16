@@ -4,6 +4,7 @@ namespace App\Services;
 
 
 
+use App\Events\LikeDesign;
 use App\Helpers\Utility;
 use App\Http\Resources\DesignResource;
 use App\Models\Design;
@@ -224,13 +225,13 @@ class DesignService
 
     public function saveDesign(int $jobDesignId, int $usertoken): \Illuminate\Http\JsonResponse
     {
-        $recordExists  = Design::find($jobDesignId)->first();
+        $recordExists  = Design::find($jobDesignId);
         if (!$recordExists) {
             return Utility::outputData(false, "Record could not be found", [], 400);
         }
 
 
-        # Check if the user token already exists in the save_jobs table
+        # Check if the user token already exists in the save_design table
         $existingRecord = DB::table('save_designs')
             ->where('job_design_id', $jobDesignId)
             ->where('user_id', $usertoken)
@@ -317,6 +318,10 @@ class DesignService
 
         # Update the like count in the designs table
         Design::where('id', $jobDesignId)->increment('likes');
+
+        $designUrl = config('services.app_config.design_link_url')  . '/' . $jobDesignId;
+
+        event(new LikeDesign($recordExists->user->email,$recordExists->user->fullname, $designUrl, $recordExists->project_title));
 
         return Utility::outputData(true, "Design liked", [], 201);
     }

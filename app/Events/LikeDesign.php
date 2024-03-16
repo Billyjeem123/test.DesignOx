@@ -14,14 +14,22 @@ class LikeDesign
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public mixed $email;
+    public mixed $fullname;
+    public  $designUrl;
+    public mixed $project_title;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($email ,$fullname, $designUrl, $project_title)
     {
-        //
+        $this->email = $email;
+        $this->fullname  =$fullname;
+        $this->designUrl = $designUrl;
+        $this->project_title = $project_title;
     }
 
     /**

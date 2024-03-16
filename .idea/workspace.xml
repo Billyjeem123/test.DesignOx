@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="861e98c6-30f6-4f11-b5ad-92d992e44a28" name="Changes" comment="initialized new repo for desingOx" />
+    <list default="true" id="861e98c6-30f6-4f11-b5ad-92d992e44a28" name="Changes" comment="initialized new repo for desingOx">
+      <change afterPath="$PROJECT_DIR$/resources/views/email/LikeDesign.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Events/LikeDesign.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Events/LikeDesign.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Services/DesignService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/DesignService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/services.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -272,7 +279,7 @@
       <workItem from="1710251006215" duration="3373000" />
       <workItem from="1710316007498" duration="14922000" />
       <workItem from="1710365884888" duration="21717000" />
-      <workItem from="1710451098503" duration="34003000" />
+      <workItem from="1710451098503" duration="37437000" />
     </task>
     <task id="LOCAL-00001" summary="initialized new repo for desingOx">
       <option name="closed" value="true" />
@@ -399,7 +406,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/Services/DesignService.php</url>
-          <line>87</line>
+          <line>88</line>
           <properties>
             <option name="className" value="\App\Services\DesignService" />
             <option name="methodName" value="getImageExtension" />
@@ -417,7 +424,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/Services/DesignService.php</url>
-          <line>288</line>
+          <line>289</line>
           <properties>
             <option name="className" value="\App\Services\DesignService" />
             <option name="methodName" value="LikeDesign" />

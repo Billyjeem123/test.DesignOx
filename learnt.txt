@@ -10,3 +10,5 @@ php artisan make:migration add_views_to_jobs_table --table=job_posts
 php artisan migrate:rollback 2024_02_13_085137_create_job_posts_table.php
 
 
+#Websocket.....
+

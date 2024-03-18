@@ -24,9 +24,19 @@ class Design extends Model
     {
         return $this->belongsToMany(Type::class, 'job_design_job_type', 'job_design_id', 'job_type_id');
 
+
     }
 
 
+    /**
+     * Relationship: a  design has many  Colors associated with it
+     */
+
+    public function color_type(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Color::class, 'job_design_job_colors', 'job_design_id', 'color_id');
+
+    }
 
     /**
      * Relationship: a  design has many  Images

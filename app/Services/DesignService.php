@@ -40,10 +40,16 @@ class DesignService
                 $saveTalentDesign->design_type()->attach($projectTypes, ['job_design_id' => $newlyCreatedDesignId]);
             }
 
+            # Save colors types (colors) using attach()
+            if (isset($data['colors'])) {
+                $colors = $data['colors'];
+                $saveTalentDesign->color_type()->attach($colors, ['job_design_id' => $newlyCreatedDesignId]);
+            }
+
             $this->saveDesignImages($data['images'], $newlyCreatedDesignId);
             $this->saveDesignPostingKeyWords($newlyCreatedDesignId, $data['keywords']);
             $this->saveDesignPostingTools($newlyCreatedDesignId, $data['tools_used']);
-            $this->saveJobColor($newlyCreatedDesignId, $data['colors']);
+
 
             return Utility::outputData(true, "Design posted", [], 201);
 
@@ -104,21 +110,6 @@ class DesignService
                 return 'jpg'; // Default to jpg if extension not recognized
         }
         }
-
-        private  function saveJobColor(int $jobDesignId, array $jobColorIds): void
-    {
-        // Prepare data for insertion
-        $data = [];
-        foreach ($jobColorIds as $jobColorId) {
-            $data[] = [
-                'job_design_id' => $jobDesignId,
-                'color_id' => $jobColorId,
-            ];
-        }
-
-        // Insert data into the pivot table
-        DB::table('job_design_job_colors')->insert($data);
-    }
 
 
     private function saveDesignPostingKeyWords($newlyCreatedDesignId, mixed $keywords): void
@@ -344,8 +335,8 @@ class DesignService
         # Load additional data
         $tools = $this->getDesignTools($design->id);
         $keywords = $this->getDesignKeyWords($design->id);
-        $designType   =  $design->design_type()->pluck('project_type')->toArray();
-        $colors  = $design->color_type()->pluck('colors')->toArray();
+        $designType   =  $design->design_type()->pluck('project_type')->toArray(); #call the relationship between  design and project_type
+        $colors  = $design->color_type()->pluck('colors')->toArray();  #call the relationship between  design and colors
 
         # Return both the design data and additional data as an array
         $DesignById =  [
@@ -378,14 +369,28 @@ class DesignService
             ->get();
     }
 
-
-    private function getDesignColors($designColorsId): \Illuminate\Support\Collection
+    public function getTalentDesigns(int $usertoken)
     {
-        return DB::table('job_design_colors')
-            ->select(['tools']) // Specify the columns you want to include
-            ->where('job_design_id', $designColorsId)
-            ->get();
+        $query = Design::where('talent_id', $usertoken);
+
+        # Paginate the results
+        return $query->paginate(10);
     }
+
+
+    public function transformDesignData($designs)
+    {
+        $designs->getCollection()->transform(function ($designs) {
+            $designs->tools = $this->getDesignTools($designs->id);
+            $designs->keywords = $this->getDesignKeyWords($designs->id);
+            return $designs;
+        });
+
+        return $designs->getCollection();
+    }
+
+
+
 
 
     private function getDesignKeyWords($designKeyWordsId): \Illuminate\Support\Collection
@@ -406,6 +411,97 @@ class DesignService
         // Update last viewed timestamp
         $design->update(['last_viewed_at' => Carbon::now()]);
 
+    }
+
+
+    public function updateDesign(int $designId, array $data, array $keywords, array $tools, array $design_tools, array $colors): \Illuminate\Http\JsonResponse
+    {
+        try {
+            # Update job details
+            $affectedRows = Design::where('id', $designId)->update($data);
+
+            # Check if any rows were affected
+            if ($affectedRows === 0) {
+                return Utility::outputData(false, "Design not found or no changes were made", [], 404);
+            }
+
+            # Retrieve the updated design instance
+            $design = Design::findOrFail($designId);
+
+            # Update keywords and tools
+            $this->updateDesignKeywords($designId, $keywords);
+            $this->updateJobTools($designId, $tools);
+
+            # Sync project types And color_types
+            $design->design_type()->sync($design_tools);
+            $design->color_type()->sync($colors);
+
+            return Utility::outputData(true, "Design  updated successfully", [], 200);
+
+        } catch (\Exception $e) {
+            throw new \Exception('An error occurred while updating design  and associates: ' . $e->getMessage());
+        }
+    }
+
+
+
+    private function updateJobTools(int $designId, array $tools):void
+    {
+        # Get the existing tools for the job
+        $existingTools = DB::table('job_design_tools')->where('job_design_id', $designId)->pluck('tools')->toArray();
+
+        # Find tools to delete
+        $toolsToDelete = array_diff($existingTools, $tools);
+
+        # Find tools to insert
+        $toolsToInsert = array_diff($tools, $existingTools);
+
+        # Delete tools that are no longer present
+        if (!empty($toolsToDelete)) {
+            DB::table('job_design_tools')->where('job_design_id', $designId)->whereIn('tools', $toolsToDelete)->delete();
+        }
+
+        # Insert new tools
+        if (!empty($toolsToInsert)) {
+            $data = [];
+            foreach ($toolsToInsert as $tool) {
+                $data[] = [
+                    'job_design_id' => $designId,
+                    'tools' => $tool,
+                ];
+            }
+            DB::table('job_design_tools')->insert($data);
+        }
+    }
+
+
+    private function updateDesignKeywords(int $designId, array $keywords): void
+    {
+        # Get the existing keywords for the job
+        $existingKeywords = DB::table('job_designs_keyword')->where('job_design_id', $designId)->pluck('keywords')->toArray();
+
+        # Find keywords to delete
+        $keywordsToDelete = array_diff($existingKeywords, $keywords);
+
+        # Find keywords to insert
+        $keywordsToInsert = array_diff($keywords, $existingKeywords);
+
+        # Delete keywords that are no longer present
+        if (!empty($keywordsToDelete)) {
+            DB::table('job_designs_keyword')->where('job_design_id', $designId)->whereIn('keywords', $keywordsToDelete)->delete();
+        }
+
+        # Insert new keywords
+        if (!empty($keywordsToInsert)) {
+            $data = [];
+            foreach ($keywordsToInsert as $keyword) {
+                $data[] = [
+                    'job_design_id' => $designId,
+                    'keywords' => $keyword,
+                ];
+            }
+            DB::table('job_designs_keyword')->insert($data);
+        }
     }
 
 

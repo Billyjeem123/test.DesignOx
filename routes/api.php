@@ -92,7 +92,7 @@ Route::prefix('talent')->group(function () {
             Route::post('/save-design', [DesignController::class, 'saveDesign'])->name('save.design');
             Route::get('/get-saved-designs', [DesignController::class, 'getSavedDesigns'])->name('get.saved.design');
             Route::post('/like-design', [DesignController::class, 'likeDesign'])->name('like.design');
-            Route::post('/get-user-design', [DesignController::class, 'getTalentDesigns'])->name('get.talent.designs');
+            Route::get('/get-user-designs', [DesignController::class, 'getTalentDesigns'])->name('get.talent.designs');
             Route::get('/get-design-by-id/{id}', [DesignController::class, 'getDesignsById'])->name('get.saved.design.id');
         });
 

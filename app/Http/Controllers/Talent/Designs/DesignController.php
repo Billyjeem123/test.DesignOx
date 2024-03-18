@@ -134,13 +134,20 @@ class DesignController extends Controller
     }
 
 
-    public function getTalentDesigns(DesignRequest $requests): \Illuminate\Http\JsonResponse
+    public function getTalentDesigns(): \Illuminate\Http\JsonResponse
     {
         try {
-            $validatedData = $requests->validated();
             $auth = Auth::user();
 
-            return $this->designService->LikeDesign($validatedData['job_design_id'], $auth->id);
+            $designByTalent =  $this->designService->getTalentDesigns($auth->id);
+            if ($designByTalent->isEmpty()) {
+                return Utility::outputData(false, "No results found", [], 404);
+            }
+
+            $responseData = $this->designService->transformDesignData($designByTalent);
+
+            # Return paginated response
+            return  Utility::outputData(true, "Talent Designs fetched  successfully", (new DesignResource($responseData))->toArrayWithMinimalData(), 200);
 
         } catch (\PDOException $e) {
             # Handle PDOException
@@ -160,6 +167,8 @@ class DesignController extends Controller
             return  Utility::outputData(false, "Unable to process request", Utility::getExceptionDetails($e), 400);
         }
     }
+
+
 
 
 }

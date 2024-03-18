@@ -8,7 +8,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Talent/Designs/DesignController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Talent/Designs/DesignController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/Design.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Design.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Providers/EventServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/EventServiceProvider.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Services/DesignService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/DesignService.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
@@ -289,7 +288,7 @@
       <workItem from="1710606025627" duration="465000" />
       <workItem from="1710663900742" duration="7000" />
       <workItem from="1710737061238" duration="1058000" />
-      <workItem from="1710786947679" duration="4513000" />
+      <workItem from="1710786947679" duration="7153000" />
     </task>
     <task id="LOCAL-00001" summary="initialized new repo for desingOx">
       <option name="closed" value="true" />
@@ -416,7 +415,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/Services/DesignService.php</url>
-          <line>89</line>
+          <line>95</line>
           <properties>
             <option name="className" value="\App\Services\DesignService" />
             <option name="methodName" value="getImageExtension" />
@@ -434,12 +433,21 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/Services/DesignService.php</url>
-          <line>331</line>
+          <line>322</line>
           <properties>
             <option name="className" value="\App\Services\DesignService" />
             <option name="methodName" value="fetchJobById" />
           </properties>
           <option name="timeStamp" value="47" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php-line-method">
+          <url>file://$PROJECT_DIR$/app/Services/DesignService.php</url>
+          <line>416</line>
+          <properties>
+            <option name="className" value="\App\Services\DesignService" />
+            <option name="methodName" value="updateJob" />
+          </properties>
+          <option name="timeStamp" value="48" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/routes/api.php</url>

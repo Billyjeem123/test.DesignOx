@@ -17,15 +17,17 @@ class Design extends Model
 
 
     /**
-     * Relationship: a  design has many  design_types
+     * Relationship: a  design has many  design_types associated with it
      */
 
     public function design_type(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Type::class, 'job_design_job_type', 'job_design_id', 'job_type_id');
 
-
     }
+
+
+
     /**
      * Relationship: a  design has many  Images
      */

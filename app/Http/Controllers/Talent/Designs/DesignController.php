@@ -150,4 +150,16 @@ class DesignController extends Controller
         }
     }
 
+
+    public function getDesignsById(int $designId): \Illuminate\Http\JsonResponse
+    {
+        try {
+            return $this->designService->fetchDesignById($designId);
+
+        } catch (\PDOException $e) {
+            return  Utility::outputData(false, "Unable to process request", Utility::getExceptionDetails($e), 400);
+        }
+    }
+
+
 }

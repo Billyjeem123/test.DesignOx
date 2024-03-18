@@ -9,6 +9,7 @@ use App\Helpers\Utility;
 use App\Http\Resources\DesignResource;
 use App\Models\Design;
 use App\Models\Images;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -324,6 +325,87 @@ class DesignService
         event(new LikeDesign($recordExists->user->email, $recordExists->user->fullname, $designUrl, $recordExists->project_title));
 
         return Utility::outputData(true, "Design liked", [], 201);
+    }
+
+
+
+    public function fetchDesignById($designId): \Illuminate\Http\JsonResponse
+    {
+        $design = Design::where('id', $designId)->first();
+
+        if(!$design){
+            return Utility::outputData(false, "Record does not exists", [], 404);
+        }
+
+        # Update view count and last viewed timestamp
+        $this->viewDesign($design);
+
+
+        # Load additional data
+        $tools = $this->getDesignTools($design->id);
+        $keywords = $this->getDesignKeyWords($design->id);
+        $designType   =  $design->design_type()->pluck('project_type')->toArray();
+        $colors  = $design->color_type()->pluck('colors')->toArray();
+
+        # Return both the design data and additional data as an array
+        $DesignById =  [
+            'designs' => [
+                'job_design_id' => $design->id,
+                'project_desc' => $design->project_desc ?? null,
+                'project_title' => $design->project_title ?? null,
+                'project_budget' => $design->project_price ?? 0,
+                'views' => $design->view_count,
+                'last_viewed' => $design->last_viewed_at->diffForHumans(),
+                'date_posted' => $design->created_at->diffForHumans(),
+                'design_link_attachment' => $design->attachment ?? 0,
+            ],
+            'tools' => $tools,
+            'keywords' => $keywords,
+            'colors' => $colors,
+            'project_type' => $designType,
+            'images' => $design->images
+        ];
+
+        return  Utility::outputData(true, "Design fetched successfully", ($DesignById), 200);
+    }
+
+
+    private function getDesignTools($designToolsId): \Illuminate\Support\Collection
+    {
+        return DB::table('job_design_tools')
+            ->select(['tools']) // Specify the columns you want to include
+            ->where('job_design_id', $designToolsId)
+            ->get();
+    }
+
+
+    private function getDesignColors($designColorsId): \Illuminate\Support\Collection
+    {
+        return DB::table('job_design_colors')
+            ->select(['tools']) // Specify the columns you want to include
+            ->where('job_design_id', $designColorsId)
+            ->get();
+    }
+
+
+    private function getDesignKeyWords($designKeyWordsId): \Illuminate\Support\Collection
+    {
+        return DB::table('job_designs_keyword')
+            ->select(['keywords']) // Specify the columns you want to include
+            ->where('job_design_id', $designKeyWordsId)
+            ->get();
+    }
+
+
+
+    private function viewDesign(Design $design): void
+    {
+        // Update view count
+        $design->increment('view_count');
+
+        // Update last viewed timestamp
+        $design->update(['last_viewed_at' => Carbon::now()]);
+
     }
 
 

@@ -32,6 +32,12 @@ class ReviewRequest extends FormRequest
 
                 ];
 
+            case 'deleteReview':
+                return [
+                    'review_id' => ['required'],
+
+                ];
+
                 break;
             default:
                 return [];

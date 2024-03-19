@@ -106,8 +106,19 @@ Route::prefix('talent')->group(function () {
             Route::post('/like-design', [DesignController::class, 'likeDesign'])->name('like.design');
             Route::get('/get-user-designs', [DesignController::class, 'getTalentDesigns'])->name('get.talent.designs');
             Route::get('/get-design-by-id/{id}', [DesignController::class, 'getDesignsById'])->name('get.saved.design.id');
+            Route::post('/review', [ReviewsController::class, 'Makereview'])->name('create.review');
+            Route::get('/get-design-reviews/{id}', [ReviewsController::class, 'getDesignReviews'])->name('get.reviews.design.id');
         });
 
+
+        # Profile Endpoint...
+
+        Route::prefix('profile')->group(function () {
+            Route::post('/update-password', [AuthController::class, 'updatePassword'])->name('password.update');
+            Route::post('/set-security-question', [AuthController::class, 'enableSecurityQuestion'])->name('security.set');
+            Route::patch('/manage-security-question', [AuthController::class, 'manageSecurityQuestion'])->name('security.manage');
+            Route::post('/update-profile', [AuthController::class, 'updateProfile'])->name('profile.update');
+        });
 
 
     });

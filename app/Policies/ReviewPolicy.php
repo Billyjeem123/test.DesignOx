@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Reviews;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -20,14 +21,21 @@ class ReviewPolicy
     }
 
 
-    public function create(User $user): bool
+    public function create(): bool
     {
-        if ($user->hasRole('client') || $user->hasRole('talent')) {
-            #  If the user has the 'client' or 'talent' role, allow access
-            return true;
-        }
+        return true;
+    }
 
-        # If the user does not have the 'client' or 'talent' role, deny access
-        return false;
+
+    /**
+     * Determine whether the user can delete the resource.
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function delete(User $user, Reviews $review): bool
+    {
+        # Check if the user is the owner of the job
+        return $user->id == $review->user_id;
     }
 }

@@ -96,4 +96,7 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Design::class, 'job_design_likes', 'user_id', 'job_design_id');
     }
+
+
+
 }

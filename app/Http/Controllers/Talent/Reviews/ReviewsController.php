@@ -28,7 +28,7 @@ class ReviewsController extends Controller
 
             $user = auth('api')->user();
 
-            # $this->authorize('create', Reviews::class);
+             $this->authorize('create', Reviews::class);
 
             $data = [
                 'user_id' => $user->id,
@@ -59,7 +59,29 @@ class ReviewsController extends Controller
             # Handle PDOException
             return  Utility::outputData(false, "Unable to process request". $e->getMessage(), [], 400);
         } catch (AuthorizationException $e) {
-            return  Utility::outputData(false, "Unauthorized access ",  $e->getMessage(), 404);
+            return  Utility::outputData(false, "Unauthorized access",  $e->getMessage(), 404);
+        }
+    }
+
+
+    public function deleteReview(ReviewRequest $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $validatedData = $request->validated();
+
+            $data = [
+                'review_id' => $validatedData['review_id'],
+            ];
+
+            $this->authorize('delete', Reviews::findOrFail($data['review_id']));
+
+            return $this->reviewService->deleteReview($data['review_id']);
+
+
+        } catch (ValidationException $e) {
+            return Utility::outputData(false, "Validation failed", $e->errors(), 422);
+        } catch (\Exception $e) {
+            return Utility::outputData(false, "An error occurred", $e->getMessage(), 500);
         }
     }
 }

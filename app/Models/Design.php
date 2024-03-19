@@ -52,7 +52,7 @@ class Design extends Model
      */
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(User::class, 'talent_id')->select(['fullname', 'country', 'email']); #get specific columns
+        return $this->belongsTo(User::class, 'talent_id')->select(['fullname', 'country', 'email', 'id']); #get specific columns
     }
 
 
@@ -73,6 +73,9 @@ class Design extends Model
     {
         return $this->hasMany(Reviews::class, 'job_design_id');
     }
+
+
+
 }
 
 

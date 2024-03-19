@@ -50,7 +50,8 @@ return [
         'app_name' => env('APP_NAME', 'DESIGNOX'),
         'app_proposal_url' => env('PROPOSAL_LINK_URL', 'https://test.designox/talent/proposals'),
         'design_link_url' => env('DESIGN_LINK_URL', 'https://test.designox/talent/design'),
-        'review_link_url' => env('REVIEW_LINK_URL', 'https://test.designox/review')
+        'client_review_link_url' => env('ClINT_REVIEW_LINK_URL', 'https://test.designox/client/review'),
+        'talent_review_link_url' => env('TALENT_REVIEW_LINK_URL', 'https://test.designox/talent/review')
 
 
     ]

@@ -5,10 +5,12 @@ namespace App\Providers;
 use App\Events\JobProposal;
 use App\Events\LikeDesign;
 use App\Events\NotifyAdminJob;
+use App\Events\NotifyReview;
 use App\Events\UserRegistered;
 use App\Listeners\JobProposalListner;
 use App\Listeners\LikeDesignListener;
 use App\Listeners\NotifyAdminJobListener;
+use App\Listeners\UserNotifyReviewListner;
 use App\Listeners\UserRegisteredListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -39,6 +41,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         JobProposal::class => [
             JobProposalListner::class,
+        ],
+
+        NotifyReview::class => [
+            UserNotifyReviewListner::class,
         ],
     ];
 

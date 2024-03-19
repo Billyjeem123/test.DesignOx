@@ -21,10 +21,20 @@ class ReviewRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
-        return [
-            //
-        ];
+        switch ($this->route()->getActionMethod()) {
+            case 'Makereview':
+                return [
+                    'job_design_id' => ['required', 'integer', 'max:255'],
+                    'review' => ['required', 'string'],
+                    'ratings' => ['required', 'integer', 'max:255']
+
+                ];
+
+                break;
+            default:
+                return [];
+        }
     }
 }

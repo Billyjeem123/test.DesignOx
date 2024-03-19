@@ -5,11 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="861e98c6-30f6-4f11-b5ad-92d992e44a28" name="Changes" comment="initialized new repo for desingOx">
-      <change afterPath="$PROJECT_DIR$/app/Services/ReviewService.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Listeners/UserNotifyReviewListner.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Notifications/DesignReview.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/email/NotifyDesignReview.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Talent/Reviews/ReviewsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Talent/Reviews/ReviewsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/ReviewRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/ReviewRequest.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/Reviews.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Reviews.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Providers/EventServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/EventServiceProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Services/ReviewService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/ReviewService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/services.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/storage/logs/laravel.log" beforeDir="false" afterPath="$PROJECT_DIR$/storage/logs/laravel.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -290,6 +296,7 @@
       <workItem from="1710663900742" duration="7000" />
       <workItem from="1710737061238" duration="1058000" />
       <workItem from="1710786947679" duration="14386000" />
+      <workItem from="1710823068879" duration="12267000" />
     </task>
     <task id="LOCAL-00001" summary="initialized new repo for desingOx">
       <option name="closed" value="true" />
@@ -397,15 +404,6 @@
           <option name="timeStamp" value="39" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php-line-method">
-          <url>file://$PROJECT_DIR$/app/Http/Requests/ProposalRequest.php</url>
-          <line>23</line>
-          <properties>
-            <option name="className" value="\App\Http\Requests\ProposalRequest" />
-            <option name="methodName" value="rules" />
-          </properties>
-          <option name="timeStamp" value="41" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php-line-method">
           <url>file://$PROJECT_DIR$/app/Http/Controllers/Client/PostJob/JobController.php</url>
           <line>230</line>
           <properties>
@@ -468,6 +466,16 @@
           <url>file://$PROJECT_DIR$/resources/views/email/clientProposalNotify.blade.php</url>
           <line>53</line>
           <option name="timeStamp" value="40" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/resources/views/email/NotifyDesignReview.blade.php</url>
+          <line>54</line>
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/resources/views/email/NotifyDesignReview.blade.php</url>
+          <line>68</line>
+          <option name="timeStamp" value="51" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

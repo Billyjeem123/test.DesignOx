@@ -27,12 +27,12 @@ class ReviewsController extends Controller
 
             $user = auth('api')->user();
 
-            $this->authorize('create', Reviews::class);
+            # $this->authorize('create', Reviews::class);
 
             $data = [
                 'user_id' => $user->id,
                 'job_design_id' => $validatedData['job_design_id'],
-                'comment' => $validatedData['comment'],
+                'reviews' => $validatedData['review'],
                 'ratings' => $validatedData['ratings'],
             ];
 

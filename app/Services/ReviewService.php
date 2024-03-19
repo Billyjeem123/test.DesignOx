@@ -3,6 +3,7 @@
 namespace App\Services;
 
 
+use App\Events\NotifyReview;
 use App\Helpers\Utility;
 use App\Models\Design;
 use App\Models\Reviews;
@@ -10,34 +11,30 @@ use App\Models\Reviews;
 class  ReviewService
 {
 
-
-
-    public function processReview(array $data): \Illuminate\Http\JsonResponse
+    public function processReview($data): \Illuminate\Http\JsonResponse
     {
         try {
             # Process reviews jobs postings..
+            Reviews::create($data); # Corrected line
 
-            Reviews::create($data); #  Corrected line
-
-            $job =  Design::findOrFail($data['job_design_id']);
+            $design =  Design::findOrFail($data['job_design_id']);
 
             $credential = [
-                'client_fullname' => $job->user->fullname,
-                'project_title' => $job->project_title,
-                'talent_fullname' => auth()->user()->fullname,
-                'client_email' => $job->user->email,
-                'proposal_cover_info' => strtok(wordwrap($data['cover_letter'], 50), "\n") . '...',  #shorten the cover letter
-                'link_to_proposal' => config('services.app_config.app_proposal_url')  . '/' . $job->id ,
+                'commentor_name' => auth()->user()->fullname,
+                'author' => $design->user->fullname,
+                'project_title' => $design->project_title,
+                'author_email' => $design->user->email,
+                'link_to_review' => config('services.app_config.review_link_url')  . '/' . $design->id ,
             ];
 
-//            event(new JobProposal($credential));
+            event(new NotifyReview($credential));
 
             return Utility::outputData(true, "Review sent...", [], 201);
 
         } catch (\Exception $e) {
             # Handle exceptions
-
-            return Utility::outputData(false, 'An error occurred while processing  design reviews.' . $e->getMessage(), Utility::getExceptionDetails($e), 500);
+            return Utility::outputData(false, 'An error occurred while processing design reviews.' . $e->getMessage(), Utility::getExceptionDetails($e), 500);
         }
     }
+
 }

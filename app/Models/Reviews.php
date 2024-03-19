@@ -9,6 +9,8 @@ class Reviews extends Model
 {
     use HasFactory;
 
+    protected  $table = 'job_design_reviews';
+
     protected  $fillable = [
         'user_id', 'job_design_id', 'comment', 'ratings'
     ];

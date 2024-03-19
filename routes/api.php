@@ -5,6 +5,7 @@ use App\Http\Controllers\Client\User\AuthController;
 use App\Http\Controllers\Role\RoleController;
 use App\Http\Controllers\Talent\Designs\DesignController;
 use App\Http\Controllers\Talent\Proposal\ProposalController;
+use App\Http\Controllers\Talent\Reviews\ReviewsController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
@@ -60,13 +61,14 @@ Route::prefix('client')->group(function () {
             Route::patch('/manage-security-question', [AuthController::class, 'manageSecurityQuestion'])->name('security.manage');
         });
 
-
+        # Designs AND Reviews Endpoint...
         Route::prefix('designs')->group(function () {
             Route::post('/get-all-designs', [DesignController::class, 'getAllDesigns'])->name('get.all.design');
             Route::post('/save-design', [DesignController::class, 'saveDesign'])->name('save.design');
             Route::get('/get-saved-designs', [DesignController::class, 'getSavedDesigns'])->name('get.saved.design');
             Route::post('/like-design', [DesignController::class, 'likeDesign'])->name('like.design');
             Route::get('/get-design-by-id/{id}', [DesignController::class, 'getDesignsById'])->name('get.saved.design.id');
+            Route::post('/review', [ReviewsController::class, 'Makereview'])->name('create.review');
         });
 
 

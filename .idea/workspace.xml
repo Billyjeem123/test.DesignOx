@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="861e98c6-30f6-4f11-b5ad-92d992e44a28" name="Changes" comment="initialized new repo for desingOx">
+      <change afterPath="$PROJECT_DIR$/app/Services/ReviewService.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Talent/Reviews/ReviewsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Talent/Reviews/ReviewsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Reviews.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Reviews.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/logs/laravel.log" beforeDir="false" afterPath="$PROJECT_DIR$/storage/logs/laravel.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -285,7 +289,7 @@
       <workItem from="1710606025627" duration="465000" />
       <workItem from="1710663900742" duration="7000" />
       <workItem from="1710737061238" duration="1058000" />
-      <workItem from="1710786947679" duration="8472000" />
+      <workItem from="1710786947679" duration="14386000" />
     </task>
     <task id="LOCAL-00001" summary="initialized new repo for desingOx">
       <option name="closed" value="true" />
@@ -445,6 +449,15 @@
             <option name="methodName" value="updateJob" />
           </properties>
           <option name="timeStamp" value="48" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php-line-method">
+          <url>file://$PROJECT_DIR$/app/Services/ProposalService.php</url>
+          <line>16</line>
+          <properties>
+            <option name="className" value="\App\Services\ProposalService" />
+            <option name="methodName" value="processTalentOffer" />
+          </properties>
+          <option name="timeStamp" value="49" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/routes/api.php</url>

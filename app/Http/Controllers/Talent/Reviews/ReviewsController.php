@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ReviewRequest;
 use App\Models\Reviews;
 use App\Services\ReviewService;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -44,6 +45,21 @@ class ReviewsController extends Controller
         } catch (\Exception $e) {
             #  Handle any other exceptions that may occur during role creation
             return Utility::outputData(false, "An error occurred", $e->getMessage(), Utility::getExceptionDetails($e), 500);
+        }
+    }
+
+
+
+    public function getDesignReviews($designId): \Illuminate\Http\JsonResponse
+    {
+        try {
+            return $this->reviewService->getDesignReviews($designId);
+
+        } catch (\PDOException $e) {
+            # Handle PDOException
+            return  Utility::outputData(false, "Unable to process request". $e->getMessage(), [], 400);
+        } catch (AuthorizationException $e) {
+            return  Utility::outputData(false, "Unauthorized access ",  $e->getMessage(), 404);
         }
     }
 }

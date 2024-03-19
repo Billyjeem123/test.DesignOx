@@ -12,7 +12,7 @@ class Reviews extends Model
     protected  $table = 'job_design_reviews';
 
     protected  $fillable = [
-        'user_id', 'job_design_id', 'comment', 'ratings'
+        'user_id', 'job_design_id', 'reviews', 'ratings'
     ];
 
     /**
@@ -21,6 +21,14 @@ class Reviews extends Model
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id')->select(['fullname', 'country', 'email']); #get specific columns
+    }
+
+    /**
+     * Relationship: Each reviews belongs to specific designs
+     */
+    public function design(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Design::class, 'job_design_id');
     }
 
 }

@@ -64,4 +64,16 @@ class Design extends Model
     {
         return $this->belongsToMany(User::class, 'job_design_likes', 'job_design_id', 'user_id');
     }
+
+    /**
+     * Relationship: a Design has many reviews pr can have many reviews
+     */
+
+    public function reviews(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Reviews::class, 'job_design_id');
+    }
 }
+
+
+

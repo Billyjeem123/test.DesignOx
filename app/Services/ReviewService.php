@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Events\NotifyReview;
 use App\Helpers\Utility;
+use App\Http\Resources\ReviewResource;
 use App\Models\Design;
 use App\Models\Reviews;
 
@@ -35,6 +36,22 @@ class  ReviewService
             # Handle exceptions
             return Utility::outputData(false, 'An error occurred while processing design reviews.' . $e->getMessage(), Utility::getExceptionDetails($e), 500);
         }
+    }
+
+
+
+    public function getDesignReviews(int $designId): \Illuminate\Http\JsonResponse
+    {
+        $design = Design::find($designId);
+
+        if (is_null($design)) {
+            return Utility::outputData(false, "No records found", [], 404);
+        }
+        $allReviews = $design->reviews()->orderByDesc('created_at')->get();
+
+        # Return paginated response
+        return  Utility::outputData(true, "Reviews fetched  successfully", new ReviewResource($allReviews), 200);
+
     }
 
 }

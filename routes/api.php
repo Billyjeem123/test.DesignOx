@@ -69,6 +69,7 @@ Route::prefix('client')->group(function () {
             Route::post('/like-design', [DesignController::class, 'likeDesign'])->name('like.design');
             Route::get('/get-design-by-id/{id}', [DesignController::class, 'getDesignsById'])->name('get.saved.design.id');
             Route::post('/review', [ReviewsController::class, 'Makereview'])->name('create.review');
+            Route::get('/get-design-reviews/{id}', [ReviewsController::class, 'getDesignReviews'])->name('get.reviews.design.id');
         });
 
 
